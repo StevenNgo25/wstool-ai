@@ -22,7 +22,7 @@ FROM nginx:alpine
 # và ghi log/cache vào các thư mục cần thiết mà không cần chmod 777.
 
 # 2. Copy chỉ các file build từ stage trước
-COPY --from=build /app/dist/WSTool.client/browser /usr/share/nginx/html
+COPY --from=build /app/dist/wstool.ui/browser /usr/share/nginx/html
 
 # 3. Copy file cấu hình Nginx cho Angular app (phục vụ qua HTTP)
 # File này (nginx/default.conf từ thư mục build context của Dockerfile này)
