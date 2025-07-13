@@ -55,4 +55,8 @@ namespace WhatsAppCampaignManager.DTOs
         public bool CanSendMessages { get; set; } = true;
         public bool CanCreateJobs { get; set; } = true;
     }
+    public class BulkDeleteRequestDto
+    {
+        public List<int> Ids { get; set; }
+    }
 }

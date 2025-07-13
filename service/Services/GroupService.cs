@@ -62,14 +62,14 @@ namespace WhatsAppCampaignManager.Services
             if (request.InstanceIds != null && request.InstanceIds.Any())
             {
                 // Get groups that are associated with messages from specified instances
-                var groupIdsFromInstances = await _context.AppMessages
-                    .Where(m => request.InstanceIds.Contains(m.InstanceId))
-                    .SelectMany(m => m.MessageGroups)
-                    .Select(mg => mg.GroupId)
-                    .Distinct()
-                    .ToListAsync();
+                //var groupIdsFromInstances = await _context.AppMessages
+                //    .Where(m => request.InstanceIds.Contains(m.InstanceId))
+                //    .SelectMany(m => m.MessageGroups)
+                //    .Select(mg => mg.GroupId)
+                //    .Distinct()
+                //    .ToListAsync();
 
-                query = query.Where(g => groupIdsFromInstances.Contains(g.Id));
+                query = query.Where(g => request.InstanceIds.Contains(g.InstanceId));
             }
 
             var groupQuery = query.Select(g => new GroupDto

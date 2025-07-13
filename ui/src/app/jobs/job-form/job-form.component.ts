@@ -79,7 +79,7 @@ export class JobFormComponent implements OnInit {
   }
 
   loadMessages(): void {
-    const pagination: PaginationRequest = { page: 1, pageSize: 100 }
+    const pagination: PaginationRequest = { page: 1, pageSize: 1000 }
     this.messageService.getMessages(pagination).subscribe({
       next: (response) => {
         this.messages = response.data
@@ -92,7 +92,7 @@ export class JobFormComponent implements OnInit {
   }
 
   loadInstances(): void {
-    const pagination: PaginationRequest = { page: 1, pageSize: 100 }
+    const pagination: PaginationRequest = { page: 1, pageSize: 1000 }
     this.instanceService.getInstances(pagination).subscribe({
       next: (response) => {
         this.instances = response.data
@@ -105,8 +105,8 @@ export class JobFormComponent implements OnInit {
   }
 
   loadGroups(): void {
-    const pagination: PaginationRequest = { page: 1, pageSize: 100 }
-    this.groupService.getGroups(pagination).subscribe({
+    const pagination: PaginationRequest = { page: 1, pageSize: 1000 }
+    this.groupService.searchGroups(pagination, this.jobForm.get("instanceId")?.value ? [this.jobForm.get("instanceId")?.value] : []).subscribe({
       next: (response) => {
         this.groups = response.data
       },
@@ -183,5 +183,31 @@ export class JobFormComponent implements OnInit {
       theme: "bootstrap",
     }
     this.toastaService.error(toastOptions)
+  }
+
+  
+
+  toggleSelectAllGroups(): void {
+    const groupIdsControl = this.jobForm.get("groupIds")
+    if (!groupIdsControl) return
+
+    const allFilteredGroupIds = this.groups.map((g) => g.id)
+    const currentSelected = groupIdsControl.value as number[]
+
+    if (
+      currentSelected.length === allFilteredGroupIds.length &&
+      currentSelected.every((id) => allFilteredGroupIds.includes(id))
+    ) {
+      // All are selected, deselect all
+      groupIdsControl.setValue([])
+    } else {
+      // Not all are selected, select all
+      groupIdsControl.setValue(allFilteredGroupIds)
+    }
+  }
+
+  onInstanceChange($event: any) {
+    console.log($event)
+    this.loadGroups()
   }
 }

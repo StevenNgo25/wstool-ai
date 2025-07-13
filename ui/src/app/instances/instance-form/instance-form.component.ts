@@ -32,7 +32,6 @@ export class InstanceFormComponent implements OnInit {
       name: ["", [Validators.required, Validators.maxLength(100)]],
       whatsAppNumber: ["", [Validators.required, Validators.maxLength(50)]],
       whapiToken: ["", [Validators.required, Validators.maxLength(200)]],
-      whapiUrl: ["", Validators.maxLength(200)],
       isActive: [true],
     })
   }
@@ -53,7 +52,6 @@ export class InstanceFormComponent implements OnInit {
         this.instanceForm.patchValue({
           name: instance.name,
           whatsAppNumber: instance.whatsAppNumber,
-          whapiUrl: instance.whapiUrl,
           isActive: instance.isActive,
         })
         // WhapiToken is not returned by DTO for security, so it won't be pre-filled

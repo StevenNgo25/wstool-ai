@@ -12,5 +12,6 @@ namespace WhatsAppCampaignManager.Services
         Task<bool> AssignInstancesToUserAsync(int userId, AssignInstancesDto assignInstancesDto);
         Task<bool> RemoveInstanceFromUserAsync(int userId, int instanceId);
         Task<List<InstanceDto>> GetUserInstancesAsync(int userId);
+        Task BulkDeleteUsersAsync(List<int> ids);
     }
 }

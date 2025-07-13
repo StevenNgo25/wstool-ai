@@ -24,7 +24,7 @@ export class GroupsComponent implements OnInit {
     page: 1,
     pageSize: 10,
     search: "",
-    sortBy: "name",
+    sortBy: "",
     sortDirection: "asc",
   }
 

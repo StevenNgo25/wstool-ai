@@ -163,14 +163,14 @@ namespace WhatsAppCampaignManager.Services
             try
             {
                 // Validate user has access to instance
-                var hasAccess = await _context.AppUserInstances
-                    .AnyAsync(ui => ui.UserId == userId && ui.InstanceId == createMessageDto.InstanceId);
+                //var hasAccess = await _context.AppUserInstances
+                //    .AnyAsync(ui => ui.UserId == userId && ui.InstanceId == createMessageDto.InstanceId);
 
-                if (!hasAccess)
-                {
-                    _logger.LogWarning("User {UserId} does not have access to instance {InstanceId}", userId, createMessageDto.InstanceId);
-                    return null;
-                }
+                //if (!hasAccess)
+                //{
+                //    _logger.LogWarning("User {UserId} does not have access to instance {InstanceId}", userId, createMessageDto.InstanceId);
+                //    return null;
+                //}
 
                 string? imageUrl = null;
 
@@ -434,6 +434,11 @@ namespace WhatsAppCampaignManager.Services
                     return false;
                 }
 
+                // remove jobs
+                var existJobs = _context.AppJobs
+                    .Where(j => j.MessageId == message.Id);
+                _context.AppJobs.RemoveRange(existJobs);
+
                 // Delete associated file
                 if (!string.IsNullOrEmpty(message.ImageUrl))
                 {
@@ -478,6 +483,11 @@ namespace WhatsAppCampaignManager.Services
                     {
                         continue;
                     }
+
+                    // remove jobs
+                    var existJobs = _context.AppJobs
+                        .Where(j => j.MessageId == message.Id);
+                    _context.AppJobs.RemoveRange(existJobs);
 
                     // Delete associated file
                     if (!string.IsNullOrEmpty(message.ImageUrl))

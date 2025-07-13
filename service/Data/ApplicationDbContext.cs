@@ -137,7 +137,7 @@ namespace WhatsAppCampaignManager.Data
                     Id = 1,
                     Username = "admin",
                     Email = "admin@whatsappcampaign.com",
-                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin123!"),
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("654321"),
                     Role = "Admin",
                     CreatedAt = DateTime.UtcNow
                 }

@@ -12,6 +12,7 @@ import { PaginationRequest, PaginatedResponse } from "../models/common.model"
 import { ConfirmDialogComponent } from "../shared/components/confirm-dialog/confirm-dialog.component"
 import { PaginationComponent } from "../shared/components/pagination/pagination.component"
 import { LoadingComponent } from "../shared/components/loading/loading.component"
+import {environment} from '../../environments/environment.js'
 
 @Component({
   selector: "app-messages",
@@ -33,12 +34,13 @@ export class MessagesComponent implements OnInit {
   loading = true
   searchTerm = ""
   selectedMessages: number[] = []
-
+  environment = environment
+  
   paginationRequest: PaginationRequest = {
     page: 1,
     pageSize: 10,
     search: "",
-    sortBy: "createdAt",
+    sortBy: "",
     sortDirection: "desc",
   }
 

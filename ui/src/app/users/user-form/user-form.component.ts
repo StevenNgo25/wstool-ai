@@ -39,7 +39,7 @@ export class UserFormComponent implements OnInit {
     this.userForm = this.fb.group({
       username: ["", [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
       email: ["", [Validators.required, Validators.email, Validators.maxLength(200)]],
-      password: ["", [Validators.minLength(6), Validators.maxLength(100)]],
+      password: [null, [Validators.minLength(6), Validators.maxLength(100)]],
       role: ["Member", Validators.required],
       isActive: [true],
       assignedInstances: [[]], // For ng-select

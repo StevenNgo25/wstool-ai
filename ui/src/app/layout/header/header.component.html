@@ -11,36 +11,36 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     
-    <div class="collapse navbar-collapse" id="navbarNav">
+    <div class="navbar-collapse" id="navbarNav">
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
           <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">
-            <i class="fa fa-dashboard me-1"></i>Dashboard
+            <i class="fa fa-dashboard me-1"></i>Trang chủ
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/messages" routerLinkActive="active">
-            <i class="fa fa-envelope me-1"></i>Messages
+            <i class="fa fa-envelope me-1"></i>Bài viết
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/jobs" routerLinkActive="active">
-            <i class="fa fa-tasks me-1"></i>Jobs
+            <i class="fa fa-tasks me-1"></i>Tác vụ
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/groups" routerLinkActive="active">
-            <i class="fa fa-users me-1"></i>Groups
+            <i class="fa fa-users me-1"></i>Nhóm
           </a>
         </li>
         <li class="nav-item" *ngIf="isAdmin">
           <a class="nav-link" routerLink="/instances" routerLinkActive="active">
-            <i class="fa fa-server me-1"></i>Instances
+            <i class="fa fa-server me-1"></i>Tài khoản
           </a>
         </li>
         <li class="nav-item" *ngIf="isAdmin">
           <a class="nav-link" routerLink="/users" routerLinkActive="active">
-            <i class="fa fa-user me-1"></i>Users
+            <i class="fa fa-user me-1"></i>Người dùng
           </a>
         </li>
       </ul>
@@ -55,9 +55,9 @@
             <li><h6 class="dropdown-header">{{ currentUser.email }}</h6></li>
             <li><span class="dropdown-item-text">Role: {{ currentUser.role }}</span></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" routerLink="/profile">
+            <!-- <li><a class="dropdown-item" routerLink="/profile">
               <i class="fa fa-user me-1"></i>Profile
-            </a></li>
+            </a></li> -->
             <li><a class="dropdown-item" href="#" (click)="logout($event)">
               <i class="fa fa-sign-out me-1"></i>Logout
             </a></li>

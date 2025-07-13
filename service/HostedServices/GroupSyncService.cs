@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using WhatsAppCampaignManager.Data;
 using WhatsAppCampaignManager.Models;
 using WhatsAppCampaignManager.Services;
@@ -59,13 +59,14 @@ namespace WhatsAppCampaignManager.HostedServices
                 try
                 {
                     _logger.LogInformation("Syncing groups for instance {InstanceName}", instance.Name);
-                    
-                    var groups = await whapiService.GetGroupsAsync(instance.WhapiToken, instance.WhapiUrl);
-                    
+
+                    var groups = await whapiService.GetGroupsAsync(instance.WhapiToken, instance.WhapiUrl,300);
+                    var fetchedIds = new List<string>();
                     foreach (var whapiGroup in groups.items)
                     {
+                        fetchedIds.Add(whapiGroup.Id);
                         var existingGroup = await context.AppGroups
-                            .FirstOrDefaultAsync(g => g.GroupId == whapiGroup.Id, stoppingToken);
+                            .FirstOrDefaultAsync(g => g.GroupId == whapiGroup.Id && g.InstanceId == instance.Id, stoppingToken);
 
                         if (existingGroup == null)
                         {
@@ -75,7 +76,7 @@ namespace WhatsAppCampaignManager.HostedServices
                                 GroupId = whapiGroup.Id,
                                 Name = whapiGroup.Name,
                                 Description = whapiGroup.Description ?? whapiGroup.Subject,
-                                ParticipantCount = whapiGroup.Size,
+                                ParticipantCount = whapiGroup.ParticipantCount,
                                 LastSyncAt = DateTime.UtcNow,
                                 InstanceId = instance.Id,
                             };
@@ -88,15 +89,28 @@ namespace WhatsAppCampaignManager.HostedServices
                             // Update existing group
                             existingGroup.Name = whapiGroup.Name;
                             existingGroup.Description = whapiGroup.Description ?? whapiGroup.Subject;
-                            existingGroup.ParticipantCount = whapiGroup.Size;
+                            existingGroup.ParticipantCount = whapiGroup.ParticipantCount;
                             existingGroup.LastSyncAt = DateTime.UtcNow;
                             existingGroup.IsActive = true;
                             existingGroup.InstanceId = instance.Id;
                         }
                     }
 
+                    // Xóa những chat không còn trong API nữa
+                    if (fetchedIds.Count > 0)
+                    {
+                        var toDelete = await context.AppGroups
+                                               .Where(x => !fetchedIds.Contains(x.GroupId) && x.InstanceId == instance.Id)
+                                               .ToListAsync(stoppingToken);
+                        if (toDelete.Any())
+                        {
+                            context.AppGroups.RemoveRange(toDelete);
+                        }
+                    }
+
                     await context.SaveChangesAsync(stoppingToken);
-                    _logger.LogInformation("Successfully synced {GroupCount} groups for instance {InstanceName}", 
+
+                    _logger.LogInformation("Successfully synced {GroupCount} groups for instance {InstanceName}",
                         groups.total, instance.Name);
                 }
                 catch (Exception ex)

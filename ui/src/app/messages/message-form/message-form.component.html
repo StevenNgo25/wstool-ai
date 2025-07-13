@@ -1,44 +1,44 @@
 <div class="container-fluid">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="h3 mb-0">{{ isEditMode ? 'Edit Message' : 'New Message' }}</h1>
+    <h1 class="h3 mb-0">{{ isEditMode ? 'Chính sửa bài viết' : 'Thêm mới bài viết' }}</h1>
   </div>
 
   <div class="card shadow">
     <div class="card-body">
       <form [formGroup]="messageForm" (ngSubmit)="onSubmit()">
         <div class="mb-3">
-          <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
+          <label for="title" class="form-label">Tiêu đề <span class="text-danger">*</span></label>
           <input type="text" class="form-control" id="title" formControlName="title"
                  [class.is-invalid]="isFieldInvalid('title')">
           <div class="invalid-feedback" *ngIf="isFieldInvalid('title')">
-            Title is required and max 200 characters.
+            Tiêu đề là bắt buộc và tối đa 200 ký tự.
           </div>
         </div>
 
         <div class="mb-3">
-          <label for="textContent" class="form-label">Text Content</label>
+          <label for="textContent" class="form-label">Nội dung bài viết</label>
           <textarea class="form-control" id="textContent" formControlName="textContent" rows="5"
                     [class.is-invalid]="isFieldInvalid('textContent')"></textarea>
           <div class="invalid-feedback" *ngIf="isFieldInvalid('textContent')">
-            Max 4000 characters.
+            Tối đa 4000 ký tự
           </div>
         </div>
 
         <div class="mb-3">
-          <label for="messageType" class="form-label">Message Type <span class="text-danger">*</span></label>
+          <label for="messageType" class="form-label">Loại bài viết <span class="text-danger">*</span></label>
           <select class="form-select" id="messageType" formControlName="messageType"
                   [class.is-invalid]="isFieldInvalid('messageType')">
-            <option value="Text">Text</option>
-            <option value="Image">Image</option>
-            <option value="Mixed">Mixed (Text + Image)</option>
+            <option value="Text">Text (Chỉ tin nhắn)</option>
+            <option value="Image">Image (Chỉ hình ảnh)</option>
+            <option value="Mixed">Mixed (Tin nhắn + Hình ảnh)</option>
           </select>
           <div class="invalid-feedback" *ngIf="isFieldInvalid('messageType')">
-            Message Type is required.
+            Loại bài viết là bắt buộc nhập.
           </div>
         </div>
 
         <div class="mb-3">
-          <label for="instanceId" class="form-label">WhatsApp Instance <span class="text-danger">*</span></label>
+          <label for="instanceId" class="form-label">Tài khoản WS <span class="text-danger">*</span></label>
           <ng-select [items]="instances"
                      bindLabel="name"
                      bindValue="id"
@@ -47,35 +47,24 @@
                      [class.is-invalid]="isFieldInvalid('instanceId')">
           </ng-select>
           <div class="invalid-feedback" *ngIf="isFieldInvalid('instanceId')">
-            Instance is required.
+            Tài khoản Ws là bắt buộc nhập.
           </div>
         </div>
 
         <div class="mb-3">
-          <label for="groupIds" class="form-label">Assigned Groups</label>
-          <ng-select [items]="groups"
-                     bindLabel="name"
-                     bindValue="id"
-                     [multiple]="true"
-                     placeholder="Select groups"
-                     formControlName="groupIds">
-          </ng-select>
-        </div>
-
-        <div class="mb-3">
-          <label for="imageFile" class="form-label">Image File</label>
+          <label for="imageFile" class="form-label">Hình ảnh</label>
           <input type="file" class="form-control" id="imageFile" (change)="onFileSelected($event)" accept="image/*">
           <small class="form-text text-muted">Only image files (JPG, PNG, GIF) are allowed.</small>
         </div>
 
         <div class="mb-3" *ngIf="currentImageUrl && !removeImage">
-          <label class="form-label">Current Image</label>
+          <label class="form-label">Hình ảnh hiện tại</label>
           <div>
-            <img [src]="currentImageUrl" alt="Current Message Image" class="img-thumbnail" style="max-width: 200px; max-height: 200px; object-fit: contain;">
+            <img [src]="environment + currentImageUrl" alt="Current Message Image" class="img-thumbnail" style="max-width: 200px; max-height: 200px; object-fit: contain;">
             <div class="form-check mt-2">
               <input class="form-check-input" type="checkbox" id="removeImage" *ngModel="removeImage" (change)="onRemoveImageChange($event)">
               <label class="form-check-label" for="removeImage">
-                Remove current image
+                Xóa hình ảnh
               </label>
             </div>
           </div>
@@ -85,7 +74,7 @@
           <button type="button" class="btn btn-secondary me-2" (click)="router.navigate(['/messages'])">Cancel</button>
           <button type="submit" class="btn btn-primary" [disabled]="loading">
             <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
-            {{ isEditMode ? 'Update Message' : 'Create Message' }}
+            {{ isEditMode ? 'Cập nhật' : 'Lưu' }}
           </button>
         </div>
       </form>

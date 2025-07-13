@@ -1,8 +1,8 @@
 <div class="container-fluid">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="h3 mb-0">Users</h1>
+    <h1 class="h3 mb-0">Người dùng</h1>
     <button class="btn btn-primary" (click)="createUser()">
-      <i class="fa fa-plus me-1"></i>New User
+      <i class="fa fa-plus me-1"></i>Thêm người dùng
     </button>
   </div>
 
@@ -11,7 +11,7 @@
       <div class="row align-items-center">
         <div class="col-md-6">
           <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search users..." 
+            <input type="text" class="form-control" placeholder="Tìm kiếm người dùng..." 
                    [(ngModel)]="searchTerm" (keyup.enter)="search()">
             <button class="btn btn-outline-secondary" type="button" (click)="search()">
               <i class="fa fa-search"></i>
@@ -19,10 +19,11 @@
           </div>
         </div>
         <div class="col-md-6 text-end">
-          <!-- No bulk actions for users as per previous context -->
+          <!-- Không có thao tác hàng loạt theo ngữ cảnh đã cho -->
         </div>
       </div>
     </div>
+
     <div class="card-body p-0">
       <app-loading *ngIf="loading" height="300px"></app-loading>
       
@@ -30,12 +31,12 @@
         <table class="table table-hover mb-0">
           <thead class="table-light">
             <tr>
-              <th>Username</th>
+              <th>Tên đăng nhập</th>
               <th>Email</th>
-              <th>Role</th>
-              <th>Active</th>
-              <th>Created At</th>
-              <th width="120">Actions</th>
+              <th>Vai trò</th>
+              <th>Trạng thái</th>
+              <th>Ngày tạo</th>
+              <th width="120">Thao tác</th>
             </tr>
           </thead>
           <tbody>
@@ -45,7 +46,7 @@
               <td>{{ user.role }}</td>
               <td>
                 <span class="badge" [ngClass]="user.isActive ? 'bg-success' : 'bg-danger'">
-                  {{ user.isActive ? 'Yes' : 'No' }}
+                  {{ user.isActive ? 'Hoạt động' : 'Tạm khóa' }}
                 </span>
               </td>
               <td>{{ user.createdAt | date:'short' }}</td>
@@ -53,12 +54,12 @@
                 <div class="btn-group btn-group-sm">
                   <button class="btn btn-outline-primary" 
                           (click)="editUser(user.id)"
-                          title="Edit">
+                          title="Chỉnh sửa">
                     <i class="fa fa-edit"></i>
                   </button>
                   <button class="btn btn-outline-danger" 
                           (click)="deleteUser(user.id)"
-                          title="Delete">
+                          title="Xóa">
                     <i class="fa fa-trash"></i>
                   </button>
                 </div>
@@ -66,13 +67,14 @@
             </tr>
             <tr *ngIf="users.data.length === 0">
               <td colspan="6" class="text-center py-4 text-muted">
-                No users found
+                Không tìm thấy người dùng nào.
               </td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
+
     <div class="card-footer" *ngIf="!loading && users.pagination">
       <app-pagination 
         [pagination]="users.pagination"

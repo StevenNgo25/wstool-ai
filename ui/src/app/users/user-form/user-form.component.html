@@ -1,82 +1,91 @@
 <div class="container-fluid">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="h3 mb-0">{{ isEditMode ? 'Edit User' : 'New User' }}</h1>
+    <h1 class="h3 mb-0">{{ isEditMode ? 'Chỉnh sửa người dùng' : 'Thêm người dùng' }}</h1>
   </div>
 
   <div class="card shadow">
     <div class="card-body">
       <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+        <!-- Username -->
         <div class="mb-3">
-          <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
+          <label for="username" class="form-label">Tên đăng nhập <span class="text-danger">*</span></label>
           <input type="text" class="form-control" id="username" formControlName="username"
                  [class.is-invalid]="isFieldInvalid('username')">
           <div class="invalid-feedback" *ngIf="isFieldInvalid('username')">
-            Username is required (min 3, max 100 characters).
+            Tên đăng nhập là bắt buộc (từ 3 đến 100 ký tự).
           </div>
         </div>
 
+        <!-- Email -->
         <div class="mb-3">
           <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
           <input type="email" class="form-control" id="email" formControlName="email"
                  [class.is-invalid]="isFieldInvalid('email')">
           <div class="invalid-feedback" *ngIf="isFieldInvalid('email')">
-            Valid email is required (max 200 characters).
+            Email hợp lệ là bắt buộc (tối đa 200 ký tự).
           </div>
         </div>
 
+        <!-- Password -->
         <div class="mb-3">
-          <label for="password" class="form-label">Password <span class="text-danger" *ngIf="!isEditMode">*</span></label>
+          <label for="password" class="form-label">Mật khẩu <span class="text-danger" *ngIf="!isEditMode">*</span></label>
           <input type="password" class="form-control" id="password" formControlName="password"
                  [class.is-invalid]="isFieldInvalid('password')">
           <div class="invalid-feedback" *ngIf="isFieldInvalid('password')">
-            Password is required (min 6, max 100 characters).
+            Mật khẩu là bắt buộc (từ 6 đến 100 ký tự).
           </div>
-          <small class="form-text text-muted" *ngIf="isEditMode">Leave blank to keep current password.</small>
+          <small class="form-text text-muted" *ngIf="isEditMode">Để trống nếu không muốn thay đổi mật khẩu.</small>
         </div>
 
+        <!-- Role -->
         <div class="mb-3">
-          <label for="role" class="form-label">Role <span class="text-danger">*</span></label>
+          <label for="role" class="form-label">Vai trò <span class="text-danger">*</span></label>
           <select class="form-select" id="role" formControlName="role"
                   [class.is-invalid]="isFieldInvalid('role')">
             <option *ngFor="let role of userRoles" [value]="role">{{ role }}</option>
           </select>
           <div class="invalid-feedback" *ngIf="isFieldInvalid('role')">
-            Role is required.
+            Vai trò là bắt buộc.
           </div>
         </div>
 
+        <!-- Is Active -->
         <div class="mb-3 form-check">
           <input type="checkbox" class="form-check-input" id="isActive" formControlName="isActive">
-          <label class="form-check-label" for="isActive">Is Active</label>
+          <label class="form-check-label" for="isActive">Kích hoạt tài khoản</label>
         </div>
 
+        <!-- Assigned Instances -->
         <div class="mb-3">
-          <label for="assignedInstances" class="form-label">Assigned Instances</label>
+          <label for="assignedInstances" class="form-label">Tài khoản được phân quyền</label>
           <ng-select [items]="allInstances"
                      bindLabel="name"
                      bindValue="id"
                      [multiple]="true"
-                     placeholder="Select instances"
+                     placeholder="Chọn tài khoản"
                      formControlName="assignedInstances">
           </ng-select>
-          <small class="form-text text-muted">Users can only send messages from assigned instances.</small>
+          <small class="form-text text-muted">Người dùng chỉ có thể gửi tin nhắn từ các tài khoản được phân quyền.</small>
         </div>
 
+        <!-- Can Send Messages -->
         <div class="mb-3 form-check">
           <input type="checkbox" class="form-check-input" id="canSendMessages" formControlName="canSendMessages">
-          <label class="form-check-label" for="canSendMessages">Can Send Messages</label>
+          <label class="form-check-label" for="canSendMessages">Cho phép gửi tin nhắn</label>
         </div>
 
+        <!-- Can Create Jobs -->
         <div class="mb-3 form-check">
           <input type="checkbox" class="form-check-input" id="canCreateJobs" formControlName="canCreateJobs">
-          <label class="form-check-label" for="canCreateJobs">Can Create Jobs</label>
+          <label class="form-check-label" for="canCreateJobs">Cho phép tạo chiến dịch</label>
         </div>
 
+        <!-- Buttons -->
         <div class="d-flex justify-content-end">
-          <button type="button" class="btn btn-secondary me-2" (click)="router.navigate(['/users'])">Cancel</button>
+          <button type="button" class="btn btn-secondary me-2" (click)="router.navigate(['/users'])">Hủy</button>
           <button type="submit" class="btn btn-primary" [disabled]="loading">
             <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
-            {{ isEditMode ? 'Update User' : 'Create User' }}
+            {{ isEditMode ? 'Cập nhật' : 'Tạo mới' }}
           </button>
         </div>
       </form>

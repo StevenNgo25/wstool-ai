@@ -58,6 +58,7 @@ export interface Group {
   isActive: boolean
   createdAt: string
   lastSyncAt?: string
+  instanceId: number
   instance: Instance
 }
 

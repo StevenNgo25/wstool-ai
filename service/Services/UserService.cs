@@ -303,5 +303,35 @@ namespace WhatsAppCampaignManager.Services
                 })
                 .ToListAsync();
         }
+        public async Task BulkDeleteUsersAsync(List<int> ids)
+        {
+            var usersToDelete = await _context.AppUsers
+                .Where(u => ids.Contains(u.Id))
+                .ToListAsync();
+
+            if (!usersToDelete.Any())
+            {
+                throw new KeyNotFoundException("No users found for the given IDs.");
+            }
+
+            // Check for jobs created by any of the users to be deleted
+            var usersWithJobs = await _context.AppJobs
+                .Where(j => ids.Contains(j.CreatedByUserId))
+                .Select(j => j.CreatedByUserId)
+                .Distinct()
+                .ToListAsync();
+
+            if (usersWithJobs.Any())
+            {
+                var usernamesWithJobs = await _context.AppUsers
+                    .Where(u => usersWithJobs.Contains(u.Id))
+                    .Select(u => u.Username)
+                    .ToListAsync();
+                throw new InvalidOperationException($"Cannot delete users: {string.Join(", ", usernamesWithJobs)} because they have created jobs. Please reassign or delete their jobs first.");
+            }
+
+            _context.AppUsers.RemoveRange(usersToDelete);
+            await _context.SaveChangesAsync();
+        }
     }
 }

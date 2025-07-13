@@ -26,6 +26,20 @@ export class GroupService {
 
     return this.http.get<PaginatedResponse<Group>>(this.apiUrl, { params })
   }
+  
+
+  searchGroups(pagination: PaginationRequest, instanceIds: number[]): Observable<PaginatedResponse<Group>> {
+    const body = {
+      page: pagination.page,
+      pageSize: pagination.pageSize,
+      sortBy: pagination.sortBy ?? '',
+      sortDirection: pagination.sortDirection ?? '',
+      search: pagination.search ?? '',
+      instanceIds: instanceIds
+    };
+  
+    return this.http.post<PaginatedResponse<Group>>(this.apiUrl + "/search", body);
+  }
 
   getDashboardStats(): Observable<DashboardStats> {
     return this.http.get<DashboardStats>(`${environment.apiUrl}/dashboard/stats`)

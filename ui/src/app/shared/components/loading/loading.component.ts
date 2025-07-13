@@ -10,4 +10,5 @@ import { CommonModule } from "@angular/common" // Import CommonModule
 export class LoadingComponent {
   @Input() height = "200px"
   @Input() message = "Loading..."
+  @Input() isLoading = true
 }

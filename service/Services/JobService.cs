@@ -131,6 +131,7 @@ namespace WhatsAppCampaignManager.Services
                     Details = l.Details,
                     CreatedAt = l.CreatedAt
                 }).ToList()
+
             });
 
             // Apply search
@@ -189,7 +190,21 @@ namespace WhatsAppCampaignManager.Services
                     Message = l.Message,
                     Details = l.Details,
                     CreatedAt = l.CreatedAt
-                }).ToList()
+                }).ToList(),
+                sentMessages = job.SentMessages.Select(l => new JobSentMessageDto
+                {
+                    Id = l.Id,
+                    JobId = l.JobId,
+                    RecipientId = l.RecipientId,
+                    RecipientType = l.RecipientType,
+                    WhapiMessageId = l.WhapiMessageId,
+                    Status = l.Status,
+                    ErrorMessage = l.ErrorMessage,
+                    SentAt = l.SentAt,
+                    DeliveredAt = l.DeliveredAt,
+                    ReadAt = l.ReadAt,
+                    LastValidatedAt = l.LastValidatedAt
+                }).ToList(),
             };
         }
 

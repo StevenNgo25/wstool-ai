@@ -24,7 +24,6 @@ namespace WhatsAppCampaignManager.Services
         public string Name { get; set; } = string.Empty;
         public string? Subject { get; set; }
         public string? Description { get; set; }
-        public int Size { get; set; }
         public long CreatedAt { get; set; }
         public string? CreatedBy { get; set; }
         public bool Announce { get; set; }

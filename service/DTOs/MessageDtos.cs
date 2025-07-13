@@ -31,9 +31,7 @@ namespace WhatsAppCampaignManager.DTOs
         
         [StringLength(20)]
         public string MessageType { get; set; } = "Text";
-        
-        [Required]
-        public int InstanceId { get; set; }
+        public int InstanceId { get; set; } = 0;
         
         public IFormFile? ImageFile { get; set; }
         

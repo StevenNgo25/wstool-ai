@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using WhatsAppCampaignManager.Models;
 
 namespace WhatsAppCampaignManager.DTOs
 {
@@ -45,6 +46,7 @@ namespace WhatsAppCampaignManager.DTOs
         public int SuccessfulMessages { get; set; }
         public int FailedMessages { get; set; }
         public List<JobLogDto> Logs { get; set; } = new List<JobLogDto>();
+        public List<JobSentMessageDto> sentMessages { get; set; } = new List<JobSentMessageDto>();
     }
 
     public class JobLogDto
@@ -54,6 +56,31 @@ namespace WhatsAppCampaignManager.DTOs
         public string Message { get; set; } = string.Empty;
         public string? Details { get; set; }
         public DateTime CreatedAt { get; set; }
+    }
+
+    public class JobSentMessageDto
+    {
+        public int Id { get; set; }
+
+        public int JobId { get; set; }
+
+        public string RecipientId { get; set; } = string.Empty; // Group ID or Phone Number
+
+        public string RecipientType { get; set; } = "Group"; // Group, User
+
+        public string? WhapiMessageId { get; set; }
+
+        public string Status { get; set; } = "Sent"; // Sent, Delivered, Read, Failed
+
+        public string? ErrorMessage { get; set; }
+
+        public DateTime SentAt { get; set; } = DateTime.UtcNow;
+
+        public DateTime? DeliveredAt { get; set; }
+
+        public DateTime? ReadAt { get; set; }
+
+        public DateTime? LastValidatedAt { get; set; }
     }
 
     public class BulkDeleteJobsRequest

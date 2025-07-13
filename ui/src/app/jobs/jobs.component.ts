@@ -39,7 +39,7 @@ export class JobsComponent implements OnInit {
     page: 1,
     pageSize: 10,
     search: "",
-    sortBy: "createdAt",
+    sortBy: "",
     sortDirection: "desc",
   }
 

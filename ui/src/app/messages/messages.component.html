@@ -1,8 +1,8 @@
 <div class="container-fluid">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="h3 mb-0">Messages</h1>
+    <h1 class="h3 mb-0">Danh sách bài viết</h1>
     <button class="btn btn-primary" (click)="createMessage()">
-      <i class="fa fa-plus me-1"></i>New Message
+      <i class="fa fa-plus me-1"></i>Thêm mới
     </button>
   </div>
 
@@ -22,7 +22,7 @@
           <button class="btn btn-danger btn-sm" 
                   [disabled]="selectedMessages.length === 0"
                   (click)="bulkDelete()">
-            <i class="fa fa-trash me-1"></i>Delete Selected ({{ selectedMessages.length }})
+            <i class="fa fa-trash me-1"></i>Xóa ({{ selectedMessages.length }} đã chọn)
           </button>
         </div>
       </div>
@@ -39,13 +39,13 @@
                        [checked]="isAllSelected()" 
                        (change)="toggleSelectAll()">
               </th>
-              <th>Title</th>
-              <th>Type</th>
-              <th>Instance</th>
-              <th>Groups</th>
-              <th>Created By</th>
-              <th>Created At</th>
-              <th width="120">Actions</th>
+              <th>Tiêu đề</th>
+              <th>Loại</th>
+              <th>Tài khoản</th>
+              <th>DS nhóm</th>
+              <th>Người tạo</th>
+              <th>Ngày tạo</th>
+              <th width="120">Hành động</th>
             </tr>
           </thead>
           <tbody>
@@ -57,7 +57,7 @@
               </td>
               <td>
                 <div class="d-flex align-items-center">
-                  <img *ngIf="message.imageUrl" [src]="message.imageUrl" 
+                  <img *ngIf="message.imageUrl" [src]="environment.imageUrl + message.imageUrl" 
                        class="me-2 rounded" width="40" height="40" 
                        style="object-fit: cover;">
                   <div>
@@ -101,7 +101,7 @@
             </tr>
             <tr *ngIf="messages.data.length === 0">
               <td colspan="8" class="text-center py-4 text-muted">
-                No messages found
+                Không tìm thấy dữ liệu
               </td>
             </tr>
           </tbody>

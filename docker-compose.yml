@@ -1,0 +1,51 @@
+networks:
+  wstool_webnet:
+    external: true 
+
+services:
+  # Backend - ASP.NET
+  wstool-be:
+    image: wstool-be
+    container_name: wstool-api-be
+    expose:
+      - "8080"
+      - "8081"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - wstool_webnet
+
+  # Frontend - Angular
+  wstool-fe:
+    image: wstool-fe
+    container_name: wstool-fe
+    expose:
+      - "80"
+    networks:
+      - wstool_webnet
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./certbot/www:/var/www/certbot
+      - ./certbot/conf:/etc/letsencrypt
+    networks:
+      - wstool_webnet
+    depends_on:
+      - wstool-be
+      - wstool-fe
+
+  # Certbot - Let's Encrypt
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - ./certbot/www:/var/www/certbot
+      - ./certbot/conf:/etc/letsencrypt
+    command: certonly --webroot --webroot-path=/var/www/certbot --email stevenworkvn@gmail.com --agree-tos --no-eff-email -d api.watchsearch-post.com -d watchsearch-post.com

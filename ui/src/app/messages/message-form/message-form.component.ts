@@ -13,6 +13,7 @@ import { CreateMessageWithFileDto, UpdateMessageWithFileDto } from "../../models
 import { Instance } from "../../models/user.model"
 import { Group } from "../../models/message.model"
 import { PaginationRequest } from "../../models/common.model"
+import { environment } from "../../../environments/environment"
 
 @Component({
   selector: "app-message-form",
@@ -31,6 +32,7 @@ export class MessageFormComponent implements OnInit {
   selectedFile: File | null = null
   currentImageUrl: string | null = null
   removeImage = false
+  environment = environment
 
   constructor(
     private fb: FormBuilder,
@@ -74,6 +76,7 @@ export class MessageFormComponent implements OnInit {
           groupIds: message.assignedGroups.map((g) => g.id),
         })
         this.currentImageUrl = message.imageUrl || null
+        //console.log(this.currentImageUrl)
         this.loading = false
       },
       error: (error) => {

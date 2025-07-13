@@ -149,5 +149,28 @@ namespace WhatsAppCampaignManager.Controllers
             var instances = await _userService.GetUserInstancesAsync(id);
             return Ok(instances);
         }
+
+        [HttpPost("bulk-delete")]
+        public async Task<IActionResult> BulkDeleteUsers([FromBody] BulkDeleteRequestDto request)
+        {
+            if (request == null || request.Ids == null || !request.Ids.Any())
+            {
+                return BadRequest("No user IDs provided for bulk deletion.");
+            }
+
+            try
+            {
+                await _userService.BulkDeleteUsersAsync(request.Ids);
+                return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
