@@ -22,3 +22,6 @@ services:
       - wstool-be-2
     networks:
       - wstool_webnet
+networks:
+  wstool_webnet:
+    driver: bridge
