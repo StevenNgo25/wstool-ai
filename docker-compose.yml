@@ -3,14 +3,20 @@ version: '3.8'
 services:
   api:
     image: wstool-be-2
+    build:
+      context: ./service
+      dockerfile: Dockerfile
     container_name: aspnet_api
     ports:
-      - "5000:8080"  # Map port 5000 (host) -> 8080 (container)
+      - "5000:8080"
     networks:
       - wstool-network-2
 
   ui:
     image: wstool-fe-2
+    build:
+      context: ./ui
+      dockerfile: Dockerfile
     container_name: angular_ui
     ports:
       - "4200:80"
