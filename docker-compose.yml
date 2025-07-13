@@ -19,7 +19,7 @@ services:
     ports:
       - "4200:80"
     depends_on:
-      - api
+      - wstool-be-2
     networks:
       - wstool-network-2
 networks:
