@@ -1,12 +1,10 @@
-version: '3.8'
-
 services:
   wstool-be-2:
     image: wstool-be-2
     build:
       context: ./service
       dockerfile: Dockerfile
-    container_name: aspnet_api
+    container_name: wstool_be_2
     ports:
       - "5000:8080"
     networks:
@@ -17,7 +15,7 @@ services:
     build:
       context: ./ui
       dockerfile: Dockerfile
-    container_name: angular_ui
+    container_name: wstool_fe_2
     ports:
       - "4200:80"
     depends_on:
