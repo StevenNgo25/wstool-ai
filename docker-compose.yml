@@ -8,7 +8,7 @@ services:
     ports:
       - "5000:8080"
     networks:
-      - wstool_webnet
+      - wstool_webnet_2
 
   wstool-fe-2:
     image: wstool-fe-2
@@ -21,7 +21,7 @@ services:
     depends_on:
       - wstool-be-2
     networks:
-      - wstool_webnet
+      - wstool_webnet_2
 networks:
-  wstool_webnet:
-    driver: bridge
+  wstool_webnet_2:
+    external: true 
