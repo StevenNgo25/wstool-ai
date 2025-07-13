@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  api:
+  wstool-be-2:
     image: wstool-be-2
     build:
       context: ./service
@@ -12,7 +12,7 @@ services:
     networks:
       - wstool-network-2
 
-  ui:
+  wstool-fe-2:
     image: wstool-fe-2
     build:
       context: ./ui
@@ -24,7 +24,6 @@ services:
       - api
     networks:
       - wstool-network-2
-
 networks:
   wstool-network-2:
     driver: bridge
