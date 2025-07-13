@@ -34,15 +34,15 @@ namespace WhatsAppCampaignManager.Services
                     return null;
                 }
 
-                // Validate user has access to the message's instance
-                var hasAccess = await _context.AppUserInstances
-                    .AnyAsync(ui => ui.UserId == userId && ui.InstanceId == message.InstanceId);
+                //// Validate user has access to the message's instance
+                //var hasAccess = await _context.AppUserInstances
+                //    .AnyAsync(ui => ui.UserId == userId && ui.InstanceId == message.InstanceId);
 
-                if (!hasAccess)
-                {
-                    _logger.LogWarning("User {UserId} does not have access to instance {InstanceId}", userId, message.InstanceId);
-                    return null;
-                }
+                //if (!hasAccess)
+                //{
+                //    _logger.LogWarning("User {UserId} does not have access to instance {InstanceId}", userId, message.InstanceId);
+                //    return null;
+                //}
 
                 // Check user's pending/running jobs limit
                 var userActiveJobs = await _context.AppJobs
