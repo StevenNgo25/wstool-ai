@@ -1,0 +1,16 @@
+.app-container {
+  min-height: 100vh;
+}
+.main-wrapper {
+  display: flex;
+}
+.main-content {
+  flex: 1;
+  min-height: calc(100vh - 56px);
+  background-color: #f8f9fc;
+}
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0 !important;
+  }
+}

@@ -1,0 +1,48 @@
+<div class="container-fluid vh-100">
+  <div class="row h-100">
+    <div class="col-md-6 d-flex align-items-center justify-content-center bg-primary">
+      <div class="text-center text-white">
+        <i class="fa fa-whatsapp" style="font-size: 5rem;"></i>
+        <h1 class="mt-3">WhatsApp Campaign Manager</h1>
+        <p class="lead">Manage your WhatsApp campaigns efficiently</p>
+      </div>
+    </div>
+    <div class="col-md-6 d-flex align-items-center justify-content-center">
+      <div class="card shadow" style="width: 400px;">
+        <div class="card-body p-5">
+          <h3 class="card-title text-center mb-4">Login</h3>
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+              <label for="username" class="form-label">Username</label>
+              <input type="text" class="form-control" id="username" 
+                     formControlName="username" 
+                     [class.is-invalid]="isFieldInvalid('username')">
+              <div class="invalid-feedback" *ngIf="isFieldInvalid('username')">
+                Username is required
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" class="form-control" id="password" 
+                     formControlName="password"
+                     [class.is-invalid]="isFieldInvalid('password')">
+              <div class="invalid-feedback" *ngIf="isFieldInvalid('password')">
+                Password is required
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary w-100" 
+                    [disabled]="loginForm.invalid || loading">
+              <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+              {{ loading ? 'Signing in...' : 'Sign In' }}
+            </button>
+          </form>
+          <div class="text-center mt-3">
+            <small class="text-muted">
+              Default admin: admin / Admin123!
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

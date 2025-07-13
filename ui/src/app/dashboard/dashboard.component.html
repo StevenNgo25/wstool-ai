@@ -1,0 +1,169 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="h3 mb-4">Dashboard</h1>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="stats">
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                Total Groups
+              </div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">
+                {{ stats.totalGroups }}
+              </div>
+            </div>
+            <div class="col-auto">
+              <i class="fa fa-users fa-2x text-gray-300"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-left-success shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                Total Messages
+              </div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">
+                {{ stats.totalMessages }}
+              </div>
+            </div>
+            <div class="col-auto">
+              <i class="fa fa-envelope fa-2x text-gray-300"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-left-info shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                Total Jobs
+              </div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">
+                {{ stats.totalJobs }}
+              </div>
+            </div>
+            <div class="col-auto">
+              <i class="fa fa-tasks fa-2x text-gray-300"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-left-warning shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                Pending Jobs
+              </div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">
+                {{ stats.pendingJobs }}
+              </div>
+            </div>
+            <div class="col-auto">
+              <i class="fa fa-clock-o fa-2x text-gray-300"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="stats">
+    <div class="col-xl-8 col-lg-7">
+      <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">Job Status Overview</h6>
+        </div>
+        <div class="card-body">
+          <div class="chart-area">
+            <canvas baseChart
+                    [data]="jobChartData"
+                    [options]="jobChartOptions"
+                    [type]="jobChartType">
+            </canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-4 col-lg-5">
+      <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">Top Groups</h6>
+        </div>
+        <div class="card-body">
+          <div class="list-group list-group-flush" *ngIf="stats.topGroups.length > 0">
+            <div class="list-group-item d-flex justify-content-between align-items-center"
+                 *ngFor="let group of stats.topGroups">
+              <div>
+                <h6 class="mb-1">{{ group.groupName }}</h6>
+                <small class="text-muted">{{ group.participantCount }} participants</small>
+              </div>
+              <span class="badge bg-primary rounded-pill">{{ group.messagesSent }} sent</span>
+            </div>
+          </div>
+          <div *ngIf="stats.topGroups.length === 0" class="text-center text-muted">
+            No groups found
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="stats">
+    <div class="col-12">
+      <div class="card shadow mb-4">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Quick Stats</h6>
+        </div>
+        <div class="card-body">
+          <div class="row text-center">
+            <div class="col-md-3">
+              <div class="border-right">
+                <h4 class="text-primary">{{ stats.totalUniqueUsers }}</h4>
+                <p class="text-muted mb-0">Unique Users</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="border-right">
+                <h4 class="text-success">{{ stats.completedJobs }}</h4>
+                <p class="text-muted mb-0">Completed Jobs</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="border-right">
+                <h4 class="text-info">{{ stats.totalSentMessages }}</h4>
+                <p class="text-muted mb-0">Messages Sent</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <h4 class="text-warning">{{ getSuccessRate() }}%</h4>
+              <p class="text-muted mb-0">Success Rate</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-loading *ngIf="loading" height="400px" message="Loading dashboard..."></app-loading>
+</div>

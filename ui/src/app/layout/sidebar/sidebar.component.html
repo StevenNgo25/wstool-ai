@@ -1,0 +1,28 @@
+<div class="sidebar bg-light border-end" style="min-height: calc(100vh - 56px);">
+  <div class="list-group list-group-flush">
+    <a routerLink="/dashboard" routerLinkActive="active" 
+       class="list-group-item list-group-item-action">
+      <i class="fa fa-dashboard me-2"></i>Dashboard
+    </a>
+    <a routerLink="/messages" routerLinkActive="active" 
+       class="list-group-item list-group-item-action">
+      <i class="fa fa-envelope me-2"></i>Messages
+    </a>
+    <a routerLink="/jobs" routerLinkActive="active" 
+       class="list-group-item list-group-item-action">
+      <i class="fa fa-tasks me-2"></i>Jobs
+    </a>
+    <a routerLink="/groups" routerLinkActive="active" 
+       class="list-group-item list-group-item-action">
+      <i class="fa fa-users me-2"></i>Groups
+    </a>
+    <a routerLink="/instances" routerLinkActive="active" 
+       class="list-group-item list-group-item-action" *ngIf="isAdmin">
+      <i class="fa fa-server me-2"></i>Instances
+    </a>
+    <a routerLink="/users" routerLinkActive="active" 
+       class="list-group-item list-group-item-action" *ngIf="isAdmin">
+      <i class="fa fa-user me-2"></i>Users
+    </a>
+  </div>
+</div>

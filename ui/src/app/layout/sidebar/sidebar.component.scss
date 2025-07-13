@@ -1,0 +1,11 @@
+.sidebar {
+  width: 250px;
+  position: fixed;
+  top: 56px;
+  left: 0;
+  z-index: 1000;
+}
+.list-group-item.active {
+  background-color: var(--bs-primary);
+  border-color: var(--bs-primary);
+}

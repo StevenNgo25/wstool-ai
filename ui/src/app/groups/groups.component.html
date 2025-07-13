@@ -1,0 +1,61 @@
+<div class="container-fluid">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Groups</h1>
+    <!-- No "New Group" button as per previous context, groups are synced -->
+  </div>
+
+  <div class="card shadow">
+    <div class="card-header">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search groups..." 
+                   [(ngModel)]="searchTerm" (keyup.enter)="search()">
+            <button class="btn btn-outline-secondary" type="button" (click)="search()">
+              <i class="fa fa-search"></i>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-6 text-end">
+          <!-- No bulk actions for groups as per previous context -->
+        </div>
+      </div>
+    </div>
+    <div class="card-body p-0">
+      <app-loading *ngIf="loading" height="300px"></app-loading>
+      
+      <div class="table-responsive" *ngIf="!loading">
+        <table class="table table-hover mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>Name</th>
+              <th>Participants</th>
+              <th>Last Synced</th>
+              <th>Instance</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let group of groups.data">
+              <td>{{ group.name }}</td>
+              <td>{{ group.participantCount }}</td>
+              <td>{{ group.lastSyncAt | date:'short' }}</td>
+              <td>{{ group.instance.name }}</td>
+            </tr>
+            <tr *ngIf="groups.data.length === 0">
+              <td colspan="4" class="text-center py-4 text-muted">
+                No groups found. Groups are synced automatically from WhatsApp instances.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card-footer" *ngIf="!loading && groups.pagination">
+      <app-pagination 
+        [pagination]="groups.pagination"
+        (pageChange)="onPageChange($event)"
+        (pageSizeChange)="onPageSizeChange($event)">
+      </app-pagination>
+    </div>
+  </div>
+</div>

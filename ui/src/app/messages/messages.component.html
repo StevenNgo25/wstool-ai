@@ -1,0 +1,119 @@
+<div class="container-fluid">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Messages</h1>
+    <button class="btn btn-primary" (click)="createMessage()">
+      <i class="fa fa-plus me-1"></i>New Message
+    </button>
+  </div>
+
+  <div class="card shadow">
+    <div class="card-header">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search messages..." 
+                   [(ngModel)]="searchTerm" (keyup.enter)="search()">
+            <button class="btn btn-outline-secondary" type="button" (click)="search()">
+              <i class="fa fa-search"></i>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-6 text-end">
+          <button class="btn btn-danger btn-sm" 
+                  [disabled]="selectedMessages.length === 0"
+                  (click)="bulkDelete()">
+            <i class="fa fa-trash me-1"></i>Delete Selected ({{ selectedMessages.length }})
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body p-0">
+      <app-loading *ngIf="loading" height="300px"></app-loading>
+      
+      <div class="table-responsive" *ngIf="!loading">
+        <table class="table table-hover mb-0">
+          <thead class="table-light">
+            <tr>
+              <th width="50">
+                <input type="checkbox" class="form-check-input" 
+                       [checked]="isAllSelected()" 
+                       (change)="toggleSelectAll()">
+              </th>
+              <th>Title</th>
+              <th>Type</th>
+              <th>Instance</th>
+              <th>Groups</th>
+              <th>Created By</th>
+              <th>Created At</th>
+              <th width="120">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let message of messages.data">
+              <td>
+                <input type="checkbox" class="form-check-input" 
+                       [checked]="isSelected(message.id)"
+                       (change)="toggleSelect(message.id)">
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <img *ngIf="message.imageUrl" [src]="message.imageUrl" 
+                       class="me-2 rounded" width="40" height="40" 
+                       style="object-fit: cover;">
+                  <div>
+                    <div class="fw-bold">{{ message.title }}</div>
+                    <small class="text-muted" *ngIf="message.textContent">
+                      {{ message.textContent | slice:0:50 }}{{ message.textContent.length > 50 ? '...' : '' }}
+                    </small>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <span class="badge" 
+                      [ngClass]="{
+                        'bg-primary': message.messageType === 'Text',
+                        'bg-success': message.messageType === 'Image',
+                        'bg-info': message.messageType === 'Mixed'
+                      }">
+                  {{ message.messageType }}
+                </span>
+              </td>
+              <td>{{ message.instanceName }}</td>
+              <td>
+                <span class="badge bg-secondary">{{ message.assignedGroups.length }} groups</span>
+              </td>
+              <td>{{ message.createdByUserName }}</td>
+              <td>{{ message.createdAt | date:'short' }}</td>
+              <td>
+                <div class="btn-group btn-group-sm">
+                  <button class="btn btn-outline-primary" 
+                          (click)="editMessage(message.id)"
+                          title="Edit">
+                    <i class="fa fa-edit"></i>
+                  </button>
+                  <button class="btn btn-outline-danger" 
+                          (click)="deleteMessage(message.id)"
+                          title="Delete">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="messages.data.length === 0">
+              <td colspan="8" class="text-center py-4 text-muted">
+                No messages found
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card-footer" *ngIf="!loading && messages.pagination">
+      <app-pagination 
+        [pagination]="messages.pagination"
+        (pageChange)="onPageChange($event)"
+        (pageSizeChange)="onPageSizeChange($event)">
+      </app-pagination>
+    </div>
+  </div>
+</div>

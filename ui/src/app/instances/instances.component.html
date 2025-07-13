@@ -1,0 +1,84 @@
+<div class="container-fluid">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Instances</h1>
+    <button class="btn btn-primary" (click)="createInstance()">
+      <i class="fa fa-plus me-1"></i>New Instance
+    </button>
+  </div>
+
+  <div class="card shadow">
+    <div class="card-header">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search instances..." 
+                   [(ngModel)]="searchTerm" (keyup.enter)="search()">
+            <button class="btn btn-outline-secondary" type="button" (click)="search()">
+              <i class="fa fa-search"></i>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-6 text-end">
+          <!-- No bulk actions for instances as per previous context -->
+        </div>
+      </div>
+    </div>
+    <div class="card-body p-0">
+      <app-loading *ngIf="loading" height="300px"></app-loading>
+      
+      <div class="table-responsive" *ngIf="!loading">
+        <table class="table table-hover mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>Name</th>
+              <th>WhatsApp Number</th>
+              <th>WHAPI URL</th>
+              <th>Active</th>
+              <th>Created At</th>
+              <th width="120">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let instance of instances.data">
+              <td>{{ instance.name }}</td>
+              <td>{{ instance.whatsAppNumber }}</td>
+              <td>{{ instance.whapiUrl || 'N/A' }}</td>
+              <td>
+                <span class="badge" [ngClass]="instance.isActive ? 'bg-success' : 'bg-danger'">
+                  {{ instance.isActive ? 'Yes' : 'No' }}
+                </span>
+              </td>
+              <td>{{ instance.createdAt | date:'short' }}</td>
+              <td>
+                <div class="btn-group btn-group-sm">
+                  <button class="btn btn-outline-primary" 
+                          (click)="editInstance(instance.id)"
+                          title="Edit">
+                    <i class="fa fa-edit"></i>
+                  </button>
+                  <button class="btn btn-outline-danger" 
+                          (click)="deleteInstance(instance.id)"
+                          title="Delete">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="instances.data.length === 0">
+              <td colspan="6" class="text-center py-4 text-muted">
+                No instances found
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card-footer" *ngIf="!loading && instances.pagination">
+      <app-pagination 
+        [pagination]="instances.pagination"
+        (pageChange)="onPageChange($event)"
+        (pageSizeChange)="onPageSizeChange($event)">
+      </app-pagination>
+    </div>
+  </div>
+</div>

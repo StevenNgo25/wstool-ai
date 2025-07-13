@@ -1,0 +1,61 @@
+<div class="container-fluid">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">{{ isEditMode ? 'Edit Instance' : 'New Instance' }}</h1>
+  </div>
+
+  <div class="card shadow">
+    <div class="card-body">
+      <form [formGroup]="instanceForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="name" class="form-label">Instance Name <span class="text-danger">*</span></label>
+          <input type="text" class="form-control" id="name" formControlName="name"
+                 [class.is-invalid]="isFieldInvalid('name')">
+          <div class="invalid-feedback" *ngIf="isFieldInvalid('name')">
+            Instance Name is required and max 100 characters.
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="whatsAppNumber" class="form-label">WhatsApp Number <span class="text-danger">*</span></label>
+          <input type="text" class="form-control" id="whatsAppNumber" formControlName="whatsAppNumber"
+                 placeholder="e.g., +1234567890"
+                 [class.is-invalid]="isFieldInvalid('whatsAppNumber')">
+          <div class="invalid-feedback" *ngIf="isFieldInvalid('whatsAppNumber')">
+            WhatsApp Number is required and max 50 characters.
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="whapiToken" class="form-label">WHAPI Token <span class="text-danger">*</span></label>
+          <input type="password" class="form-control" id="whapiToken" formControlName="whapiToken"
+                 [class.is-invalid]="isFieldInvalid('whapiToken')">
+          <div class="invalid-feedback" *ngIf="isFieldInvalid('whapiToken')">
+            WHAPI Token is required and max 200 characters.
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="whapiUrl" class="form-label">WHAPI URL (Optional)</label>
+          <input type="url" class="form-control" id="whapiUrl" formControlName="whapiUrl"
+                 placeholder="e.g., https://gate.whapi.cloud/messages/text">
+          <div class="invalid-feedback" *ngIf="isFieldInvalid('whapiUrl')">
+            Invalid URL format or max 200 characters.
+          </div>
+        </div>
+
+        <div class="mb-3 form-check">
+          <input type="checkbox" class="form-check-input" id="isActive" formControlName="isActive">
+          <label class="form-check-label" for="isActive">Is Active</label>
+        </div>
+
+        <div class="d-flex justify-content-end">
+          <button type="button" class="btn btn-secondary me-2" (click)="router.navigate(['/instances'])">Cancel</button>
+          <button type="submit" class="btn btn-primary" [disabled]="loading">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+            {{ isEditMode ? 'Update Instance' : 'Create Instance' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
