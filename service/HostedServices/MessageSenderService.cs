@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using WhatsAppCampaignManager.Constants;
 using WhatsAppCampaignManager.Data;
@@ -124,7 +124,7 @@ namespace WhatsAppCampaignManager.HostedServices
                 await SendMessageToGroup(job, group, context, whapiService, imageBase64, stoppingToken);
                 
                 // Small delay between messages to avoid rate limiting
-                await Task.Delay(1000, stoppingToken);
+                await Task.Delay(GetRandomNumber() * 1000, stoppingToken);
             }
         }
 
@@ -272,6 +272,13 @@ namespace WhatsAppCampaignManager.HostedServices
             {
                 _logger.LogError(ex, "Error logging job message for job {JobId}", jobId);
             }
+        }
+
+        private int GetRandomNumber(int min = 5, int max = 10)
+        {
+            Random random = new Random();
+            // Random.Next(min, maxValue) trả về số >= min và < maxValue
+            return random.Next(min, max + 1); // +1 để bao gồm cả 'max'
         }
     }
 }

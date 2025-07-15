@@ -160,9 +160,18 @@ namespace WhatsAppCampaignManager.Services
                 .Include(j => j.Message)
                 .Include(j => j.Instance)
                 .Include(j => j.CreatedByUser)
-                .Include(j => j.SentMessages)
-                .Include(j => j.JobLogs.OrderByDescending(l => l.CreatedAt))
+                .Include(j => j.SentMessages.OrderByDescending(l => l.SentAt))
+                //.Include(j => j.JobLogs.OrderByDescending(l => l.CreatedAt))
                 .FirstOrDefaultAsync(j => j.Id == id);
+
+            if (job != null)
+            {
+                job.JobLogs = await _context.AppJobLogs
+                    .Where(l => l.JobId == job.Id)
+                    .OrderByDescending(l => l.CreatedAt)
+                    .Take(100)
+                    .ToListAsync();
+            }
 
             if (job == null) return null;
 
