@@ -6,6 +6,7 @@ using System.Text;
 using WhatsAppCampaignManager.Data;
 using WhatsAppCampaignManager.HostedServices;
 using WhatsAppCampaignManager.Services;
+using WhatsAppCampaignManager.Services.Implements;
 
 var builder = WebApplication.CreateBuilder(args);
 

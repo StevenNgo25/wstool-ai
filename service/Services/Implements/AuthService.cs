@@ -7,7 +7,7 @@ using WhatsAppCampaignManager.Data;
 using WhatsAppCampaignManager.DTOs;
 using WhatsAppCampaignManager.Models;
 
-namespace WhatsAppCampaignManager.Services
+namespace WhatsAppCampaignManager.Services.Implements
 {
     public class AuthService : IAuthService
     {

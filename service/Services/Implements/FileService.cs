@@ -1,4 +1,4 @@
-namespace WhatsAppCampaignManager.Services
+namespace WhatsAppCampaignManager.Services.Implements
 {
     public class FileService : IFileService
     {

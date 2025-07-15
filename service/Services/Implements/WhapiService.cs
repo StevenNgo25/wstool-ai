@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Text;
 
-namespace WhatsAppCampaignManager.Services
+namespace WhatsAppCampaignManager.Services.Implements
 {
     public class WhapiService : IWhapiService
     {

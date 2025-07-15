@@ -3,7 +3,7 @@ using WhatsAppCampaignManager.Data;
 using WhatsAppCampaignManager.DTOs;
 using WhatsAppCampaignManager.Extensions;
 
-namespace WhatsAppCampaignManager.Services
+namespace WhatsAppCampaignManager.Services.Implements
 {
     public class GroupService : IGroupService
     {

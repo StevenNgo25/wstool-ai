@@ -6,7 +6,7 @@ using WhatsAppCampaignManager.DTOs;
 using WhatsAppCampaignManager.Models;
 using WhatsAppCampaignManager.Extensions;
 
-namespace WhatsAppCampaignManager.Services
+namespace WhatsAppCampaignManager.Services.Implements
 {
     public class JobService : IJobService
     {
