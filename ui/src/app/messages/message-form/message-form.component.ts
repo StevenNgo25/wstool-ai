@@ -119,7 +119,7 @@ export class MessageFormComponent implements OnInit {
     if (input.files && input.files.length > 0) {
       this.selectedFile = input.files[0]
       this.removeImage = false
-      this.messageForm.get("messageType")?.setValue("Image")
+      //this.messageForm.get("messageType")?.setValue("Image")
     } else {
       this.selectedFile = null
     }
