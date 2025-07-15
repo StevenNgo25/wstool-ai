@@ -62,7 +62,7 @@ namespace WhatsAppCampaignManager.HostedServices
 
                     var groups = await whapiService.GetGroupsAsync(instance.WhapiToken, instance.WhapiUrl,300);
                     var fetchedIds = new List<string>();
-                    foreach (var whapiGroup in groups.items)
+                    foreach (var whapiGroup in groups.items.Where(q=>q.ParticipantCount >= 20))
                     {
                         fetchedIds.Add(whapiGroup.Id);
                         var existingGroup = await context.AppGroups
