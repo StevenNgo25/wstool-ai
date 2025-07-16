@@ -7,38 +7,16 @@
     <div class="card-body">
       <form [formGroup]="messageForm" (ngSubmit)="onSubmit()">
         <div class="mb-3">
-          <label for="title" class="form-label">Tiêu đề <span class="text-danger">*</span></label>
-          <input type="text" class="form-control" id="title" formControlName="title"
-                 [class.is-invalid]="isFieldInvalid('title')">
-          <div class="invalid-feedback" *ngIf="isFieldInvalid('title')">
-            Tiêu đề là bắt buộc và tối đa 200 ký tự.
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <label for="textContent" class="form-label">Nội dung bài viết</label>
+          <label for="textContent" class="form-label">Nội dung bài viết <span class="text-danger">*</span></label>
           <textarea class="form-control" id="textContent" formControlName="textContent" rows="5"
                     [class.is-invalid]="isFieldInvalid('textContent')"></textarea>
           <div class="invalid-feedback" *ngIf="isFieldInvalid('textContent')">
-            Tối đa 4000 ký tự
+            Tối đa 4000 ký tự và bắt buộc nhập
           </div>
         </div>
 
         <div class="mb-3">
-          <label for="messageType" class="form-label">Loại bài viết <span class="text-danger">*</span></label>
-          <select class="form-select" id="messageType" formControlName="messageType"
-                  [class.is-invalid]="isFieldInvalid('messageType')">
-            <option value="Text">Text (Chỉ tin nhắn)</option>
-            <option value="Image">Image (Chỉ hình ảnh)</option>
-            <option value="Mixed">Mixed (Tin nhắn + Hình ảnh)</option>
-          </select>
-          <div class="invalid-feedback" *ngIf="isFieldInvalid('messageType')">
-            Loại bài viết là bắt buộc nhập.
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <label for="instanceId" class="form-label">Tài khoản WS <span class="text-danger">*</span></label>
+          <label for="instanceId" class="form-label">Tài khoản WS</label>
           <ng-select [items]="instances"
                      bindLabel="name"
                      bindValue="id"
@@ -46,9 +24,6 @@
                      formControlName="instanceId"
                      [class.is-invalid]="isFieldInvalid('instanceId')">
           </ng-select>
-          <div class="invalid-feedback" *ngIf="isFieldInvalid('instanceId')">
-            Tài khoản Ws là bắt buộc nhập.
-          </div>
         </div>
 
         <div class="mb-3">
@@ -62,7 +37,7 @@
           <div>
             <img [src]="environment + currentImageUrl" alt="Current Message Image" class="img-thumbnail" style="max-width: 200px; max-height: 200px; object-fit: contain;">
             <div class="form-check mt-2">
-              <input class="form-check-input" type="checkbox" id="removeImage" *ngModel="removeImage" (change)="onRemoveImageChange($event)">
+              <input class="form-check-input" type="checkbox" id="removeImage" [(ngModel)]="removeImage" (change)="onRemoveImageChange($event)">
               <label class="form-check-label" for="removeImage">
                 Xóa hình ảnh
               </label>

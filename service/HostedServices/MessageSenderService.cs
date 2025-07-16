@@ -16,8 +16,8 @@ namespace WhatsAppCampaignManager.HostedServices
 
         protected override async Task ProcessSingleJobAsync(AppJob job, CancellationToken stoppingToken)
         {
-            _logger.LogInformation("Processing job {JobId}: {JobName} for user {UserId}", 
-                job.Id, job.Name, job.CreatedByUserId);
+            _logger.LogInformation("Processing job {JobId}: for user {UserId}", 
+                job.Id, job.CreatedByUserId);
 
             using var scope = _scopeFactory.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();

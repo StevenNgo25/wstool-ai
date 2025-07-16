@@ -6,13 +6,6 @@ namespace WhatsAppCampaignManager.Models
     {
         public int Id { get; set; }
         
-        [Required]
-        [StringLength(200)]
-        public string Name { get; set; } = string.Empty;
-        
-        [StringLength(500)]
-        public string? Description { get; set; }
-        
         [StringLength(20)]
         public string JobType { get; set; } = "SendToGroups"; // SendToGroups, SendToUsers
         
@@ -34,7 +27,7 @@ namespace WhatsAppCampaignManager.Models
         
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         
-        // JSON serialized list of group IDs or user phone numbers
+        // JSON serialized list of APP group IDs or user phone numbers
         [StringLength(4000)]
         public string? TargetData { get; set; }
         

@@ -44,9 +44,8 @@ export class MessageService {
     var url = `${this.apiUrl}/with-file`
 
     const formData = new FormData();
-    formData.append('title', message.title);
-    formData.append('messageType', message.messageType);
-    formData.append('instanceId', message.instanceId.toString());
+    if(message.instanceId)
+      formData.append('instanceId', message.instanceId.toString());
 
     if (message.textContent) {
       formData.append('textContent', message.textContent);
@@ -72,9 +71,6 @@ export class MessageService {
     message: UpdateMessageWithFileDto
   ): Observable<void> {
     const formData = new FormData();
-    if (message.title) formData.append('title', message.title);
-    if (message.messageType)
-      formData.append('messageType', message.messageType);
     if (message.instanceId)
       formData.append('instanceId', message.instanceId.toString());
     if (message.removeImage)

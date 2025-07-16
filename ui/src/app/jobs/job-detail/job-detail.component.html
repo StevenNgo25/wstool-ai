@@ -24,8 +24,6 @@
     <div class="card-body">
       <div class="row">
         <div class="col-md-6">
-          <p><strong>Tên công việc:</strong> {{ job.name }}</p>
-          <p><strong>Mô tả:</strong> {{ job.description || 'Không có' }}</p>
           <p><strong>Loại công việc:</strong> {{ job.jobType }}</p>
           <p><strong>Tin nhắn:</strong> {{ job.messageTitle }}</p>
           <p><strong>Tài khoản WhatsApp:</strong> {{ job.instanceName }}</p>
@@ -41,12 +39,14 @@
       </div>
       <div class="row mt-3">
         <div class="col-12">
-          <p><strong>Nhóm mục tiêu:</strong> 
-            <span *ngIf="job.assignedGroups && job.assignedGroups.length > 0">
-              <span *ngFor="let group of job.assignedGroups" class="badge bg-secondary me-1">{{ group.name }}</span>
-            </span>
-            <span *ngIf="!job.assignedGroups || job.assignedGroups.length === 0">Không có</span>
-          </p>
+          <div><strong>Nhóm mục tiêu:</strong> 
+            <div style="height: 100px; overflow-y: auto;">
+              <span *ngIf="job.assignedGroups && job.assignedGroups.length > 0">
+                <span *ngFor="let group of job.assignedGroups" class="badge bg-secondary me-1">{{ group.name }}</span>
+              </span>
+              <span *ngIf="!job.assignedGroups || job.assignedGroups.length === 0">Không có</span>
+            </div>
+          </div>
           <p><strong>Số điện thoại mục tiêu:</strong> 
             <span *ngIf="job.targetPhoneNumbers && job.targetPhoneNumbers.length > 0">
               {{ job.targetPhoneNumbers.join(', ') }}

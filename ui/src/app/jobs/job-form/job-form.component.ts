@@ -1,6 +1,6 @@
-import { Component, OnInit } from "@angular/core"
+import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core"
 import { CommonModule } from "@angular/common" // Import CommonModule
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from "@angular/forms" // Import ReactiveFormsModule
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormsModule } from "@angular/forms" // Import ReactiveFormsModule
 import { RouterModule } from "@angular/router" // Import RouterModule
 import { NgSelectModule } from "@ng-select/ng-select" // Import NgSelectModule
 import { ToastaService, ToastOptions, ToastaModule } from "ngx-toasta" // Import ToastaModule
@@ -15,11 +15,12 @@ import { Message } from "../../models/message.model"
 import { Instance } from "../../models/user.model"
 import { Group } from "../../models/message.model"
 import { PaginationRequest } from "../../models/common.model"
+import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap"
 
 @Component({
   selector: "app-job-form",
   standalone: true, // Đánh dấu là standalone component
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, NgSelectModule, ToastaModule], // Import các module cần thiết
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, NgSelectModule, ToastaModule, FormsModule], // Import các module cần thiết
   templateUrl: "./job-form.component.html",
   styleUrls: ["./job-form.component.scss"],
 })
@@ -29,6 +30,12 @@ export class JobFormComponent implements OnInit {
   messages: Message[] = []
   instances: Instance[] = []
   groups: Group[] = []
+  
+  @ViewChild('groupModal') groupModal!: TemplateRef<any>;
+  groupSearch: string = '';
+  selectedGroupIds: any[] = [];
+  selectedGroups: Group[] = [];
+  selectAllChecked = false;
 
   jobTypes = [
     { value: "SendToGroups", label: "Send to Groups" },
@@ -43,10 +50,9 @@ export class JobFormComponent implements OnInit {
     private groupService: GroupService,
     public router: Router,
     private toastaService: ToastaService,
+    private modalService: NgbModal,
   ) {
     this.jobForm = this.fb.group({
-      name: ["", [Validators.required, Validators.maxLength(200)]],
-      description: ["", Validators.maxLength(500)],
       jobType: ["SendToGroups", Validators.required],
       messageId: [null, Validators.required],
       instanceId: [null, Validators.required],
@@ -128,8 +134,6 @@ export class JobFormComponent implements OnInit {
     const formValue = this.jobForm.value
 
     const jobData: CreateJobDto = {
-      name: formValue.name,
-      description: formValue.description,
       jobType: formValue.jobType,
       messageId: formValue.messageId,
       instanceId: formValue.instanceId,
@@ -210,4 +214,48 @@ export class JobFormComponent implements OnInit {
     console.log($event)
     this.loadGroups()
   }
+
+  openGroupModal() {
+    this.groupSearch = '';
+    this.selectAllChecked = this.selectedGroupIds.length === this.groups.length;
+    this.modalService.open(this.groupModal, { size: 'lg' });
+  }
+  filteredGroups() {
+    if (!this.groupSearch) return this.groups;
+    return this.groups.filter(g =>
+      g.name.toLowerCase().includes(this.groupSearch.toLowerCase())
+    );
+  }
+  toggleGroupSelection(group: any) {
+    const index = this.selectedGroupIds.indexOf(group.id);
+    if (index > -1) {
+      this.selectedGroupIds.splice(index, 1);
+    } else {
+      this.selectedGroupIds.push(group.id);
+    }
+  
+    this.selectAllChecked = this.selectedGroupIds.length === this.groups.length;
+  }
+  toggleSelectAll() {
+  const filtered = this.filteredGroups();
+  const filteredIds = filtered.map(g => g.id);
+
+  if (this.selectAllChecked) {
+    // Thêm chỉ các nhóm đang hiển thị nếu chưa có
+    this.selectedGroupIds = Array.from(new Set([...this.selectedGroupIds, ...filteredIds]));
+  } else {
+    // Loại bỏ các nhóm đang hiển thị khỏi danh sách chọn
+    this.selectedGroupIds = this.selectedGroupIds.filter(id => !filteredIds.includes(id));
+  }
+}
+
+  confirmGroupSelection(modalRef: NgbModalRef) {
+    this.selectedGroups = this.groups.filter(g => this.selectedGroupIds.includes(g.id));
+    this.jobForm.get('groupIds')?.setValue(this.selectedGroupIds);
+    modalRef.close();
+  }
+  isGroupSelected(id: any): boolean {
+    return this.selectedGroupIds.includes(id);
+  }
+  
 }

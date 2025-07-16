@@ -7,28 +7,18 @@
     <div class="card-body">
       <form [formGroup]="jobForm" (ngSubmit)="onSubmit()">
         <div class="mb-3">
-          <label for="name" class="form-label">Tên công việc <span class="text-danger">*</span></label>
-          <input type="text" class="form-control" id="name" formControlName="name"
-                 [class.is-invalid]="isFieldInvalid('name')">
-          <div class="invalid-feedback" *ngIf="isFieldInvalid('name')">
-            Tên công việc là bắt buộc và tối đa 200 ký tự.
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <label for="description" class="form-label">Mô tả</label>
-          <textarea class="form-control" id="description" formControlName="description" rows="3"
-                    [class.is-invalid]="isFieldInvalid('description')"></textarea>
-          <div class="invalid-feedback" *ngIf="isFieldInvalid('description')">
-            Tối đa 500 ký tự.
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <label for="jobType" class="form-label">Loại công việc <span class="text-danger">*</span></label>
-          <select class="form-select" id="jobType" formControlName="jobType"
-                  [class.is-invalid]="isFieldInvalid('jobType')">
-            <option *ngFor="let type of jobTypes" [value]="type.value">{{ type.label }}</option>
+          <label for="jobType" class="form-label"
+            >Loại công việc <span class="text-danger">*</span></label
+          >
+          <select
+            class="form-select"
+            id="jobType"
+            formControlName="jobType"
+            [class.is-invalid]="isFieldInvalid('jobType')"
+          >
+            <option *ngFor="let type of jobTypes" [value]="type.value">
+              {{ type.label }}
+            </option>
           </select>
           <div class="invalid-feedback" *ngIf="isFieldInvalid('jobType')">
             Loại công việc là bắt buộc.
@@ -36,13 +26,17 @@
         </div>
 
         <div class="mb-3">
-          <label for="messageId" class="form-label">Tin nhắn <span class="text-danger">*</span></label>
-          <ng-select [items]="messages"
-                     bindLabel="title"
-                     bindValue="id"
-                     placeholder="Chọn một tin nhắn"
-                     formControlName="messageId"
-                     [class.is-invalid]="isFieldInvalid('messageId')">
+          <label for="messageId" class="form-label"
+            >Tin nhắn <span class="text-danger">*</span></label
+          >
+          <ng-select
+            [items]="messages"
+            bindLabel="textContent"
+            bindValue="id"
+            placeholder="Chọn một tin nhắn"
+            formControlName="messageId"
+            [class.is-invalid]="isFieldInvalid('messageId')"
+          >
           </ng-select>
           <div class="invalid-feedback" *ngIf="isFieldInvalid('messageId')">
             Tin nhắn là bắt buộc.
@@ -50,29 +44,42 @@
         </div>
 
         <div class="mb-3">
-          <label for="scheduledAt" class="form-label">Hẹn giờ đăng (Không bắt buộc)</label>
-          <input type="datetime-local" class="form-control" id="scheduledAt" formControlName="scheduledAt">
-          <small class="form-text text-muted">Để trống để chạy ngay lập tức.</small>
+          <label for="scheduledAt" class="form-label"
+            >Hẹn giờ đăng (Không bắt buộc)</label
+          >
+          <input
+            type="datetime-local"
+            class="form-control"
+            id="scheduledAt"
+            formControlName="scheduledAt"
+          />
+          <small class="form-text text-muted"
+            >Để trống để chạy ngay lập tức.</small
+          >
         </div>
 
-        <hr class="my-4">
+        <hr class="my-4" />
 
         <div class="mb-3">
-          <label for="instanceId" class="form-label">Tài khoản WhatsApp <span class="text-danger">*</span></label>
-          <ng-select [items]="instances"
-                     bindLabel="name"
-                     bindValue="id"
-                     placeholder="Chọn một tài khoản"
-                     formControlName="instanceId"
-                     (change)="onInstanceChange($event)"
-                     [class.is-invalid]="isFieldInvalid('instanceId')">
+          <label for="instanceId" class="form-label"
+            >Tài khoản WhatsApp <span class="text-danger">*</span></label
+          >
+          <ng-select
+            [items]="instances"
+            bindLabel="name"
+            bindValue="id"
+            placeholder="Chọn một tài khoản"
+            formControlName="instanceId"
+            (change)="onInstanceChange($event)"
+            [class.is-invalid]="isFieldInvalid('instanceId')"
+          >
           </ng-select>
           <div class="invalid-feedback" *ngIf="isFieldInvalid('instanceId')">
             Tài khoản là bắt buộc.
           </div>
         </div>
 
-        <div class="mb-3" *ngIf="jobForm.get('jobType')?.value === 'SendToGroups'">
+        <!-- <div class="mb-3" *ngIf="jobForm.get('jobType')?.value === 'SendToGroups'">
           <label for="groupIds" class="form-label">Nhóm mục tiêu <span class="text-danger">*</span></label>
           <div class="mb-2">
             <button type="button" class="btn btn-outline-primary btn-sm" (click)="toggleSelectAllGroups()">
@@ -93,22 +100,81 @@
           <div class="invalid-feedback" *ngIf="isFieldInvalid('groupIds')">
             Cần chọn ít nhất một nhóm.
           </div>
+        </div> -->
+
+        <!-- Hiển thị nếu jobType === 'SendToGroups' -->
+        <div
+          class="mb-3"
+          *ngIf="jobForm.get('jobType')?.value === 'SendToGroups'"
+        >
+          <label class="form-label"
+            >Nhóm mục tiêu <span class="text-danger">*</span></label
+          >
+
+          <!-- Nút mở modal -->
+          <div class="mb-2">
+            <button
+              type="button"
+              class="btn btn-outline-primary btn-sm"
+              (click)="openGroupModal()"
+            >
+              Chọn nhóm
+            </button>
+          </div>
+
+          <!-- Hiển thị nhóm đã chọn -->
+          <div
+            class="form-control"
+            [class.is-invalid]="isFieldInvalid('groupIds')"
+            style="min-height: 60px"
+          >
+            <span *ngIf="selectedGroups.length === 0" class="text-muted"
+              >Chưa chọn nhóm nào</span
+            >
+            <ul *ngIf="selectedGroups.length > 0" class="mb-0 ps-3" style="height: 300px; overflow-y: auto;">
+              <li *ngFor="let group of selectedGroups">{{ group.name }}</li>
+            </ul>
+          </div>
+
+          <div class="invalid-feedback" *ngIf="isFieldInvalid('groupIds')">
+            Cần chọn ít nhất một nhóm.
+          </div>
         </div>
 
-        <div class="mb-3" *ngIf="jobForm.get('jobType')?.value === 'SendToUsers'">
-          <label for="phoneNumbers" class="form-label">Số điện thoại (cách nhau bằng dấu phẩy) <span class="text-danger">*</span></label>
-          <textarea class="form-control" id="phoneNumbers" formControlName="phoneNumbers" rows="5"
-                    placeholder="Ví dụ: +1234567890, +1987654321"
-                    [class.is-invalid]="isFieldInvalid('phoneNumbers')"></textarea>
+        <div
+          class="mb-3"
+          *ngIf="jobForm.get('jobType')?.value === 'SendToUsers'"
+        >
+          <label for="phoneNumbers" class="form-label"
+            >Số điện thoại (cách nhau bằng dấu phẩy)
+            <span class="text-danger">*</span></label
+          >
+          <textarea
+            class="form-control"
+            id="phoneNumbers"
+            formControlName="phoneNumbers"
+            rows="5"
+            placeholder="Ví dụ: +1234567890, +1987654321"
+            [class.is-invalid]="isFieldInvalid('phoneNumbers')"
+          ></textarea>
           <div class="invalid-feedback" *ngIf="isFieldInvalid('phoneNumbers')">
             Cần nhập số điện thoại.
           </div>
         </div>
 
         <div class="d-flex justify-content-end">
-          <button type="button" class="btn btn-secondary me-2" (click)="router.navigate(['/jobs'])">Hủy</button>
+          <button
+            type="button"
+            class="btn btn-secondary me-2"
+            (click)="router.navigate(['/jobs'])"
+          >
+            Hủy
+          </button>
           <button type="submit" class="btn btn-primary" [disabled]="loading">
-            <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+            <span
+              *ngIf="loading"
+              class="spinner-border spinner-border-sm me-2"
+            ></span>
             Tạo công việc
           </button>
         </div>
@@ -116,3 +182,36 @@
     </div>
   </div>
 </div>
+<ng-template #groupModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Chọn nhóm</h5>
+    <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <div class="mb-2">
+      <input type="text" class="form-control" placeholder="Tìm kiếm nhóm..." [(ngModel)]="groupSearch" />
+    </div>
+    <div class="form-check mb-2">
+      <input type="checkbox" class="form-check-input" id="selectAll" [(ngModel)]="selectAllChecked" (change)="toggleSelectAll()" />
+      <label for="selectAll" class="form-check-label">Chọn tất cả</label>
+    </div>
+    <div style="max-height: 300px; overflow-y: auto;">
+      <div *ngFor="let group of filteredGroups()">
+        <div class="form-check">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            [id]="'group_' + group.id"
+            [checked]="isGroupSelected(group.id)"
+            (change)="toggleGroupSelection(group)"
+          />
+          <label class="form-check-label" [for]="'group_' + group.id">{{ group.name }}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="modal.dismiss()">Đóng</button>
+    <button class="btn btn-primary" (click)="confirmGroupSelection(modal)">Xác nhận</button>
+  </div>
+</ng-template>

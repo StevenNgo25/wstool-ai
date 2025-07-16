@@ -5,6 +5,7 @@ using WhatsAppCampaignManager.Data;
 using WhatsAppCampaignManager.DTOs;
 using WhatsAppCampaignManager.Models;
 using WhatsAppCampaignManager.Extensions;
+using Newtonsoft.Json;
 
 namespace WhatsAppCampaignManager.Services.Implements
 {
@@ -34,45 +35,43 @@ namespace WhatsAppCampaignManager.Services.Implements
                     return null;
                 }
 
-                //// Validate user has access to the message's instance
-                //var hasAccess = await _context.AppUserInstances
-                //    .AnyAsync(ui => ui.UserId == userId && ui.InstanceId == message.InstanceId);
+                // Validate user has access to the message's instance
+                var hasAccess = await _context.AppUserInstances
+                    .AnyAsync(ui => ui.UserId == userId && ui.InstanceId == createJobDto.InstanceId);
 
-                //if (!hasAccess)
-                //{
-                //    _logger.LogWarning("User {UserId} does not have access to instance {InstanceId}", userId, message.InstanceId);
-                //    return null;
-                //}
-
-                // Check user's pending/running jobs limit
-                var userActiveJobs = await _context.AppJobs
-                    .CountAsync(j => j.CreatedByUserId == userId && 
-                               (j.Status == AppConst.JobStatus.PENDING || j.Status == AppConst.JobStatus.RUNNING));
-
-                if (userActiveJobs >= 10) // Max 10 pending/running jobs per user
+                if (!hasAccess)
                 {
-                    _logger.LogWarning("User {UserId} has reached maximum active jobs limit", userId);
+                    _logger.LogWarning("User {UserId} does not have access to instance {InstanceId}", userId, createJobDto.InstanceId);
                     return null;
                 }
+
+                //// Check user's pending/running jobs limit
+                //var userActiveJobs = await _context.AppJobs
+                //    .CountAsync(j => j.CreatedByUserId == userId && 
+                //               (j.Status == AppConst.JobStatus.PENDING || j.Status == AppConst.JobStatus.RUNNING));
+
+                //if (userActiveJobs >= 10) // Max 10 pending/running jobs per user
+                //{
+                //    _logger.LogWarning("User {UserId} has reached maximum active jobs limit", userId);
+                //    return null;
+                //}
 
                 // Prepare target data
                 string? targetData = null;
                 if (createJobDto.JobType == "SendToGroups" && createJobDto.GroupIds?.Any() == true)
                 {
-                    targetData = JsonSerializer.Serialize(createJobDto.GroupIds);
+                    targetData = System.Text.Json.JsonSerializer.Serialize(createJobDto.GroupIds);
                 }
                 else if (createJobDto.JobType == "SendToUsers" && createJobDto.PhoneNumbers?.Any() == true)
                 {
-                    targetData = JsonSerializer.Serialize(createJobDto.PhoneNumbers);
+                    targetData = System.Text.Json.JsonSerializer.Serialize(createJobDto.PhoneNumbers);
                 }
 
                 var job = new AppJob
                 {
-                    Name = createJobDto.Name,
-                    Description = createJobDto.Description,
                     JobType = createJobDto.JobType,
                     MessageId = createJobDto.MessageId,
-                    InstanceId = message.InstanceId, // Use message's instance
+                    InstanceId = createJobDto.InstanceId, // Use message's instance
                     CreatedByUserId = userId,
                     ScheduledAt = createJobDto.ScheduledAt,
                     TargetData = targetData,
@@ -109,11 +108,8 @@ namespace WhatsAppCampaignManager.Services.Implements
             var jobQuery = query.Select(j => new JobDto
             {
                 Id = j.Id,
-                Name = j.Name,
-                Description = j.Description,
                 JobType = j.JobType,
                 Status = j.Status,
-                MessageTitle = j.Message.Title,
                 InstanceName = j.Instance.Name,
                 CreatedByUserName = j.CreatedByUser.Username,
                 ScheduledAt = j.ScheduledAt,
@@ -136,8 +132,6 @@ namespace WhatsAppCampaignManager.Services.Implements
 
             // Apply search
             jobQuery = jobQuery.ApplySearch(request.Search, 
-                x => x.Name, 
-                x => x.Description ?? "", 
                 x => x.MessageTitle,
                 x => x.InstanceName,
                 x => x.CreatedByUserName);
@@ -175,14 +169,15 @@ namespace WhatsAppCampaignManager.Services.Implements
 
             if (job == null) return null;
 
+            var assignGroupIds = job.TargetData != null
+                    ? JsonConvert.DeserializeObject<List<int>>(job.TargetData) : null;
+            var assignedGroups = await _context.AppGroups.Where(g => assignGroupIds.Contains(g.Id)).ToListAsync();
+
             return new JobDto
             {
                 Id = job.Id,
-                Name = job.Name,
-                Description = job.Description,
                 JobType = job.JobType,
                 Status = job.Status,
-                MessageTitle = job.Message.Title,
                 InstanceName = job.Instance.Name,
                 CreatedByUserName = job.CreatedByUser.Username,
                 ScheduledAt = job.ScheduledAt,
@@ -200,7 +195,7 @@ namespace WhatsAppCampaignManager.Services.Implements
                     Details = l.Details,
                     CreatedAt = l.CreatedAt
                 }).ToList(),
-                sentMessages = job.SentMessages.Select(l => new JobSentMessageDto
+                SentMessages = job.SentMessages.Select(l => new JobSentMessageDto
                 {
                     Id = l.Id,
                     JobId = l.JobId,
@@ -214,6 +209,15 @@ namespace WhatsAppCampaignManager.Services.Implements
                     ReadAt = l.ReadAt,
                     LastValidatedAt = l.LastValidatedAt
                 }).ToList(),
+                AssignedGroups = assignedGroups.Select(s=> new GroupDto
+                {
+                    Id = s.Id,
+                    GroupId = s.GroupId,
+                    Name = s.Name,
+                    Description = s.Description,
+                    ParticipantCount = s.ParticipantCount
+                }).ToList(),
+                TargetPhoneNumbers = job.TargetData
             };
         }
 

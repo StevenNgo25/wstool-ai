@@ -40,7 +40,6 @@
                        [checked]="isAllSelected()" 
                        (change)="toggleSelectAll()">
               </th>
-              <th>Tên</th>
               <th>Loại</th>
               <th>Tiêu đề tin nhắn</th>
               <th>Tài khoản</th>
@@ -57,7 +56,6 @@
                        [checked]="isSelected(job.id)"
                        (change)="toggleSelect(job.id)">
               </td>
-              <td>{{ job.name }}</td>
               <td>{{ job.jobType }}</td>
               <td>{{ job.messageTitle }}</td>
               <td>{{ job.instanceName }}</td>

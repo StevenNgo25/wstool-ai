@@ -31,11 +31,14 @@ builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 // Background Services
-builder.Services.AddHostedService<GroupSyncService>();
-builder.Services.AddHostedService<UserAnalyticsService>();
-builder.Services.AddHostedService<MessageSenderService>();
-builder.Services.AddHostedService<MessageValidationService>();
-builder.Services.AddHostedService<FileCleanupService>();
+//if (builder.Environment.IsProduction())
+{
+    builder.Services.AddHostedService<GroupSyncService>();
+    builder.Services.AddHostedService<UserAnalyticsService>();
+    builder.Services.AddHostedService<MessageSenderService>();
+    builder.Services.AddHostedService<MessageValidationService>();
+    builder.Services.AddHostedService<FileCleanupService>();
+}
 
 // JWT Authentication
 var jwtKey = builder.Configuration["Jwt:Key"] ?? "YourSuperSecretKeyThatIsAtLeast32CharactersLong!";
@@ -66,13 +69,13 @@ builder.Services.AddAuthorization();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo 
-    { 
-        Title = "WhatsApp Campaign Manager API", 
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "WhatsApp Campaign Manager API",
         Version = "v1",
         Description = "API for managing WhatsApp campaigns via WHAPI.cloud"
     });
-    
+
     // Add JWT authentication to Swagger
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
@@ -82,7 +85,7 @@ builder.Services.AddSwaggerGen(c =>
         Type = SecuritySchemeType.ApiKey,
         Scheme = "Bearer"
     });
-    
+
     c.AddSecurityRequirement(new OpenApiSecurityRequirement()
     {
         {

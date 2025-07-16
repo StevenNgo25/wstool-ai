@@ -2,12 +2,10 @@ import { Instance } from "./user.model"
 
 export interface Message {
   id: number
-  title: string
-  textContent?: string
+  textContent: string
   imageUrl?: string
-  messageType: string
   createdByUserName: string
-  instanceId: number
+  instanceId?: number
   instanceName: string
   createdAt: string
   updatedAt?: string
@@ -15,34 +13,26 @@ export interface Message {
 }
 
 export interface CreateMessageDto {
-  title: string
-  textContent?: string
-  messageType: string
-  instanceId: number
+  textContent: string
+  instanceId?: number
   groupIds: number[]
 }
 
 export interface CreateMessageWithFileDto {
-  title: string
-  textContent?: string
-  messageType: string
-  instanceId: number
+  textContent: string
+  instanceId?: number
   imageFile?: File
   groupIds: number[]
 }
 
 export interface UpdateMessageDto {
-  title?: string
-  textContent?: string
-  messageType?: string
+  textContent: string
   instanceId?: number
   groupIds?: number[]
 }
 
 export interface UpdateMessageWithFileDto {
-  title?: string
-  textContent?: string
-  messageType?: string
+  textContent: string
   instanceId?: number
   imageFile?: File
   removeImage?: boolean
@@ -58,7 +48,7 @@ export interface Group {
   isActive: boolean
   createdAt: string
   lastSyncAt?: string
-  instanceId: number
+  instanceId?: number
   instance: Instance
 }
 

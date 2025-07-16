@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core"
 import { CommonModule } from "@angular/common" // Import CommonModule
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from "@angular/forms" // Import ReactiveFormsModule
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormsModule } from "@angular/forms" // Import ReactiveFormsModule
 import { RouterModule } from "@angular/router" // Import RouterModule
 import { NgSelectModule } from "@ng-select/ng-select" // Import NgSelectModule
 import { ToastaService, ToastOptions, ToastaModule } from "ngx-toasta" // Import ToastaModule
@@ -18,7 +18,7 @@ import { environment } from "../../../environments/environment"
 @Component({
   selector: "app-message-form",
   standalone: true, // Đánh dấu là standalone component
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, NgSelectModule, ToastaModule], // Import các module cần thiết
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, NgSelectModule, ToastaModule, FormsModule], // Import các module cần thiết
   templateUrl: "./message-form.component.html",
   styleUrls: ["./message-form.component.scss"],
 })
@@ -44,10 +44,8 @@ export class MessageFormComponent implements OnInit {
     private toastaService: ToastaService,
   ) {
     this.messageForm = this.fb.group({
-      title: ["", [Validators.required, Validators.maxLength(200)]],
-      textContent: ["", Validators.maxLength(4000)],
-      messageType: ["Text", Validators.required],
-      instanceId: [null, Validators.required],
+      textContent: ["",[Validators.required, Validators.maxLength(4000)]],
+      instanceId: [null],
       groupIds: [[]],
     })
   }
@@ -69,9 +67,7 @@ export class MessageFormComponent implements OnInit {
     this.messageService.getMessage(this.messageId!).subscribe({
       next: (message) => {
         this.messageForm.patchValue({
-          title: message.title,
           textContent: message.textContent,
-          messageType: message.messageType,
           instanceId: message.instanceId,
           groupIds: message.assignedGroups.map((g) => g.id),
         })
@@ -119,7 +115,6 @@ export class MessageFormComponent implements OnInit {
     if (input.files && input.files.length > 0) {
       this.selectedFile = input.files[0]
       this.removeImage = false
-      //this.messageForm.get("messageType")?.setValue("Image")
     } else {
       this.selectedFile = null
     }
@@ -130,7 +125,6 @@ export class MessageFormComponent implements OnInit {
     this.removeImage = checkbox.checked
     if (this.removeImage) {
       this.selectedFile = null
-      this.messageForm.get("messageType")?.setValue("Text") // Default to text if image removed
     }
   }
 
@@ -153,9 +147,7 @@ export class MessageFormComponent implements OnInit {
   createMessage(): void {
     const formValue = this.messageForm.value
     const messageData: CreateMessageWithFileDto = {
-      title: formValue.title,
       textContent: formValue.textContent,
-      messageType: formValue.messageType,
       instanceId: formValue.instanceId,
       imageFile: this.selectedFile || undefined,
       groupIds: formValue.groupIds,
@@ -177,9 +169,7 @@ export class MessageFormComponent implements OnInit {
   updateMessage(): void {
     const formValue = this.messageForm.value
     const messageData: UpdateMessageWithFileDto = {
-      title: formValue.title,
       textContent: formValue.textContent,
-      messageType: formValue.messageType,
       instanceId: formValue.instanceId,
       imageFile: this.selectedFile || undefined,
       removeImage: this.removeImage,

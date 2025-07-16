@@ -1,7 +1,5 @@
 export interface Job {
   id: number
-  name: string
-  description?: string
   jobType: string
   status: string
   messageTitle: string
@@ -23,8 +21,6 @@ export interface Job {
 }
 
 export interface CreateJobDto {
-  name: string
-  description?: string
   jobType: string
   messageId: number
   instanceId: number

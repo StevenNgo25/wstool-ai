@@ -29,10 +29,8 @@ namespace WhatsAppCampaignManager.Services.Implements
                 .Select(m => new MessageDto
                 {
                     Id = m.Id,
-                    Title = m.Title,
                     TextContent = m.TextContent,
                     ImageUrl = m.ImageUrl,
-                    MessageType = m.MessageType,
                     CreatedByUserName = m.CreatedByUser.Username,
                     InstanceId = m.InstanceId,
                     InstanceName = m.Instance.Name,
@@ -53,7 +51,6 @@ namespace WhatsAppCampaignManager.Services.Implements
 
             // Apply search
             query = query.ApplySearch(request.Search, 
-                x => x.Title, 
                 x => x.TextContent ?? "", 
                 x => x.CreatedByUserName,
                 x => x.InstanceName);
@@ -81,10 +78,8 @@ namespace WhatsAppCampaignManager.Services.Implements
                 .Select(m => new MessageDto
                 {
                     Id = m.Id,
-                    Title = m.Title,
                     TextContent = m.TextContent,
                     ImageUrl = m.ImageUrl,
-                    MessageType = m.MessageType,
                     CreatedByUserName = m.CreatedByUser.Username,
                     InstanceId = m.InstanceId,
                     InstanceName = m.Instance.Name,
@@ -122,9 +117,7 @@ namespace WhatsAppCampaignManager.Services.Implements
 
                 var message = new AppMessage
                 {
-                    Title = createMessageDto.Title,
                     TextContent = createMessageDto.TextContent,
-                    MessageType = createMessageDto.MessageType,
                     InstanceId = createMessageDto.InstanceId,
                     CreatedByUserId = userId
                 };
@@ -187,10 +180,8 @@ namespace WhatsAppCampaignManager.Services.Implements
 
                 var message = new AppMessage
                 {
-                    Title = createMessageDto.Title,
                     TextContent = createMessageDto.TextContent,
                     ImageUrl = imageUrl,
-                    MessageType = createMessageDto.MessageType,
                     InstanceId = createMessageDto.InstanceId,
                     CreatedByUserId = userId
                 };
@@ -255,19 +246,14 @@ namespace WhatsAppCampaignManager.Services.Implements
                         _logger.LogWarning("User {UserId} does not have access to instance {InstanceId}", userId, updateMessageDto.InstanceId);
                         return false;
                     }
-
-                    message.InstanceId = updateMessageDto.InstanceId.Value;
                 }
 
+                message.InstanceId = updateMessageDto.InstanceId;
+
                 // Update message properties
-                if (!string.IsNullOrEmpty(updateMessageDto.Title))
-                    message.Title = updateMessageDto.Title;
 
                 if (updateMessageDto.TextContent != null)
                     message.TextContent = updateMessageDto.TextContent;
-
-                if (!string.IsNullOrEmpty(updateMessageDto.MessageType))
-                    message.MessageType = updateMessageDto.MessageType;
 
                 message.UpdatedAt = DateTime.UtcNow;
 
@@ -335,9 +321,9 @@ namespace WhatsAppCampaignManager.Services.Implements
                         _logger.LogWarning("User {UserId} does not have access to instance {InstanceId}", userId, updateMessageDto.InstanceId);
                         return false;
                     }
-
-                    message.InstanceId = updateMessageDto.InstanceId.Value;
                 }
+
+                message.InstanceId = updateMessageDto.InstanceId;
 
                 // Handle file operations
                 if (updateMessageDto.RemoveImage && !string.IsNullOrEmpty(message.ImageUrl))
@@ -363,14 +349,9 @@ namespace WhatsAppCampaignManager.Services.Implements
                 }
 
                 // Update message properties
-                if (!string.IsNullOrEmpty(updateMessageDto.Title))
-                    message.Title = updateMessageDto.Title;
 
                 if (updateMessageDto.TextContent != null)
                     message.TextContent = updateMessageDto.TextContent;
-
-                if (!string.IsNullOrEmpty(updateMessageDto.MessageType))
-                    message.MessageType = updateMessageDto.MessageType;
 
                 message.UpdatedAt = DateTime.UtcNow;
 

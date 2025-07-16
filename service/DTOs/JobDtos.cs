@@ -5,12 +5,6 @@ namespace WhatsAppCampaignManager.DTOs
 {
     public class CreateJobDto
     {
-        [Required]
-        [StringLength(200)]
-        public string Name { get; set; } = string.Empty;
-        
-        [StringLength(500)]
-        public string? Description { get; set; }
         
         [Required]
         [StringLength(20)]
@@ -31,8 +25,6 @@ namespace WhatsAppCampaignManager.DTOs
     public class JobDto
     {
         public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
-        public string? Description { get; set; }
         public string JobType { get; set; } = string.Empty;
         public string Status { get; set; } = string.Empty;
         public string MessageTitle { get; set; } = string.Empty;
@@ -46,7 +38,9 @@ namespace WhatsAppCampaignManager.DTOs
         public int SuccessfulMessages { get; set; }
         public int FailedMessages { get; set; }
         public List<JobLogDto> Logs { get; set; } = new List<JobLogDto>();
-        public List<JobSentMessageDto> sentMessages { get; set; } = new List<JobSentMessageDto>();
+        public List<JobSentMessageDto> SentMessages { get; set; } = new List<JobSentMessageDto>();
+        public List<GroupDto> AssignedGroups { get; set; } = new List<GroupDto>();
+        public string? TargetPhoneNumbers { get; set; }
     }
 
     public class JobLogDto

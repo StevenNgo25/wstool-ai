@@ -51,6 +51,8 @@ namespace WhatsAppCampaignManager.HostedServices
                 .Where(i => i.IsActive)
                 .ToListAsync(stoppingToken);
 
+            const int pageSize = 50;
+
             foreach (var instance in activeInstances)
             {
                 if (stoppingToken.IsCancellationRequested)
@@ -60,48 +62,68 @@ namespace WhatsAppCampaignManager.HostedServices
                 {
                     _logger.LogInformation("Syncing groups for instance {InstanceName}", instance.Name);
 
-                    var groups = await whapiService.GetGroupsAsync(instance.WhapiToken, instance.WhapiUrl,300);
                     var fetchedIds = new List<string>();
-                    foreach (var whapiGroup in groups.items.Where(q=>q.ParticipantCount >= 20))
+                    int page = 0;
+                    bool hasMore = true;
+
+                    while (hasMore && !stoppingToken.IsCancellationRequested)
                     {
-                        fetchedIds.Add(whapiGroup.Id);
-                        var existingGroup = await context.AppGroups
-                            .FirstOrDefaultAsync(g => g.GroupId == whapiGroup.Id && g.InstanceId == instance.Id, stoppingToken);
+                        var groups = await whapiService.GetGroupsAsync(
+                            instance.WhapiToken,
+                            instance.WhapiUrl,
+                            pageSize,
+                            offset: page * pageSize);
 
-                        if (existingGroup == null)
+                        if (groups.items == null || groups.items.Count == 0)
+                            break;
+
+                        foreach (var whapiGroup in groups.items.Where(q => q.ParticipantCount >= 20))
                         {
-                            // Create new group
-                            var newGroup = new AppGroup
+                            fetchedIds.Add(whapiGroup.Id);
+
+                            var existingGroup = await context.AppGroups
+                                .FirstOrDefaultAsync(g => g.GroupId == whapiGroup.Id && g.InstanceId == instance.Id, stoppingToken);
+
+                            if (existingGroup == null)
                             {
-                                GroupId = whapiGroup.Id,
-                                Name = whapiGroup.Name,
-                                Description = whapiGroup.Description ?? whapiGroup.Subject,
-                                ParticipantCount = whapiGroup.ParticipantCount,
-                                LastSyncAt = DateTime.UtcNow,
-                                InstanceId = instance.Id,
-                            };
+                                var newGroup = new AppGroup
+                                {
+                                    GroupId = whapiGroup.Id,
+                                    Name = whapiGroup.Name,
+                                    Description = whapiGroup.Description ?? whapiGroup.Subject,
+                                    ParticipantCount = whapiGroup.ParticipantCount,
+                                    LastSyncAt = DateTime.UtcNow,
+                                    InstanceId = instance.Id,
+                                };
 
-                            context.AppGroups.Add(newGroup);
-                            _logger.LogInformation("Added new group: {GroupName}", whapiGroup.Name);
+                                context.AppGroups.Add(newGroup);
+                                _logger.LogInformation("Added new group: {GroupName}", whapiGroup.Name);
+                            }
+                            else
+                            {
+                                existingGroup.Name = whapiGroup.Name;
+                                existingGroup.Description = whapiGroup.Description ?? whapiGroup.Subject;
+                                existingGroup.ParticipantCount = whapiGroup.ParticipantCount;
+                                existingGroup.LastSyncAt = DateTime.UtcNow;
+                                existingGroup.IsActive = true;
+                                existingGroup.InstanceId = instance.Id;
+                            }
                         }
-                        else
-                        {
-                            // Update existing group
-                            existingGroup.Name = whapiGroup.Name;
-                            existingGroup.Description = whapiGroup.Description ?? whapiGroup.Subject;
-                            existingGroup.ParticipantCount = whapiGroup.ParticipantCount;
-                            existingGroup.LastSyncAt = DateTime.UtcNow;
-                            existingGroup.IsActive = true;
-                            existingGroup.InstanceId = instance.Id;
-                        }
+
+                        // Nếu số lượng nhóm trả về < pageSize thì không còn trang tiếp theo
+                        hasMore = groups.items.Count == pageSize;
+                        page++;
+
+                        await context.SaveChangesAsync(stoppingToken);
                     }
 
-                    // Xóa những chat không còn trong API nữa
+                    // Xóa những nhóm không còn trong API nữa
                     if (fetchedIds.Count > 0)
                     {
                         var toDelete = await context.AppGroups
-                                               .Where(x => !fetchedIds.Contains(x.GroupId) && x.InstanceId == instance.Id)
-                                               .ToListAsync(stoppingToken);
+                            .Where(x => !fetchedIds.Contains(x.GroupId) && x.InstanceId == instance.Id)
+                            .ToListAsync(stoppingToken);
+
                         if (toDelete.Any())
                         {
                             context.AppGroups.RemoveRange(toDelete);
@@ -111,7 +133,7 @@ namespace WhatsAppCampaignManager.HostedServices
                     await context.SaveChangesAsync(stoppingToken);
 
                     _logger.LogInformation("Successfully synced {GroupCount} groups for instance {InstanceName}",
-                        groups.total, instance.Name);
+                        fetchedIds.Count, instance.Name);
                 }
                 catch (Exception ex)
                 {
@@ -119,5 +141,6 @@ namespace WhatsAppCampaignManager.HostedServices
                 }
             }
         }
+
     }
 }

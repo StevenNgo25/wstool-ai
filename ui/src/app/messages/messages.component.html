@@ -11,7 +11,7 @@
       <div class="row align-items-center">
         <div class="col-md-6">
           <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search messages..." 
+            <input type="text" class="form-control" placeholder="Nhập từ khóa..." 
                    [(ngModel)]="searchTerm" (keyup.enter)="search()">
             <button class="btn btn-outline-secondary" type="button" (click)="search()">
               <i class="fa fa-search"></i>
@@ -40,9 +40,7 @@
                        (change)="toggleSelectAll()">
               </th>
               <th>Tiêu đề</th>
-              <th>Loại</th>
               <th>Tài khoản</th>
-              <!-- <th>DS nhóm</th> -->
               <th>Người tạo</th>
               <th>Ngày tạo</th>
               <th width="120">Hành động</th>
@@ -61,27 +59,11 @@
                        class="me-2 rounded" width="40" height="40" 
                        style="object-fit: cover;">
                   <div>
-                    <div class="fw-bold">{{ message.title }}</div>
-                    <small class="text-muted" *ngIf="message.textContent">
-                      {{ message.textContent | slice:0:50 }}{{ message.textContent.length > 50 ? '...' : '' }}
-                    </small>
+                    <div class="fw-bold">{{ message.textContent | slice:0:50 }}{{ message.textContent.length > 50 ? '...' : '' }}</div>
                   </div>
                 </div>
               </td>
-              <td>
-                <span class="badge" 
-                      [ngClass]="{
-                        'bg-primary': message.messageType === 'Text',
-                        'bg-success': message.messageType === 'Image',
-                        'bg-info': message.messageType === 'Mixed'
-                      }">
-                  {{ message.messageType }}
-                </span>
-              </td>
               <td>{{ message.instanceName }}</td>
-              <!-- <td>
-                <span class="badge bg-secondary">{{ message.assignedGroups.length }} groups</span>
-              </td> -->
               <td>{{ message.createdByUserName }}</td>
               <td>{{ message.createdAt | date:'short' }}</td>
               <td>
