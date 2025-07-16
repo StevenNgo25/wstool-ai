@@ -1,34 +1,59 @@
 networks:
-  wstool_webnet_2:
+  wstool_webnet:
     external: true
 
 volumes:
   wstool_be_wwwroot_data:   # Volume để lưu wwwroot lâu dài
 
 services:
-  wstool-be-2:
-    image: wstool-be-2
+  wstool-be:
+    image: wstool-be
     build:
       context: ./service
       dockerfile: Dockerfile
-    container_name: wstool_be_2
+    container_name: wstool_be
     ports:
-      - "5000:8080"
+      - "8080"
     volumes:
       - wstool_be_wwwroot_data:/app/wwwroot   # Mount volume vào đúng thư mục wwwroot
     networks:
-      - wstool_webnet_2
+      - wstool_webnet
     user: "0:0"
 
-  wstool-fe-2:
-    image: wstool-fe-2
+  wstool-fe:
+    image: wstool-fe
     build:
       context: ./ui
       dockerfile: Dockerfile
-    container_name: wstool_fe_2
+    container_name: wstool_fe
     ports:
-      - "4200:80"
+      - "80"
     depends_on:
-      - wstool-be-2
+      - wstool-be
     networks:
-      - wstool_webnet_2
+      - wstool_webnet
+    # Nginx Reverse Proxy
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./certbot/www:/var/www/certbot
+      - ./certbot/conf:/etc/letsencrypt
+    networks:
+      - wstool_webnet
+    depends_on:
+      - wstool-be
+      - wstool-fe
+
+  # Certbot - Let's Encrypt
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - ./certbot/www:/var/www/certbot
+      - ./certbot/conf:/etc/letsencrypt
+    command: certonly --webroot --webroot-path=/var/www/certbot --email stevenworkvn@gmail.com --agree-tos --no-eff-email -d api.watchsearch-post.com -d watchsearch-post.com
