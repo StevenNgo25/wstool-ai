@@ -35,7 +35,7 @@
         <div class="mb-3" *ngIf="currentImageUrl && !removeImage">
           <label class="form-label">Hình ảnh hiện tại</label>
           <div>
-            <img [src]="environment + currentImageUrl" alt="Current Message Image" class="img-thumbnail" style="max-width: 200px; max-height: 200px; object-fit: contain;">
+            <img [src]="environment.imageUrl + currentImageUrl" alt="Current Message Image" class="img-thumbnail" style="max-width: 200px; max-height: 200px; object-fit: contain;">
             <div class="form-check mt-2">
               <input class="form-check-input" type="checkbox" id="removeImage" [(ngModel)]="removeImage" (change)="onRemoveImageChange($event)">
               <label class="form-check-label" for="removeImage">
