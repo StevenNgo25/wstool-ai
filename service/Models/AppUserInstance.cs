@@ -13,6 +13,6 @@ namespace WhatsAppCampaignManager.Models
         public bool CanSendMessages { get; set; } = true;
         public bool CanCreateJobs { get; set; } = true;
         
-        public DateTime AssignedAt { get; set; } = DateTime.UtcNow;
+        public DateTime AssignedAt { get; set; } = DateTime.Now;
     }
 }

@@ -16,11 +16,12 @@ namespace WhatsAppCampaignManager.Services.Implements
             _logger = logger;
         }
 
-        public async Task<PaginatedResponse<GroupDto>> GetGroupsAsync(PaginationRequest request)
+        public async Task<PaginatedResponse<GroupDto>> GetGroupsAsync(PaginationRequest request, int userId, string userRole)
         {
             var query = _context.AppGroups
                 .Where(g => g.IsActive)
                 .Include(i=>i.Instance)
+                .Where(q=> userRole == "Admin" || q.Instance.UserInstances.Any(q=>q.UserId == userId))
                 .Select(g => new GroupDto
                 {
                     Id = g.Id,
@@ -52,10 +53,12 @@ namespace WhatsAppCampaignManager.Services.Implements
             return await query.ToPaginatedResponseAsync(request);
         }
 
-        public async Task<PaginatedResponse<GroupDto>> SearchGroupsByInstancesAsync(GroupSearchRequest request)
+        public async Task<PaginatedResponse<GroupDto>> SearchGroupsByInstancesAsync(GroupSearchRequest request, int userId, string userRole)
         {
             var query = _context.AppGroups
                 .Where(g => g.IsActive)
+                .Include(i => i.Instance)
+                .Where(q => userRole == "Admin" || q.Instance.UserInstances.Any(q => q.UserId == userId))
                 .AsQueryable();
 
             // Filter by instance IDs if provided

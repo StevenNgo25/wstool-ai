@@ -80,8 +80,8 @@ namespace WhatsAppCampaignManager.HostedServices
                                     UserPhoneNumber = participant.Id,
                                     UserName = participant.Name ?? participant.PushName,
                                     IsAdmin = participant.IsAdmin || participant.IsSuperAdmin,
-                                    JoinedAt = DateTime.UtcNow, // WHAPI doesn't provide join date
-                                    LastSeenAt = DateTime.UtcNow
+                                    JoinedAt = DateTime.Now, // WHAPI doesn't provide join date
+                                    LastSeenAt = DateTime.Now
                                 };
 
                                 context.AppAnalytics.Add(newAnalytic);
@@ -91,8 +91,8 @@ namespace WhatsAppCampaignManager.HostedServices
                                 // Update existing record
                                 existingAnalytic.UserName = participant.Name ?? participant.PushName;
                                 existingAnalytic.IsAdmin = participant.IsAdmin || participant.IsSuperAdmin;
-                                existingAnalytic.LastSeenAt = DateTime.UtcNow;
-                                existingAnalytic.UpdatedAt = DateTime.UtcNow;
+                                existingAnalytic.LastSeenAt = DateTime.Now;
+                                existingAnalytic.UpdatedAt = DateTime.Now;
                             }
                         }
 

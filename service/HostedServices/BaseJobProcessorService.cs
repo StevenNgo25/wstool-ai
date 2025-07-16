@@ -77,7 +77,7 @@ namespace WhatsAppCampaignManager.HostedServices
                     foreach (var job in runningJobs)
                     {
                         job.Status = AppConst.JobStatus.FAILED;
-                        job.CompletedAt = DateTime.UtcNow;
+                        job.CompletedAt = DateTime.Now;
                     }
 
                     await context.SaveChangesAsync(stoppingToken);
@@ -100,7 +100,7 @@ namespace WhatsAppCampaignManager.HostedServices
                 .Include(j => j.Instance)
                 .Include(j => j.CreatedByUser)
                 .Where(j => j.Status == AppConst.JobStatus.PENDING && 
-                           (j.ScheduledAt == null || j.ScheduledAt <= DateTime.UtcNow))
+                           (j.ScheduledAt == null || j.ScheduledAt <= DateTime.Now))
                 .AsNoTracking()
                 .ToListAsync(stoppingToken);
 
@@ -171,7 +171,7 @@ namespace WhatsAppCampaignManager.HostedServices
                 if (job != null && job.Status == AppConst.JobStatus.PENDING)
                 {
                     job.Status = AppConst.JobStatus.RUNNING;
-                    job.StartedAt = DateTime.UtcNow;
+                    job.StartedAt = DateTime.Now;
                     await context.SaveChangesAsync(stoppingToken);
                 }
             }
@@ -192,7 +192,7 @@ namespace WhatsAppCampaignManager.HostedServices
                 if (job != null)
                 {
                     job.Status = AppConst.JobStatus.COMPLETED;
-                    job.CompletedAt = DateTime.UtcNow;
+                    job.CompletedAt = DateTime.Now;
                     await context.SaveChangesAsync(stoppingToken);
                 }
             }
@@ -213,7 +213,7 @@ namespace WhatsAppCampaignManager.HostedServices
                 if (job != null)
                 {
                     job.Status = AppConst.JobStatus.FAILED;
-                    job.CompletedAt = DateTime.UtcNow;
+                    job.CompletedAt = DateTime.Now;
                     await context.SaveChangesAsync(stoppingToken);
 
                     // Log error
@@ -223,7 +223,7 @@ namespace WhatsAppCampaignManager.HostedServices
                         LogLevel = "Error",
                         Message = "Job failed",
                         Details = errorMessage,
-                        CreatedAt = DateTime.UtcNow
+                        CreatedAt = DateTime.Now
                     };
                     context.AppJobLogs.Add(jobLog);
                     await context.SaveChangesAsync(stoppingToken);

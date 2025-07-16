@@ -36,7 +36,7 @@ namespace WhatsAppCampaignManager.Services.Implements
                 }
 
                 // Update last login
-                user.LastLoginAt = DateTime.UtcNow;
+                user.LastLoginAt = DateTime.Now;
                 await _context.SaveChangesAsync();
 
                 var token = GenerateJwtToken(user);
@@ -47,7 +47,7 @@ namespace WhatsAppCampaignManager.Services.Implements
                     Username = user.Username,
                     Email = user.Email,
                     Role = user.Role,
-                    ExpiresAt = DateTime.UtcNow.AddHours(24),
+                    ExpiresAt = DateTime.Now.AddHours(24),
                     User = user
                 };
             }
@@ -95,7 +95,7 @@ namespace WhatsAppCampaignManager.Services.Implements
                     Username = user.Username,
                     Email = user.Email,
                     Role = user.Role,
-                    ExpiresAt = DateTime.UtcNow.AddHours(24)
+                    ExpiresAt = DateTime.Now.AddHours(24)
                 };
             }
             catch (Exception ex)
@@ -118,7 +118,7 @@ namespace WhatsAppCampaignManager.Services.Implements
                 var user = await _context.AppUsers.FindAsync(userId);
                 if (user != null)
                 {
-                    user.LastLoginAt = DateTime.UtcNow;
+                    user.LastLoginAt = DateTime.Now;
                     await _context.SaveChangesAsync();
                     return true;
                 }
@@ -145,7 +145,7 @@ namespace WhatsAppCampaignManager.Services.Implements
                     new Claim(ClaimTypes.Email, user.Email),
                     new Claim(ClaimTypes.Role, user.Role)
                 }),
-                Expires = DateTime.UtcNow.AddHours(24),
+                Expires = DateTime.Now.AddHours(24),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 

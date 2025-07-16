@@ -170,7 +170,7 @@ namespace WhatsAppCampaignManager.Services.Implements
 
             if (job == null) return null;
 
-            var assignGroupIds = job.TargetData != null
+            var assignGroupIds = job.JobType == "SendToGroups" && job.TargetData != null
                     ? JsonConvert.DeserializeObject<List<int>>(job.TargetData) : null;
             var assignedGroups = await _context.AppGroups.Where(g => assignGroupIds.Contains(g.Id)).ToListAsync();
 
@@ -219,7 +219,7 @@ namespace WhatsAppCampaignManager.Services.Implements
                     Description = s.Description,
                     ParticipantCount = s.ParticipantCount
                 }).ToList(),
-                TargetPhoneNumbers = job.TargetData
+                TargetPhoneNumbers = job.JobType == "SendToUsers" && job.TargetData != null ? JsonConvert.DeserializeObject<List<string>>(job.TargetData) : null
             };
         }
 
@@ -234,11 +234,11 @@ namespace WhatsAppCampaignManager.Services.Implements
                 
                 if (status == AppConst.JobStatus.RUNNING && job.StartedAt == null)
                 {
-                    job.StartedAt = DateTime.UtcNow;
+                    job.StartedAt = DateTime.Now;
                 }
                 else if ((status == AppConst.JobStatus.COMPLETED || status == AppConst.JobStatus.FAILED) && job.CompletedAt == null)
                 {
-                    job.CompletedAt = DateTime.UtcNow;
+                    job.CompletedAt = DateTime.Now;
                 }
 
                 await _context.SaveChangesAsync();
@@ -366,7 +366,7 @@ namespace WhatsAppCampaignManager.Services.Implements
             return await _context.AppJobs
                 .Include(j => j.Message)
                 .Include(j => j.Instance)
-                .Where(j => j.Status == AppConst.JobStatus.PENDING && (j.ScheduledAt == null || j.ScheduledAt <= DateTime.UtcNow))
+                .Where(j => j.Status == AppConst.JobStatus.PENDING && (j.ScheduledAt == null || j.ScheduledAt <= DateTime.Now))
                 .OrderBy(j => j.CreatedAt)
                 .ToListAsync();
         }

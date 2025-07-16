@@ -149,7 +149,7 @@ namespace WhatsAppCampaignManager.Services
                 if (updateInstanceDto.IsActive.HasValue)
                     instance.IsActive = updateInstanceDto.IsActive.Value;
 
-                instance.UpdatedAt = DateTime.UtcNow;
+                instance.UpdatedAt = DateTime.Now;
 
                 await _context.SaveChangesAsync();
                 return true;

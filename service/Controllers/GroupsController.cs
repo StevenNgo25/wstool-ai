@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using WhatsAppCampaignManager.DTOs;
 using WhatsAppCampaignManager.Services;
 
@@ -7,7 +8,7 @@ namespace WhatsAppCampaignManager.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    //[Authorize]
+    [Authorize]
     public class GroupsController : ControllerBase
     {
         private readonly IGroupService _groupService;
@@ -19,17 +20,30 @@ namespace WhatsAppCampaignManager.Controllers
             _logger = logger;
         }
 
+        private int GetCurrentUserId()
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return int.TryParse(userIdClaim, out var userId) ? userId : 0;
+        }
+
         [HttpGet]
         public async Task<ActionResult<PaginatedResponse<GroupDto>>> GetGroups([FromQuery] PaginationRequest request)
         {
-            var groups = await _groupService.GetGroupsAsync(request);
+            var userId = GetCurrentUserId();
+            var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+
+            var groups = await _groupService.GetGroupsAsync(request, userId, userRole);
             return Ok(groups);
         }
 
         [HttpPost("search")]
         public async Task<ActionResult<PaginatedResponse<GroupDto>>> SearchGroupsByInstances([FromBody] GroupSearchRequest request)
         {
-            var groups = await _groupService.SearchGroupsByInstancesAsync(request);
+
+            var userId = GetCurrentUserId();
+            var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+
+            var groups = await _groupService.SearchGroupsByInstancesAsync(request, userId, userRole);
             return Ok(groups);
         }
 

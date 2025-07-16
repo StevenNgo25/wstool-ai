@@ -10,6 +10,6 @@ namespace WhatsAppCampaignManager.Models
         public int GroupId { get; set; }
         public virtual AppGroup Group { get; set; } = null!;
         
-        public DateTime AssignedAt { get; set; } = DateTime.UtcNow;
+        public DateTime AssignedAt { get; set; } = DateTime.Now;
     }
 }

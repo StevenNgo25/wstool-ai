@@ -40,7 +40,7 @@ namespace WhatsAppCampaignManager.DTOs
         public List<JobLogDto> Logs { get; set; } = new List<JobLogDto>();
         public List<JobSentMessageDto> SentMessages { get; set; } = new List<JobSentMessageDto>();
         public List<GroupDto> AssignedGroups { get; set; } = new List<GroupDto>();
-        public string? TargetPhoneNumbers { get; set; }
+        public List<string>? TargetPhoneNumbers { get; set; }
     }
 
     public class JobLogDto
@@ -68,7 +68,7 @@ namespace WhatsAppCampaignManager.DTOs
 
         public string? ErrorMessage { get; set; }
 
-        public DateTime SentAt { get; set; } = DateTime.UtcNow;
+        public DateTime SentAt { get; set; } = DateTime.Now;
 
         public DateTime? DeliveredAt { get; set; }
 

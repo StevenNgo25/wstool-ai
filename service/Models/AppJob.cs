@@ -25,7 +25,7 @@ namespace WhatsAppCampaignManager.Models
         public DateTime? StartedAt { get; set; }
         public DateTime? CompletedAt { get; set; }
         
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
         
         // JSON serialized list of APP group IDs or user phone numbers
         [StringLength(4000)]

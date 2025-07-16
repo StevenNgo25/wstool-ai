@@ -47,8 +47,8 @@ namespace WhatsAppCampaignManager.HostedServices
             var whapiService = scope.ServiceProvider.GetRequiredService<IWhapiService>();
 
             // Get messages that need validation (sent in last 24 hours and not validated recently)
-            var cutoffTime = DateTime.UtcNow.AddHours(-24);
-            var lastValidationCutoff = DateTime.UtcNow.AddMinutes(-30);
+            var cutoffTime = DateTime.Now.AddHours(-24);
+            var lastValidationCutoff = DateTime.Now.AddMinutes(-30);
 
             var messagesToValidate = await context.AppSentMessages
                 .Include(sm => sm.Job)
@@ -92,7 +92,7 @@ namespace WhatsAppCampaignManager.HostedServices
                             sentMessage.ReadAt = messageTime;
                     }
 
-                    sentMessage.LastValidatedAt = DateTime.UtcNow;
+                    sentMessage.LastValidatedAt = DateTime.Now;
 
                     _logger.LogDebug("Updated message {MessageId} status to {Status}", 
                         sentMessage.WhapiMessageId, sentMessage.Status);
@@ -100,7 +100,7 @@ namespace WhatsAppCampaignManager.HostedServices
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Error validating message {MessageId}", sentMessage.WhapiMessageId);
-                    sentMessage.LastValidatedAt = DateTime.UtcNow; // Mark as validated to avoid retry loops
+                    sentMessage.LastValidatedAt = DateTime.Now; // Mark as validated to avoid retry loops
                 }
             }
 

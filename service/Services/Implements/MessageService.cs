@@ -19,9 +19,10 @@ namespace WhatsAppCampaignManager.Services.Implements
             _logger = logger;
         }
 
-        public async Task<PaginatedResponse<MessageDto>> GetMessagesAsync(PaginationRequest request)
+        public async Task<PaginatedResponse<MessageDto>> GetMessagesAsync(PaginationRequest request, int userId)
         {
             var query = _context.AppMessages
+                .Where(q=>q.CreatedByUserId == userId)
                 .Include(m => m.CreatedByUser)
                 .Include(m => m.Instance)
                 .Include(m => m.MessageGroups)
@@ -255,7 +256,7 @@ namespace WhatsAppCampaignManager.Services.Implements
                 if (updateMessageDto.TextContent != null)
                     message.TextContent = updateMessageDto.TextContent;
 
-                message.UpdatedAt = DateTime.UtcNow;
+                message.UpdatedAt = DateTime.Now;
 
                 // Update group assignments if provided
                 if (updateMessageDto.GroupIds != null)
@@ -353,7 +354,7 @@ namespace WhatsAppCampaignManager.Services.Implements
                 if (updateMessageDto.TextContent != null)
                     message.TextContent = updateMessageDto.TextContent;
 
-                message.UpdatedAt = DateTime.UtcNow;
+                message.UpdatedAt = DateTime.Now;
 
                 // Update group assignments if provided
                 if (updateMessageDto.GroupIds != null)

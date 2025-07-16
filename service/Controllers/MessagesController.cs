@@ -8,7 +8,7 @@ namespace WhatsAppCampaignManager.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    //[Authorize]
+    [Authorize]
     public class MessagesController : ControllerBase
     {
         private readonly IMessageService _messageService;
@@ -29,7 +29,8 @@ namespace WhatsAppCampaignManager.Controllers
         [HttpGet]
         public async Task<ActionResult<PaginatedResponse<MessageDto>>> GetMessages([FromQuery] PaginationRequest request)
         {
-            var messages = await _messageService.GetMessagesAsync(request);
+            var userId = GetCurrentUserId();
+            var messages = await _messageService.GetMessagesAsync(request, userId);
             return Ok(messages);
         }
 

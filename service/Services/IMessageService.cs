@@ -4,7 +4,7 @@ namespace WhatsAppCampaignManager.Services
 {
     public interface IMessageService
     {
-        Task<PaginatedResponse<MessageDto>> GetMessagesAsync(PaginationRequest request);
+        Task<PaginatedResponse<MessageDto>> GetMessagesAsync(PaginationRequest request, int userId);
         Task<MessageDto?> GetMessageByIdAsync(int id);
         Task<MessageDto?> CreateMessageAsync(CreateMessageDto createMessageDto, int userId);
         Task<MessageDto?> CreateMessageWithFileAsync(CreateMessageWithFileDto createMessageDto, int userId);

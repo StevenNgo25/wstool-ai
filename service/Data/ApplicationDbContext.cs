@@ -139,7 +139,7 @@ namespace WhatsAppCampaignManager.Data
                     Email = "admin@whatsappcampaign.com",
                     PasswordHash = BCrypt.Net.BCrypt.HashPassword("654321"),
                     Role = "Admin",
-                    CreatedAt = DateTime.UtcNow
+                    CreatedAt = DateTime.Now
                 }
             );
 
@@ -152,7 +152,7 @@ namespace WhatsAppCampaignManager.Data
                     Email = "user1@whatsappcampaign.com",
                     PasswordHash = BCrypt.Net.BCrypt.HashPassword("123456"),
                     Role = "Member",
-                    CreatedAt = DateTime.UtcNow
+                    CreatedAt = DateTime.Now
                 }
             );
         }

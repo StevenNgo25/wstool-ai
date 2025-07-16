@@ -8,7 +8,7 @@ namespace WhatsAppCampaignManager.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    //[Authorize]
+    [Authorize]
     public class JobsController : ControllerBase
     {
         private readonly IJobService _jobService;

@@ -24,7 +24,7 @@ namespace WhatsAppCampaignManager.Models
         [StringLength(500)]
         public string? ErrorMessage { get; set; }
         
-        public DateTime SentAt { get; set; } = DateTime.UtcNow;
+        public DateTime SentAt { get; set; } = DateTime.Now;
         
         public DateTime? DeliveredAt { get; set; }
         

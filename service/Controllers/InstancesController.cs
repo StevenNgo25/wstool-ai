@@ -7,7 +7,7 @@ namespace WhatsAppCampaignManager.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    //[Authorize]
+    [Authorize]
     public class InstancesController : ControllerBase
     {
         private readonly IInstanceService _instanceService;

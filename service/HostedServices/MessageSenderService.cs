@@ -189,7 +189,7 @@ namespace WhatsAppCampaignManager.HostedServices
                     WhapiMessageId = response.Id,
                     Status = response.Sent ? "Sent" : "Failed",
                     ErrorMessage = response.Sent ? null : response.Error,
-                    SentAt = DateTime.UtcNow
+                    SentAt = DateTime.Now
                 };
 
                 context.AppSentMessages.Add(sentMessage);
@@ -231,7 +231,7 @@ namespace WhatsAppCampaignManager.HostedServices
                     WhapiMessageId = response.Id,
                     Status = response.Sent ? "Sent" : "Failed",
                     ErrorMessage = response.Sent ? null : response.Error,
-                    SentAt = DateTime.UtcNow
+                    SentAt = DateTime.Now
                 };
 
                 context.AppSentMessages.Add(sentMessage);
@@ -262,7 +262,7 @@ namespace WhatsAppCampaignManager.HostedServices
                     LogLevel = level,
                     Message = message,
                     Details = details,
-                    CreatedAt = DateTime.UtcNow
+                    CreatedAt = DateTime.Now
                 };
 
                 context.AppJobLogs.Add(log);

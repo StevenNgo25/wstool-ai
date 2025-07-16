@@ -127,7 +127,7 @@ namespace WhatsAppCampaignManager.Services.Implements
                 if (!Directory.Exists(folderPath))
                     return new List<string>();
 
-                var cutoffDate = DateTime.UtcNow - olderThan;
+                var cutoffDate = DateTime.Now - olderThan;
                 var oldFiles = new List<string>();
 
                 await Task.Run(() =>
