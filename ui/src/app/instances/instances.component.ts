@@ -12,6 +12,7 @@ import { PaginationRequest, PaginatedResponse } from "../models/common.model"
 import { ConfirmDialogComponent } from "../shared/components/confirm-dialog/confirm-dialog.component"
 import { PaginationComponent } from "../shared/components/pagination/pagination.component"
 import { LoadingComponent } from "../shared/components/loading/loading.component"
+import { AuthService } from "../services/auth.service"
 
 @Component({
   selector: "app-instances",
@@ -42,12 +43,19 @@ export class InstancesComponent implements OnInit {
     sortDirection: "desc",
   }
 
+  isAdmin = false
+  qrCode: string | null = null;
+  code: string | null = null;
+
   constructor(
     private instanceService: InstanceService,
     public router: Router,
     private modalService: NgbModal,
     private toastaService: ToastaService,
-  ) {}
+    private authService: AuthService,
+  ) {
+    this.isAdmin = this.authService.isAdmin()
+  }
 
   ngOnInit(): void {
     this.loadInstances()
@@ -114,6 +122,27 @@ export class InstancesComponent implements OnInit {
         }
       })
       .catch(() => {})
+  }
+  scanQr(instanceId: number) {
+    /* this.instanceService.getQrCode(instanceId).subscribe((res) => {
+      this.qrCode = res.qrCodeBase64;
+      this.modalService.open(this.qrModal);
+    }); */
+  }
+  
+  getCode(instanceId: number) {
+    /* this.apiService.getCode(instanceId).subscribe((res) => {
+      this.code = res.code;
+      this.modalService.open(this.codeModal);
+    }); */
+  }
+  
+  logoutInstance(instanceId: number) {
+    /* if (confirm('Bạn có chắc chắn muốn đăng xuất tài khoản này?')) {
+      this.apiService.logoutInstance(instanceId).subscribe(() => {
+        this.loadInstances(); // load lại danh sách
+      });
+    } */
   }
 
   private showSuccess(message: string): void {

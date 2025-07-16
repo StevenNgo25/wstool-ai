@@ -185,5 +185,73 @@ namespace WhatsAppCampaignManager.Services.Implements
                 return false;
             }
         }
+
+        public async Task<string?> GetQrCodeAsync(string token, string? baseUrl = null)
+        {
+            try
+            {
+                var url = $"{baseUrl ?? DefaultBaseUrl}/api/users/login?wakeup=true";
+                var request = new HttpRequestMessage(HttpMethod.Get, url);
+                request.Headers.Add("Authorization", $"Bearer {token}");
+
+                var response = await _httpClient.SendAsync(request);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return null;
+                }
+
+                var content = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<JObject>(content);
+                return result?["base64"]?.ToString();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error validating token with WHAPI");
+                return null;
+            }
+        }
+
+        public async Task<string?> GetRawCodeAsync(string phone, string token, string? baseUrl = null)
+        {
+            try
+            {
+                var url = $"{baseUrl ?? DefaultBaseUrl}/api/users/login/"+ phone;
+                var request = new HttpRequestMessage(HttpMethod.Get, url);
+                request.Headers.Add("Authorization", $"Bearer {token}");
+
+                var response = await _httpClient.SendAsync(request);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return null;
+                }
+
+                var content = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<JObject>(content);
+                return result?["code"]?.ToString();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error validating token with WHAPI");
+                return null;
+            }
+        }
+
+        public async Task<bool> Logout(string token, string? baseUrl = null)
+        {
+            try
+            {
+                var url = $"{baseUrl ?? DefaultBaseUrl}/api/users/logout";
+                var request = new HttpRequestMessage(HttpMethod.Post, url);
+                request.Headers.Add("Authorization", $"Bearer {token}");
+
+                var response = await _httpClient.SendAsync(request);
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error validating token with WHAPI");
+                return false;
+            }
+        }
     }
 }

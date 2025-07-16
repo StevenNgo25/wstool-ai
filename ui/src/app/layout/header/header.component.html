@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <a class="navbar-brand" routerLink="/dashboard">
       <i class="fa fa-whatsapp me-2"></i>
-      WhatsApp Campaign Manager
+      WS-TOOL
     </a>
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
@@ -13,36 +13,6 @@
     
     <div class="navbar-collapse" id="navbarNav">
       <ul class="navbar-nav me-auto">
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">
-            <i class="fa fa-dashboard me-1"></i>Trang chủ
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/messages" routerLinkActive="active">
-            <i class="fa fa-envelope me-1"></i>Bài viết
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/jobs" routerLinkActive="active">
-            <i class="fa fa-tasks me-1"></i>Tác vụ
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/groups" routerLinkActive="active">
-            <i class="fa fa-users me-1"></i>Nhóm
-          </a>
-        </li>
-        <li class="nav-item" *ngIf="isAdmin">
-          <a class="nav-link" routerLink="/instances" routerLinkActive="active">
-            <i class="fa fa-server me-1"></i>Tài khoản
-          </a>
-        </li>
-        <li class="nav-item" *ngIf="isAdmin">
-          <a class="nav-link" routerLink="/users" routerLinkActive="active">
-            <i class="fa fa-user me-1"></i>Người dùng
-          </a>
-        </li>
       </ul>
       
       <ul class="navbar-nav">

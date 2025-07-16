@@ -3,6 +3,7 @@ using WhatsAppCampaignManager.Data;
 using WhatsAppCampaignManager.DTOs;
 using WhatsAppCampaignManager.Models;
 using WhatsAppCampaignManager.Extensions;
+using WhatsAppCampaignManager.Services.Implements;
 
 namespace WhatsAppCampaignManager.Services
 {
@@ -34,8 +35,8 @@ namespace WhatsAppCampaignManager.Services
                 });
 
             // Apply search
-            query = query.ApplySearch(request.Search, 
-                x => x.Name, 
+            query = query.ApplySearch(request.Search,
+                x => x.Name,
                 x => x.WhatsAppNumber);
 
             // Apply sorting
@@ -82,7 +83,7 @@ namespace WhatsAppCampaignManager.Services
                 // Check if WhatsApp number already exists
                 var existingInstance = await _context.AppInstances
                     .FirstOrDefaultAsync(i => i.WhatsAppNumber == createInstanceDto.WhatsAppNumber);
-                
+
                 if (existingInstance != null)
                 {
                     _logger.LogWarning("WhatsApp number {Number} already exists", createInstanceDto.WhatsAppNumber);
@@ -241,6 +242,46 @@ namespace WhatsAppCampaignManager.Services
         {
             return await _context.AppUserInstances
                 .AnyAsync(ui => ui.UserId == userId && ui.InstanceId == instanceId);
+        }
+
+        public async Task LogoutInstanceAsync(int instanceId)
+        {
+            var instance = await _context.AppInstances.FindAsync(instanceId);
+            if (instance == null)
+            {
+                return;
+            }
+
+            var isValidToken = await _whapiService.Logout(instance.WhapiToken, instance.WhapiUrl);
+            if (!isValidToken)
+            {
+                _logger.LogWarning("Invalid WHAPI token provided for instance");
+                return;
+            }
+        }
+
+        public async Task<string?> GetQrCodeBase64Async(int instanceId)
+        {
+            var instance = await _context.AppInstances.FindAsync(instanceId);
+            if (instance == null)
+            {
+                return null;
+            }
+
+            var result = await _whapiService.GetQrCodeAsync(instance.WhapiToken, instance.WhapiUrl);
+            return result;
+        }
+
+        public async Task<string?> GetConnectCodeAsync(int instanceId, string sdt)
+        {
+            var instance = await _context.AppInstances.FindAsync(instanceId);
+            if (instance == null)
+            {
+                return null;
+            }
+
+            var result = await _whapiService.GetRawCodeAsync(sdt, instance.WhapiToken, instance.WhapiUrl);
+            return result;
         }
     }
 }

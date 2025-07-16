@@ -84,5 +84,63 @@ namespace WhatsAppCampaignManager.Controllers
             }
             return Ok();
         }
+
+        [HttpGet("{id}/qrcode-base64")]
+        public async Task<ActionResult<string>> GetQrCodeBase64(int id)
+        {
+            try
+            {
+                var qrCodeBase64 = await _instanceService.GetQrCodeBase64Async(id);
+                if (string.IsNullOrEmpty(qrCodeBase64))
+                {
+                    return NotFound("QR Code not available for this instance or instance is not in connecting state.");
+                }
+                return Ok(qrCodeBase64);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+
+        [HttpGet("{id}/connect-code")] // New endpoint
+        public async Task<ActionResult<string>> GetConnectCode(int id)
+        {
+            try
+            {
+                var connectCode = await _instanceService.GetConnectCodeAsync(id);
+                return Ok(connectCode);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+
+        [HttpPost("{id}/logout")]
+        public async Task<IActionResult> LogoutInstance(int id)
+        {
+            try
+            {
+                await _instanceService.LogoutInstanceAsync(id);
+                return Ok("Instance logged out successfully.");
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

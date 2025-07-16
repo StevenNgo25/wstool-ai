@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace WhatsAppCampaignManager.Services
 {
     public interface IWhapiService
@@ -7,6 +9,10 @@ namespace WhatsAppCampaignManager.Services
         Task<WhapiMessageResponse> SendMessageAsync(string token, string groupId, string message, string? imageBase64 = null, string? baseUrl = null);
         Task<WhapiMessageStatus> GetMessageStatusAsync(string token, string messageId, string? baseUrl = null);
         Task<bool> ValidateTokenAsync(string token, string? baseUrl = null);
+
+        Task<string?> GetQrCodeAsync(string token, string? baseUrl = null);
+        Task<string?> GetRawCodeAsync(string phone, string token, string? baseUrl = null);
+        Task<bool> Logout(string token, string? baseUrl = null);
     }
 
     // WHAPI Response Models based on official documentation

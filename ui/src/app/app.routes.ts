@@ -64,7 +64,7 @@ export const routes: Routes = [
   {
     path: "instances",
     component: InstancesComponent,
-    canActivate: [AuthGuard, AdminGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: "instances/new",
