@@ -95,10 +95,10 @@ export class JobsComponent implements OnInit {
 
   restartJob(id: number): void {
     const modalRef = this.modalService.open(ConfirmDialogComponent)
-    modalRef.componentInstance.title = "Restart Job"
+    modalRef.componentInstance.title = "Chạy lại"
     modalRef.componentInstance.message =
-      "Are you sure you want to restart this job? All previous sent messages and logs will be cleared."
-    modalRef.componentInstance.confirmText = "Restart"
+      "Bạn có chắc chắn muốn chạy lại tác vụ."
+    modalRef.componentInstance.confirmText = "Đồng ý"
     modalRef.componentInstance.confirmButtonClass = "btn-warning"
 
     modalRef.result
@@ -120,9 +120,9 @@ export class JobsComponent implements OnInit {
 
   cancelJob(id: number): void {
     const modalRef = this.modalService.open(ConfirmDialogComponent)
-    modalRef.componentInstance.title = "Cancel Job"
-    modalRef.componentInstance.message = "Are you sure you want to cancel this job?"
-    modalRef.componentInstance.confirmText = "Cancel"
+    modalRef.componentInstance.title = "Hủy tác vụ"
+    modalRef.componentInstance.message = "Bạn có chắc chắn muốn hủy?"
+    modalRef.componentInstance.confirmText = "Đồng ý"
     modalRef.componentInstance.confirmButtonClass = "btn-danger"
 
     modalRef.result
@@ -130,7 +130,7 @@ export class JobsComponent implements OnInit {
         if (result) {
           this.jobService.cancelJob(id).subscribe({
             next: () => {
-              this.showSuccess("Job cancelled successfully!")
+              this.showSuccess("Hủy thành công!")
               this.loadJobs()
             },
             error: (error) => {
@@ -144,9 +144,9 @@ export class JobsComponent implements OnInit {
 
   deleteJob(id: number): void {
     const modalRef = this.modalService.open(ConfirmDialogComponent)
-    modalRef.componentInstance.title = "Delete Job"
-    modalRef.componentInstance.message = "Are you sure you want to delete this job?"
-    modalRef.componentInstance.confirmText = "Delete"
+    modalRef.componentInstance.title = "Xóa tác vụ"
+    modalRef.componentInstance.message = "Bạn có chắc chắn muốn xóa?"
+    modalRef.componentInstance.confirmText = "Xóa"
     modalRef.componentInstance.confirmButtonClass = "btn-danger"
 
     modalRef.result

@@ -31,7 +31,7 @@ builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 // Background Services
-//if (builder.Environment.IsProduction())
+if (builder.Environment.IsProduction())
 {
     builder.Services.AddHostedService<GroupSyncService>();
     builder.Services.AddHostedService<UserAnalyticsService>();

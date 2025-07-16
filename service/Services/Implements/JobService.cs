@@ -117,6 +117,7 @@ namespace WhatsAppCampaignManager.Services.Implements
                 CompletedAt = j.CompletedAt,
                 CreatedAt = j.CreatedAt,
                 TotalSentMessages = j.SentMessages.Count,
+                MessageTitle = j.Message.TextContent ?? string.Empty,
                 SuccessfulMessages = j.SentMessages.Count(sm => sm.Status == "Delivered" || sm.Status == "Read"),
                 FailedMessages = j.SentMessages.Count(sm => sm.Status == "Failed"),
                 Logs = j.JobLogs.Select(l => new JobLogDto
@@ -184,6 +185,7 @@ namespace WhatsAppCampaignManager.Services.Implements
                 StartedAt = job.StartedAt,
                 CompletedAt = job.CompletedAt,
                 CreatedAt = job.CreatedAt,
+                MessageTitle = job.Message.TextContent ?? string.Empty,
                 TotalSentMessages = job.SentMessages.Count,
                 SuccessfulMessages = job.SentMessages.Count(sm => sm.Status == "Delivered" || sm.Status == "Read"),
                 FailedMessages = job.SentMessages.Count(sm => sm.Status == "Failed"),
