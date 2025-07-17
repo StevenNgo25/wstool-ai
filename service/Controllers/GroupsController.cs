@@ -61,7 +61,9 @@ namespace WhatsAppCampaignManager.Controllers
         [HttpGet("stats")]
         public async Task<ActionResult<DashboardStatsDto>> GetDashboardStats()
         {
-            var stats = await _groupService.GetDashboardStatsAsync();
+            var userId = GetCurrentUserId();
+            var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+            var stats = await _groupService.GetDashboardStatsAsync(userId, userRole);
             return Ok(stats);
         }
     }

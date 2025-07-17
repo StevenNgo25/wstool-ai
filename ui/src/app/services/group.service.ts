@@ -46,7 +46,7 @@ export class GroupService {
 
   getDashboardStats(): Observable<DashboardStats> {
     return this.apiService.get<DashboardStats>(
-      `${environment.apiUrl}/dashboard/stats`
+      `${environment.apiUrl}/groups/stats`
     );
   }
 }

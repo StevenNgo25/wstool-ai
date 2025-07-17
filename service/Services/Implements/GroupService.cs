@@ -20,9 +20,9 @@ namespace WhatsAppCampaignManager.Services.Implements
         {
             var query = _context.AppGroups
                 .Where(g => g.IsActive)
-                .Include(i=>i.Instance)
-                .Where(q=> userRole == "Admin" || q.Instance.UserInstances.Any(q=>q.UserId == userId))
-                .Where(q=>q.Instance.IsActive)
+                .Include(i => i.Instance)
+                .Where(q => userRole == "Admin" || q.Instance.UserInstances.Any(q => q.UserId == userId))
+                .Where(q => q.Instance.IsActive)
                 .Select(g => new GroupDto
                 {
                     Id = g.Id,
@@ -33,13 +33,13 @@ namespace WhatsAppCampaignManager.Services.Implements
                     IsActive = g.IsActive,
                     CreatedAt = g.CreatedAt,
                     LastSyncAt = g.LastSyncAt,
-                    Instance= g.Instance
+                    Instance = g.Instance
                 });
 
             // Apply search
-            query = query.ApplySearch(request.Search, 
-                x => x.Name, 
-                x => x.Description ?? "", 
+            query = query.ApplySearch(request.Search,
+                x => x.Name,
+                x => x.Description ?? "",
                 x => x.GroupId);
 
             // Apply sorting
@@ -90,9 +90,9 @@ namespace WhatsAppCampaignManager.Services.Implements
             });
 
             // Apply search
-            groupQuery = groupQuery.ApplySearch(request.Search, 
-                x => x.Name, 
-                x => x.Description ?? "", 
+            groupQuery = groupQuery.ApplySearch(request.Search,
+                x => x.Name,
+                x => x.Description ?? "",
                 x => x.GroupId);
 
             // Apply sorting
@@ -125,20 +125,23 @@ namespace WhatsAppCampaignManager.Services.Implements
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<DashboardStatsDto> GetDashboardStatsAsync()
+        public async Task<DashboardStatsDto> GetDashboardStatsAsync(int userId, string role)
         {
             try
             {
+                var userInstance = await _context.AppUserInstances.AsNoTracking().Where(q => q.UserId == userId).Select(s => s.InstanceId).ToListAsync();
+
                 var stats = new DashboardStatsDto
                 {
-                    TotalGroups = await _context.AppGroups.CountAsync(g => g.IsActive),
-                    TotalUniqueUsers = await _context.AppAnalytics.Select(a => a.UserPhoneNumber).Distinct().CountAsync(),
-                    TotalMessages = await _context.AppMessages.CountAsync(),
-                    TotalJobs = await _context.AppJobs.CountAsync(),
-                    PendingJobs = await _context.AppJobs.CountAsync(j => j.Status == "Pending"),
-                    CompletedJobs = await _context.AppJobs.CountAsync(j => j.Status == "Completed"),
-                    TotalSentMessages = await _context.AppSentMessages.CountAsync(),
+                    TotalGroups = await _context.AppGroups.Include(i => i.Instance).Where(q => role == "Admin" || userInstance.Contains(q.InstanceId)).CountAsync(g => g.IsActive),
+                    TotalUniqueUsers = await _context.AppAnalytics.Include(i => i.Group).Where(q => role == "Admin" || userInstance.Contains(q.Group.InstanceId)).Select(a => a.UserPhoneNumber).Distinct().CountAsync(),
+                    TotalMessages = await _context.AppMessages.Where(q => q.CreatedByUserId == userId).CountAsync(),
+                    TotalJobs = await _context.AppJobs.Where(q => q.CreatedByUserId == userId).CountAsync(),
+                    PendingJobs = await _context.AppJobs.Where(q => q.CreatedByUserId == userId).CountAsync(j => j.Status == "Pending"),
+                    CompletedJobs = await _context.AppJobs.Where(q => q.CreatedByUserId == userId).CountAsync(j => j.Status == "Completed"),
+                    TotalSentMessages = await _context.AppSentMessages.Include(i => i.Job).Where(q=>q.Job.CreatedByUserId == userId).CountAsync(),
                     TopGroups = await _context.AppGroups
+                    .Include(i => i.Instance).Where(q => role == "Admin" || userInstance.Contains(q.InstanceId))
                         .Where(g => g.IsActive)
                         .OrderByDescending(g => g.ParticipantCount)
                         .Take(5)
