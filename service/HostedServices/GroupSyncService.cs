@@ -256,18 +256,18 @@ namespace WhatsAppCampaignManager.HostedServices
                 await context.SaveChangesAsync(stoppingToken);
             }
 
-            // Xóa những nhóm không còn trong API nữa
-            if (fetchedIds.Count > 0)
-            {
-                var toDelete = await context.AppGroups
-                    .Where(x => !fetchedIds.Contains(x.GroupId) && x.InstanceId == instance.Id)
-                    .ToListAsync(stoppingToken);
+            //// Xóa những nhóm không còn trong API nữa
+            //if (fetchedIds.Count > 0)
+            //{
+            //    var toDelete = await context.AppGroups
+            //        .Where(x => !fetchedIds.Contains(x.GroupId) && x.InstanceId == instance.Id)
+            //        .ToListAsync(stoppingToken);
 
-                if (toDelete.Any())
-                {
-                    context.AppGroups.RemoveRange(toDelete);
-                }
-            }
+            //    if (toDelete.Any())
+            //    {
+            //        context.AppGroups.RemoveRange(toDelete);
+            //    }
+            //}
 
             await context.SaveChangesAsync(stoppingToken);
 
