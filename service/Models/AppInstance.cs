@@ -21,7 +21,10 @@ namespace WhatsAppCampaignManager.Models
         public string? WhapiUrl { get; set; }
         
         public bool IsActive { get; set; } = true;
-        
+
+        [StringLength(20)]
+        public string? Status { get; set; }
+
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         
         public DateTime? UpdatedAt { get; set; }

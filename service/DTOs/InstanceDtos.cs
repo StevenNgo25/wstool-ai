@@ -43,6 +43,7 @@ namespace WhatsAppCampaignManager.DTOs
         public string WhapiToken { get; set; } = string.Empty;
         public string? WhapiUrl { get; set; }
         public bool IsActive { get; set; }
+        public string? Status { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
     }

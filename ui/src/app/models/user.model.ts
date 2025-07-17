@@ -47,6 +47,7 @@ export interface Instance {
   isActive: boolean
   createdAt: string
   updatedAt?: string
+  status?: string
 }
 
 export interface CreateInstanceDto {

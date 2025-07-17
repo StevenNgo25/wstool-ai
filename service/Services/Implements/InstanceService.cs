@@ -34,7 +34,8 @@ namespace WhatsAppCampaignManager.Services.Implements
                     WhapiUrl = i.WhapiUrl,
                     IsActive = i.IsActive,
                     CreatedAt = i.CreatedAt,
-                    UpdatedAt = i.UpdatedAt
+                    UpdatedAt = i.UpdatedAt,
+                    Status = i.Status
                 });
 
             // Apply search
@@ -67,7 +68,8 @@ namespace WhatsAppCampaignManager.Services.Implements
                     WhapiUrl = i.WhapiUrl,
                     IsActive = i.IsActive,
                     CreatedAt = i.CreatedAt,
-                    UpdatedAt = i.UpdatedAt
+                    UpdatedAt = i.UpdatedAt,
+                    Status = i.Status
                 })
                 .FirstOrDefaultAsync();
         }

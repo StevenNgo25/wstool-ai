@@ -13,6 +13,8 @@ namespace WhatsAppCampaignManager.Services
         Task<string?> GetQrCodeAsync(string token, string? baseUrl = null);
         Task<string?> GetRawCodeAsync(string phone, string token, string? baseUrl = null);
         Task<bool> Logout(string token, string? baseUrl = null);
+
+        Task<string?> HealthCheck(string token, string? baseUrl = null);
     }
 
     // WHAPI Response Models based on official documentation

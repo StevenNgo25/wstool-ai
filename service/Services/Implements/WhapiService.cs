@@ -254,5 +254,38 @@ namespace WhatsAppCampaignManager.Services.Implements
                 return false;
             }
         }
+
+
+        public async Task<string?> HealthCheck(string token, string? baseUrl = null)
+        {
+            try
+            {
+                var url = $"{baseUrl ?? DefaultBaseUrl}/health?wakeup=true";
+                var request = new HttpRequestMessage(HttpMethod.Get, url);
+                request.Headers.Add("Authorization", $"Bearer {token}");
+
+                using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(15));
+                var response = await _httpClient.SendAsync(request, cts.Token);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return null;
+                }
+
+                var content = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<JObject>(content);
+                return result?["status"]?["text"]?.ToString();
+            }
+            catch (TaskCanceledException ex) when (!ex.CancellationToken.IsCancellationRequested)
+            {
+                _logger.LogError("HealthCheck timed out after 15 seconds");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error validating token with WHAPI");
+                return null;
+            }
+        }
     }
 }

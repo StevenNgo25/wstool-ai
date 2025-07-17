@@ -44,6 +44,7 @@
               <th>Số WhatsApp</th>
               <th>Đang hoạt động</th>
               <th>Ngày tạo</th>
+              <th>Trang thái</th>
               <th width="120">Thao tác</th>
             </tr>
           </thead>
@@ -60,6 +61,14 @@
                 </span>
               </td>
               <td>{{ instance.createdAt | date : "short" }}</td>
+              <td>
+                <span
+                  class="badge"
+                  [ngClass]="'bg-primary'"
+                >
+                  {{ instance.status }}
+                </span>
+              </td>
               <td>
                 <div class="btn-group btn-group-sm">
                   <button

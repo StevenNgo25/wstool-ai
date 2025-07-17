@@ -41,6 +41,109 @@ namespace WhatsAppCampaignManager.HostedServices
             }
         }
 
+        //private async Task SyncGroupsFromAllInstances(CancellationToken stoppingToken)
+        //{
+        //    using var scope = _serviceProvider.CreateScope();
+        //    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        //    var whapiService = scope.ServiceProvider.GetRequiredService<IWhapiService>();
+
+        //    var activeInstances = await context.AppInstances
+        //        .Where(i => i.IsActive)
+        //        .ToListAsync(stoppingToken);
+
+        //    const int pageSize = 50;
+
+        //    foreach (var instance in activeInstances)
+        //    {
+        //        if (stoppingToken.IsCancellationRequested)
+        //            break;
+
+        //        try
+        //        {
+        //            _logger.LogInformation("Syncing groups for instance {InstanceName}", instance.Name);
+
+        //            var fetchedIds = new List<string>();
+        //            int page = 0;
+        //            bool hasMore = true;
+
+        //            while (hasMore && !stoppingToken.IsCancellationRequested)
+        //            {
+        //                var groups = await whapiService.GetGroupsAsync(
+        //                    instance.WhapiToken,
+        //                    instance.WhapiUrl,
+        //                    pageSize,
+        //                    offset: page * pageSize);
+
+        //                if (groups.items == null || groups.items.Count == 0)
+        //                    break;
+
+        //                foreach (var whapiGroup in groups.items.Where(q => q.ParticipantCount >= 20))
+        //                {
+        //                    fetchedIds.Add(whapiGroup.Id);
+
+        //                    var existingGroup = await context.AppGroups
+        //                        .FirstOrDefaultAsync(g => g.GroupId == whapiGroup.Id && g.InstanceId == instance.Id, stoppingToken);
+
+        //                    if (existingGroup == null)
+        //                    {
+        //                        var newGroup = new AppGroup
+        //                        {
+        //                            GroupId = whapiGroup.Id,
+        //                            Name = whapiGroup.Name,
+        //                            Description = whapiGroup.Description ?? whapiGroup.Subject,
+        //                            ParticipantCount = whapiGroup.ParticipantCount,
+        //                            Participants = whapiGroup.Participants != null ? string.Join(';', whapiGroup.Participants) : null,
+        //                            LastSyncAt = DateTime.Now,
+        //                            InstanceId = instance.Id,
+        //                        };
+
+        //                        context.AppGroups.Add(newGroup);
+        //                        _logger.LogInformation("Added new group: {GroupName}", whapiGroup.Name);
+        //                    }
+        //                    else
+        //                    {
+        //                        existingGroup.Name = whapiGroup.Name;
+        //                        existingGroup.Description = whapiGroup.Description ?? whapiGroup.Subject;
+        //                        existingGroup.ParticipantCount = whapiGroup.ParticipantCount;
+        //                        existingGroup.Participants = whapiGroup.Participants != null ? string.Join(';', whapiGroup.Participants) : null;
+        //                        existingGroup.LastSyncAt = DateTime.Now;
+        //                        existingGroup.IsActive = true;
+        //                        existingGroup.InstanceId = instance.Id;
+        //                    }
+        //                }
+
+        //                // Nếu số lượng nhóm trả về < pageSize thì không còn trang tiếp theo
+        //                hasMore = groups.items.Count == pageSize;
+        //                page++;
+
+        //                await context.SaveChangesAsync(stoppingToken);
+        //            }
+
+        //            // Xóa những nhóm không còn trong API nữa
+        //            if (fetchedIds.Count > 0)
+        //            {
+        //                var toDelete = await context.AppGroups
+        //                    .Where(x => !fetchedIds.Contains(x.GroupId) && x.InstanceId == instance.Id)
+        //                    .ToListAsync(stoppingToken);
+
+        //                if (toDelete.Any())
+        //                {
+        //                    context.AppGroups.RemoveRange(toDelete);
+        //                }
+        //            }
+
+        //            await context.SaveChangesAsync(stoppingToken);
+
+        //            _logger.LogInformation("Successfully synced {GroupCount} groups for instance {InstanceName}",
+        //                fetchedIds.Count, instance.Name);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            _logger.LogError(ex, "Error syncing groups for instance {InstanceName}", instance.Name);
+        //        }
+        //    }
+        //}
+
         private async Task SyncGroupsFromAllInstances(CancellationToken stoppingToken)
         {
             using var scope = _serviceProvider.CreateScope();
@@ -48,101 +151,125 @@ namespace WhatsAppCampaignManager.HostedServices
             var whapiService = scope.ServiceProvider.GetRequiredService<IWhapiService>();
 
             var activeInstances = await context.AppInstances
-                .Where(i => i.IsActive)
+                .Where(i => i.IsActive && i.Id == 3)
                 .ToListAsync(stoppingToken);
 
-            const int pageSize = 50;
+            const int maxConcurrency = 5;
+            var semaphore = new SemaphoreSlim(maxConcurrency);
+            var tasks = new List<Task>();
 
             foreach (var instance in activeInstances)
             {
                 if (stoppingToken.IsCancellationRequested)
                     break;
 
-                try
+                await semaphore.WaitAsync(stoppingToken);
+
+                tasks.Add(Task.Run(async () =>
                 {
-                    _logger.LogInformation("Syncing groups for instance {InstanceName}", instance.Name);
-
-                    var fetchedIds = new List<string>();
-                    int page = 0;
-                    bool hasMore = true;
-
-                    while (hasMore && !stoppingToken.IsCancellationRequested)
+                    try
                     {
-                        var groups = await whapiService.GetGroupsAsync(
-                            instance.WhapiToken,
-                            instance.WhapiUrl,
-                            pageSize,
-                            offset: page * pageSize);
-
-                        if (groups.items == null || groups.items.Count == 0)
-                            break;
-
-                        foreach (var whapiGroup in groups.items.Where(q => q.ParticipantCount >= 20))
-                        {
-                            fetchedIds.Add(whapiGroup.Id);
-
-                            var existingGroup = await context.AppGroups
-                                .FirstOrDefaultAsync(g => g.GroupId == whapiGroup.Id && g.InstanceId == instance.Id, stoppingToken);
-
-                            if (existingGroup == null)
-                            {
-                                var newGroup = new AppGroup
-                                {
-                                    GroupId = whapiGroup.Id,
-                                    Name = whapiGroup.Name,
-                                    Description = whapiGroup.Description ?? whapiGroup.Subject,
-                                    ParticipantCount = whapiGroup.ParticipantCount,
-                                    Participants = whapiGroup.Participants != null ? string.Join(';', whapiGroup.Participants) : null,
-                                    LastSyncAt = DateTime.Now,
-                                    InstanceId = instance.Id,
-                                };
-
-                                context.AppGroups.Add(newGroup);
-                                _logger.LogInformation("Added new group: {GroupName}", whapiGroup.Name);
-                            }
-                            else
-                            {
-                                existingGroup.Name = whapiGroup.Name;
-                                existingGroup.Description = whapiGroup.Description ?? whapiGroup.Subject;
-                                existingGroup.ParticipantCount = whapiGroup.ParticipantCount;
-                                existingGroup.Participants = whapiGroup.Participants != null ? string.Join(';', whapiGroup.Participants) : null;
-                                existingGroup.LastSyncAt = DateTime.Now;
-                                existingGroup.IsActive = true;
-                                existingGroup.InstanceId = instance.Id;
-                            }
-                        }
-
-                        // Nếu số lượng nhóm trả về < pageSize thì không còn trang tiếp theo
-                        hasMore = groups.items.Count == pageSize;
-                        page++;
-
-                        await context.SaveChangesAsync(stoppingToken);
+                        await SyncGroupsForInstance(instance, stoppingToken);
                     }
-
-                    // Xóa những nhóm không còn trong API nữa
-                    if (fetchedIds.Count > 0)
+                    catch (Exception ex)
                     {
-                        var toDelete = await context.AppGroups
-                            .Where(x => !fetchedIds.Contains(x.GroupId) && x.InstanceId == instance.Id)
-                            .ToListAsync(stoppingToken);
-
-                        if (toDelete.Any())
-                        {
-                            context.AppGroups.RemoveRange(toDelete);
-                        }
+                        _logger.LogError(ex, "Error syncing groups for instance {InstanceName}", instance.Name);
                     }
-
-                    await context.SaveChangesAsync(stoppingToken);
-
-                    _logger.LogInformation("Successfully synced {GroupCount} groups for instance {InstanceName}",
-                        fetchedIds.Count, instance.Name);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Error syncing groups for instance {InstanceName}", instance.Name);
-                }
+                    finally
+                    {
+                        semaphore.Release();
+                    }
+                }, stoppingToken));
             }
+
+            await Task.WhenAll(tasks);
         }
+
+
+        private async Task SyncGroupsForInstance(AppInstance instance, CancellationToken stoppingToken)
+        {
+            using var scope = _serviceProvider.CreateScope();
+            var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            var whapiService = scope.ServiceProvider.GetRequiredService<IWhapiService>();
+
+            _logger.LogInformation("Syncing groups for instance {InstanceName}", instance.Name);
+
+            var fetchedIds = new List<string>();
+            int page = 0;
+            const int pageSize = 20;
+            bool hasMore = true;
+
+            while (hasMore && !stoppingToken.IsCancellationRequested)
+            {
+                var groups = await whapiService.GetGroupsAsync(
+                    instance.WhapiToken,
+                    instance.WhapiUrl,
+                    pageSize,
+                    offset: page * pageSize);
+
+                if (groups.items == null || groups.items.Count == 0)
+                    break;
+
+                foreach (var whapiGroup in groups.items.Where(q => q.ParticipantCount >= 20))
+                {
+                    fetchedIds.Add(whapiGroup.Id);
+
+                    var existingGroup = await context.AppGroups
+                        .FirstOrDefaultAsync(g => g.GroupId == whapiGroup.Id && g.InstanceId == instance.Id, stoppingToken);
+
+                    if (existingGroup == null)
+                    {
+                        var newGroup = new AppGroup
+                        {
+                            GroupId = whapiGroup.Id,
+                            Name = whapiGroup.Name,
+                            Description = whapiGroup.Description ?? whapiGroup.Subject,
+                            ParticipantCount = whapiGroup.ParticipantCount,
+                            Participants = whapiGroup.Participants != null ? string.Join(';', whapiGroup.Participants) : null,
+                            LastSyncAt = DateTime.Now,
+                            InstanceId = instance.Id,
+                        };
+
+                        context.AppGroups.Add(newGroup);
+                        _logger.LogInformation("Added new group: {GroupName}", whapiGroup.Name);
+                    }
+                    else
+                    {
+                        existingGroup.Name = whapiGroup.Name;
+                        existingGroup.Description = whapiGroup.Description ?? whapiGroup.Subject;
+                        existingGroup.ParticipantCount = whapiGroup.ParticipantCount;
+                        existingGroup.Participants = whapiGroup.Participants != null ? string.Join(';', whapiGroup.Participants) : null;
+                        existingGroup.LastSyncAt = DateTime.Now;
+                        existingGroup.IsActive = true;
+                        existingGroup.InstanceId = instance.Id;
+                    }
+                }
+
+                hasMore = groups.items.Count == pageSize;
+                page++;
+
+                await context.SaveChangesAsync(stoppingToken);
+            }
+
+            // Xóa những nhóm không còn trong API nữa
+            if (fetchedIds.Count > 0)
+            {
+                var toDelete = await context.AppGroups
+                    .Where(x => !fetchedIds.Contains(x.GroupId) && x.InstanceId == instance.Id)
+                    .ToListAsync(stoppingToken);
+
+                if (toDelete.Any())
+                {
+                    context.AppGroups.RemoveRange(toDelete);
+                }
+
+                await context.SaveChangesAsync(stoppingToken);
+            }
+
+            _logger.LogInformation("Successfully synced {GroupCount} groups for instance {InstanceName}",
+                fetchedIds.Count, instance.Name);
+        }
+
 
     }
 }
