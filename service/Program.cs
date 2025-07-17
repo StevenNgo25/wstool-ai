@@ -31,8 +31,8 @@ builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 // Background Services
-builder.Services.AddHostedService<GroupSyncService>();
-builder.Services.AddHostedService<AppInstanceHealthCheckJob>();
+//builder.Services.AddHostedService<GroupSyncService>();
+//builder.Services.AddHostedService<AppInstanceHealthCheckJob>();
 if (builder.Environment.IsProduction())
 {
     builder.Services.AddHostedService<GroupSyncService>();
