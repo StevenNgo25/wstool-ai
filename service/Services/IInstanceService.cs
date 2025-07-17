@@ -15,6 +15,6 @@ namespace WhatsAppCampaignManager.Services
 
         Task LogoutInstanceAsync(int instanceId); // Renamed from DisconnectInstanceAsync
         Task<string?> GetQrCodeBase64Async(int instanceId);
-        Task<string> GetConnectCodeAsync(int instanceId); // New method
+        Task<string> GetConnectCodeAsync(int instanceId, string sdt); // New method
     }
 }

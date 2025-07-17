@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core"
+import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core"
 import { CommonModule } from "@angular/common" // Import CommonModule
 import { FormsModule } from "@angular/forms" // Import FormsModule
 import { RouterModule } from "@angular/router" // Import RouterModule
@@ -31,9 +31,14 @@ import { AuthService } from "../services/auth.service"
   styleUrls: ["./instances.component.scss"],
 })
 export class InstancesComponent implements OnInit {
+  @ViewChild('qrModal') qrModal!: TemplateRef<any>;
+  @ViewChild('codeModal') codeModal!: TemplateRef<any>;
   instances: PaginatedResponse<Instance> = { data: [], pagination: {} as any }
   loading = true
   searchTerm = ""
+  getCode_instanceId:number|null = null
+  phoneNumber = null
+  showCode = false
 
   paginationRequest: PaginationRequest = {
     page: 1,
@@ -124,17 +129,26 @@ export class InstancesComponent implements OnInit {
       .catch(() => {})
   }
   scanQr(instanceId: number) {
-    /* this.instanceService.getQrCode(instanceId).subscribe((res) => {
-      this.qrCode = res.qrCodeBase64;
+    this.instanceService.getQrCode(instanceId).subscribe((res) => {
+      this.qrCode = res;
       this.modalService.open(this.qrModal);
-    }); */
+    });
+  }
+
+  showCodeModal(instanceId: number) {
+    this.getCode_instanceId = instanceId
+    this.modalService.open(this.codeModal);
   }
   
-  getCode(instanceId: number) {
-    /* this.apiService.getCode(instanceId).subscribe((res) => {
-      this.code = res.code;
-      this.modalService.open(this.codeModal);
-    }); */
+  getCode() {
+    if (this.phoneNumber && this.getCode_instanceId) {
+      this.instanceService.getCode(this.getCode_instanceId, this.phoneNumber).subscribe((res) => {
+        this.code = res;
+        this.showCode = true;
+      });
+    } else {
+      alert('Vui lòng nhập số điện thoại');
+    }
   }
   
   logoutInstance(instanceId: number) {

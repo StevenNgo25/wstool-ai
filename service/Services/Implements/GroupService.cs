@@ -22,6 +22,7 @@ namespace WhatsAppCampaignManager.Services.Implements
                 .Where(g => g.IsActive)
                 .Include(i=>i.Instance)
                 .Where(q=> userRole == "Admin" || q.Instance.UserInstances.Any(q=>q.UserId == userId))
+                .Where(q=>q.Instance.IsActive)
                 .Select(g => new GroupDto
                 {
                     Id = g.Id,
@@ -59,6 +60,7 @@ namespace WhatsAppCampaignManager.Services.Implements
                 .Where(g => g.IsActive)
                 .Include(i => i.Instance)
                 .Where(q => userRole == "Admin" || q.Instance.UserInstances.Any(q => q.UserId == userId))
+                .Where(q => q.Instance.IsActive)
                 .AsQueryable();
 
             // Filter by instance IDs if provided

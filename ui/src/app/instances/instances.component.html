@@ -90,7 +90,7 @@
                   <!-- Lấy mã code -->
                   <button
                     class="btn btn-outline-secondary"
-                    (click)="getCode(instance.id)"
+                    (click)="showCodeModal(instance.id)"
                     title="Lấy mã code"
                   >
                     <i class="fa fa-key"></i>
@@ -145,6 +145,16 @@
     <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
   </div>
   <div class="modal-body text-center">
-    <p class="fs-5">{{ code }}</p>
+    <div class="mb-3">
+      <input type="text"
+             class="form-control"
+             placeholder="Nhập số điện thoại"
+             [(ngModel)]="phoneNumber">
+    </div>
+    <button class="btn btn-primary mb-3" (click)="getCode()">Lấy mã</button>
+
+    <div *ngIf="showCode">
+      <p class="fs-5">{{ code }}</p>
+    </div>
   </div>
 </ng-template>

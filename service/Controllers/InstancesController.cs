@@ -108,11 +108,11 @@ namespace WhatsAppCampaignManager.Controllers
         }
 
         [HttpGet("{id}/connect-code")] // New endpoint
-        public async Task<ActionResult<string>> GetConnectCode(int id)
+        public async Task<ActionResult<string>> GetConnectCode(int id, string phone)
         {
             try
             {
-                var connectCode = await _instanceService.GetConnectCodeAsync(id);
+                var connectCode = await _instanceService.GetConnectCodeAsync(id, phone);
                 return Ok(connectCode);
             }
             catch (KeyNotFoundException)

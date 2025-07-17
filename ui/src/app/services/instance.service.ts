@@ -36,4 +36,16 @@ export class InstanceService {
   deleteInstance(id: number): Observable<void> {
     return this.apiService.delete<void>(`${this.apiUrl}/${id}`)
   }
+
+  getQrCode(id: number): Observable<string> {
+    return this.apiService.get<string>(this.apiUrl+ `/${id}/qrcode-base64`)
+  }
+
+  getCode(id: number, phone: string): Observable<string> {
+    return this.apiService.get<string>(`${this.apiUrl}/${id}/connect-code?phone=${phone}`)
+  }
+
+  logoutInstance(id: number): Observable<void> {
+    return this.apiService.get<void>(`${this.apiUrl}/${id}/logout`)
+  }
 }

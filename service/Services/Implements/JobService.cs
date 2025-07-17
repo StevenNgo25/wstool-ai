@@ -95,6 +95,7 @@ namespace WhatsAppCampaignManager.Services.Implements
             var query = _context.AppJobs
                 .Include(j => j.Message)
                 .Include(j => j.Instance)
+                .Where(q=>q.Instance.IsActive)
                 .Include(j => j.CreatedByUser)
                 .Include(j => j.SentMessages)
                 .Include(j => j.JobLogs.OrderByDescending(l => l.CreatedAt).Take(10)) // Latest 10 logs
@@ -189,6 +190,7 @@ namespace WhatsAppCampaignManager.Services.Implements
                 TotalSentMessages = job.SentMessages.Count,
                 SuccessfulMessages = job.SentMessages.Count(sm => sm.Status == "Delivered" || sm.Status == "Read"),
                 FailedMessages = job.SentMessages.Count(sm => sm.Status == "Failed"),
+                TargetPhoneNumbers = job.JobType == "SendToUsers" && job.TargetData != null ? JsonConvert.DeserializeObject<List<string>>(job.TargetData) : null,
                 Logs = job.JobLogs.Select(l => new JobLogDto
                 {
                     Id = l.Id,
@@ -218,8 +220,7 @@ namespace WhatsAppCampaignManager.Services.Implements
                     Name = s.Name,
                     Description = s.Description,
                     ParticipantCount = s.ParticipantCount
-                }).ToList(),
-                TargetPhoneNumbers = job.JobType == "SendToUsers" && job.TargetData != null ? JsonConvert.DeserializeObject<List<string>>(job.TargetData) : null
+                }).ToList()
             };
         }
 
