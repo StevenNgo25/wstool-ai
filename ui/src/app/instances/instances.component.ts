@@ -39,6 +39,8 @@ export class InstancesComponent implements OnInit {
   getCode_instanceId:number|null = null
   phoneNumber = null
   showCode = false
+  countdown: number = 30;
+  timerInterval: any;
 
   paginationRequest: PaginationRequest = {
     page: 1,
@@ -129,10 +131,39 @@ export class InstancesComponent implements OnInit {
       .catch(() => {})
   }
   scanQr(instanceId: number) {
+    this.qrCode = null
+    this.loadQr(instanceId); // Load lần đầu
+  
+    // Mở modal
+    const modalRef = this.modalService.open(this.qrModal);
+  
+    // Reset countdown mỗi khi mở
+    this.countdown = 30;
+  
+    // Clear timer cũ nếu có
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+    }
+  
+    // Tạo bộ đếm ngược và tự động reload
+    this.timerInterval = setInterval(() => {
+      this.countdown--;
+  
+      if (this.countdown <= 0) {
+        this.loadQr(instanceId);
+        this.countdown = 30; // Reset về 30s sau mỗi lần reload
+      }
+    }, 1000);
+  
+    // Clear interval khi modal đóng
+    modalRef.result.finally(() => {
+      clearInterval(this.timerInterval);
+    });
+  }
+  
+  loadQr(instanceId: number) {
     this.instanceService.getQrCode(instanceId).subscribe((res) => {
-      console.log(res)
       this.qrCode = res.qr;
-      this.modalService.open(this.qrModal);
     });
   }
 

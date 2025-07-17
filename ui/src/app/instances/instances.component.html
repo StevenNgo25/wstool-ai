@@ -134,9 +134,11 @@
     <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
   </div>
   <div class="modal-body text-center">
-    <img *ngIf="qrCode" [src]="qrCode" class="img-fluid" />
+    <img *ngIf="qrCode" [src]="qrCode" class="img-fluid" style="width: 100%;" />
+    <p class="mt-3">Tự động làm mới sau: {{ countdown }} giây</p>
   </div>
 </ng-template>
+
 
 <!-- Modal hiển thị mã code -->
 <ng-template #codeModal let-modal>
