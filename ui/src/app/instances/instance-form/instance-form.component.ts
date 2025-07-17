@@ -30,7 +30,7 @@ export class InstanceFormComponent implements OnInit {
   ) {
     this.instanceForm = this.fb.group({
       name: ["", [Validators.required, Validators.maxLength(100)]],
-      whatsAppNumber: ["", [Validators.required, Validators.maxLength(50)]],
+      whatsAppNumber: ["", [Validators.maxLength(50)]],
       whapiToken: ["", [Validators.required, Validators.maxLength(200)]],
       isActive: [true],
     })
@@ -52,10 +52,11 @@ export class InstanceFormComponent implements OnInit {
         this.instanceForm.patchValue({
           name: instance.name,
           whatsAppNumber: instance.whatsAppNumber,
+          whapiToken: instance.whapiToken,
           isActive: instance.isActive,
         })
         // WhapiToken is not returned by DTO for security, so it won't be pre-filled
-        this.instanceForm.get("whatsAppNumber")?.disable() // WhatsApp number cannot be changed
+        //this.instanceForm.get("whatsAppNumber")?.disable() // WhatsApp number cannot be changed
         this.loading = false
       },
       error: (error) => {

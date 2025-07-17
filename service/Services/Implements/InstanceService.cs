@@ -12,6 +12,8 @@ namespace WhatsAppCampaignManager.Services.Implements
         private readonly IWhapiService _whapiService;
         private readonly ILogger<InstanceService> _logger;
 
+        private readonly string BaseUrl = "https://gate.whapi.cloud";
+
         public InstanceService(ApplicationDbContext context, IWhapiService whapiService, ILogger<InstanceService> logger)
         {
             _context = context;
@@ -61,6 +63,7 @@ namespace WhatsAppCampaignManager.Services.Implements
                     Id = i.Id,
                     Name = i.Name,
                     WhatsAppNumber = i.WhatsAppNumber,
+                    WhapiToken = i.WhapiToken,
                     WhapiUrl = i.WhapiUrl,
                     IsActive = i.IsActive,
                     CreatedAt = i.CreatedAt,
@@ -96,7 +99,7 @@ namespace WhatsAppCampaignManager.Services.Implements
                     Name = createInstanceDto.Name,
                     WhatsAppNumber = createInstanceDto.WhatsAppNumber,
                     WhapiToken = createInstanceDto.WhapiToken,
-                    WhapiUrl = createInstanceDto.WhapiUrl
+                    WhapiUrl = createInstanceDto.WhapiUrl ?? BaseUrl
                 };
 
                 _context.AppInstances.Add(instance);
@@ -133,7 +136,7 @@ namespace WhatsAppCampaignManager.Services.Implements
                 if (!string.IsNullOrEmpty(updateInstanceDto.Name))
                     instance.Name = updateInstanceDto.Name;
 
-                if (!string.IsNullOrEmpty(updateInstanceDto.WhapiToken))
+                if (!string.IsNullOrEmpty(updateInstanceDto.WhapiToken) && updateInstanceDto.WhapiToken != instance.WhapiToken)
                 {
                     // Validate new token
                     var isValidToken = await _whapiService.ValidateTokenAsync(updateInstanceDto.WhapiToken, updateInstanceDto.WhapiUrl ?? instance.WhapiUrl);
@@ -152,6 +155,7 @@ namespace WhatsAppCampaignManager.Services.Implements
                     instance.IsActive = updateInstanceDto.IsActive.Value;
 
                 instance.UpdatedAt = DateTime.Now;
+                instance.WhatsAppNumber = updateInstanceDto.WhatsAppNumber;
 
                 await _context.SaveChangesAsync();
                 return true;

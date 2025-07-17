@@ -8,7 +8,6 @@ namespace WhatsAppCampaignManager.DTOs
         [StringLength(100)]
         public string Name { get; set; } = string.Empty;
         
-        [Required]
         [StringLength(50)]
         public string WhatsAppNumber { get; set; } = string.Empty;
         
@@ -32,13 +31,16 @@ namespace WhatsAppCampaignManager.DTOs
         public string? WhapiUrl { get; set; }
         
         public bool? IsActive { get; set; }
+
+        public string? WhatsAppNumber { get; set; }
     }
 
     public class InstanceDto
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public string WhatsAppNumber { get; set; } = string.Empty;
+        public string? WhatsAppNumber { get; set; }
+        public string WhapiToken { get; set; } = string.Empty;
         public string? WhapiUrl { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }

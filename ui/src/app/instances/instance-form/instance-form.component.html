@@ -17,12 +17,12 @@
         </div>
 
         <div class="mb-3">
-          <label for="whatsAppNumber" class="form-label">Số WhatsApp <span class="text-danger">*</span></label>
+          <label for="whatsAppNumber" class="form-label">Số WhatsApp</label>
           <input type="text" class="form-control" id="whatsAppNumber" formControlName="whatsAppNumber"
-                 placeholder="VD: +84123456789"
+                 placeholder="VD: 84123456789"
                  [class.is-invalid]="isFieldInvalid('whatsAppNumber')">
           <div class="invalid-feedback" *ngIf="isFieldInvalid('whatsAppNumber')">
-            Số WhatsApp là bắt buộc và tối đa 50 ký tự.
+            Số WhatsApp tối đa 50 ký tự.
           </div>
         </div>
 

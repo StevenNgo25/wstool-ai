@@ -147,14 +147,10 @@ namespace WhatsAppCampaignManager.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("WhatsAppNumber")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("WhatsAppNumber")
-                        .IsUnique();
 
                     b.ToTable("AppInstances");
                 });
@@ -414,20 +410,20 @@ namespace WhatsAppCampaignManager.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 7, 17, 11, 0, 55, 588, DateTimeKind.Local).AddTicks(5948),
+                            CreatedAt = new DateTime(2025, 7, 17, 15, 23, 54, 38, DateTimeKind.Local).AddTicks(6362),
                             Email = "admin@whatsappcampaign.com",
                             IsActive = true,
-                            PasswordHash = "$2a$11$KiqQAV/oKOyrmjhYUN76uO0cQXH5XfWcvBHL3kGNRx9H/ecE.ItFS",
+                            PasswordHash = "$2a$11$2Ieqjvd9epAfe0wQwi49MuwZJ8877LI/A3ZECP9S1RO6jD6ldhZJq",
                             Role = "Admin",
                             Username = "admin"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 7, 17, 11, 0, 55, 699, DateTimeKind.Local).AddTicks(901),
+                            CreatedAt = new DateTime(2025, 7, 17, 15, 23, 54, 225, DateTimeKind.Local).AddTicks(3236),
                             Email = "user1@whatsappcampaign.com",
                             IsActive = true,
-                            PasswordHash = "$2a$11$HN.MEEp8zY13ehZCNpicDeg983KYgJQuA/Zew2nuxecZ7xp1seOki",
+                            PasswordHash = "$2a$11$zKjizxyp1Wui6L.sZe3cJuVyTq3n5dXifSZT34GoRXvZB8wwO.qPW",
                             Role = "Member",
                             Username = "user1"
                         });

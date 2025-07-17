@@ -10,9 +10,8 @@ namespace WhatsAppCampaignManager.Models
         [StringLength(100)]
         public string Name { get; set; } = string.Empty;
         
-        [Required]
         [StringLength(50)]
-        public string WhatsAppNumber { get; set; } = string.Empty;
+        public string? WhatsAppNumber { get; set; }
         
         [Required]
         [StringLength(200)]

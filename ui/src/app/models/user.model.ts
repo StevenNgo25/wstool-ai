@@ -41,7 +41,8 @@ export interface LoginResponse {
 export interface Instance {
   id: number
   name: string
-  whatsAppNumber: string
+  whatsAppNumber?: string
+  whapiToken: string
   whapiUrl?: string
   isActive: boolean
   createdAt: string
@@ -50,7 +51,7 @@ export interface Instance {
 
 export interface CreateInstanceDto {
   name: string
-  whatsAppNumber: string
+  whatsAppNumber?: string
   whapiToken: string
   whapiUrl?: string
 }

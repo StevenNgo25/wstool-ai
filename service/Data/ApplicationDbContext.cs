@@ -104,9 +104,9 @@ namespace WhatsAppCampaignManager.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Indexes for performance
-            modelBuilder.Entity<AppInstance>()
-                .HasIndex(i => i.WhatsAppNumber)
-                .IsUnique();
+            //modelBuilder.Entity<AppInstance>()
+            //    .HasIndex(i => i.WhatsAppNumber)
+            //    .IsUnique();
 
             modelBuilder.Entity<AppUser>()
                 .HasIndex(u => u.Username)
