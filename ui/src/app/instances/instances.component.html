@@ -134,7 +134,7 @@
     <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
   </div>
   <div class="modal-body text-center">
-    <img *ngIf="qrCode" [src]="'data:image/png;base64,' + qrCode" class="img-fluid" />
+    <img *ngIf="qrCode" [src]="qrCode" class="img-fluid" />
   </div>
 </ng-template>
 

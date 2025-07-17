@@ -130,7 +130,8 @@ export class InstancesComponent implements OnInit {
   }
   scanQr(instanceId: number) {
     this.instanceService.getQrCode(instanceId).subscribe((res) => {
-      this.qrCode = res;
+      console.log(res)
+      this.qrCode = res.qr;
       this.modalService.open(this.qrModal);
     });
   }
@@ -143,7 +144,7 @@ export class InstancesComponent implements OnInit {
   getCode() {
     if (this.phoneNumber && this.getCode_instanceId) {
       this.instanceService.getCode(this.getCode_instanceId, this.phoneNumber).subscribe((res) => {
-        this.code = res;
+        this.code = res.code;
         this.showCode = true;
       });
     } else {

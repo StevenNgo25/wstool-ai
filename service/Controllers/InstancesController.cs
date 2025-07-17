@@ -104,7 +104,7 @@ namespace WhatsAppCampaignManager.Controllers
                 {
                     return NotFound("QR Code not available for this instance or instance is not in connecting state.");
                 }
-                return Ok(qrCodeBase64);
+                return Ok(new { qr = qrCodeBase64 });
             }
             catch (KeyNotFoundException)
             {
@@ -122,7 +122,7 @@ namespace WhatsAppCampaignManager.Controllers
             try
             {
                 var connectCode = await _instanceService.GetConnectCodeAsync(id, phone);
-                return Ok(connectCode);
+                return Ok(new {code = connectCode });
             }
             catch (KeyNotFoundException)
             {

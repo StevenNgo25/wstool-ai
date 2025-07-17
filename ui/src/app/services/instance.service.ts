@@ -37,12 +37,12 @@ export class InstanceService {
     return this.apiService.delete<void>(`${this.apiUrl}/${id}`)
   }
 
-  getQrCode(id: number): Observable<string> {
-    return this.apiService.get<string>(this.apiUrl+ `/${id}/qrcode-base64`)
+  getQrCode(id: number): Observable<any> {
+    return this.apiService.get<any>(this.apiUrl+ `/${id}/qrcode-base64`)
   }
 
-  getCode(id: number, phone: string): Observable<string> {
-    return this.apiService.get<string>(`${this.apiUrl}/${id}/connect-code?phone=${phone}`)
+  getCode(id: number, phone: string): Observable<any> {
+    return this.apiService.get<any>(`${this.apiUrl}/${id}/connect-code?phone=${phone}`)
   }
 
   logoutInstance(id: number): Observable<void> {

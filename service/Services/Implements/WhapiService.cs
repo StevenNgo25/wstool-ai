@@ -191,7 +191,7 @@ namespace WhatsAppCampaignManager.Services.Implements
         {
             try
             {
-                var url = $"{baseUrl ?? DefaultBaseUrl}/api/users/login?wakeup=true";
+                var url = $"{baseUrl ?? DefaultBaseUrl}/users/login?wakeup=true";
                 var request = new HttpRequestMessage(HttpMethod.Get, url);
                 request.Headers.Add("Authorization", $"Bearer {token}");
 
@@ -216,7 +216,7 @@ namespace WhatsAppCampaignManager.Services.Implements
         {
             try
             {
-                var url = $"{baseUrl ?? DefaultBaseUrl}/api/users/login/" + phone;
+                var url = $"{baseUrl ?? DefaultBaseUrl}/users/login/" + phone;
                 var request = new HttpRequestMessage(HttpMethod.Get, url);
                 request.Headers.Add("Authorization", $"Bearer {token}");
 
@@ -241,7 +241,7 @@ namespace WhatsAppCampaignManager.Services.Implements
         {
             try
             {
-                var url = $"{baseUrl ?? DefaultBaseUrl}/api/users/logout";
+                var url = $"{baseUrl ?? DefaultBaseUrl}/users/logout";
                 var request = new HttpRequestMessage(HttpMethod.Post, url);
                 request.Headers.Add("Authorization", $"Bearer {token}");
 
