@@ -18,6 +18,8 @@ namespace WhatsAppCampaignManager.Models
         public string? Description { get; set; }
         
         public int ParticipantCount { get; set; } = 0;
+
+        public string? Participants { get; set; }
         
         public bool IsActive { get; set; } = true;
         

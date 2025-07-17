@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using WhatsAppCampaignManager.DTOs;
 using WhatsAppCampaignManager.Services;
 
@@ -19,10 +20,18 @@ namespace WhatsAppCampaignManager.Controllers
             _logger = logger;
         }
 
+        private int GetCurrentUserId()
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return int.TryParse(userIdClaim, out var userId) ? userId : 0;
+        }
+
         [HttpGet]
         public async Task<ActionResult<PaginatedResponse<InstanceDto>>> GetInstances([FromQuery] PaginationRequest request)
         {
-            var instances = await _instanceService.GetInstancesAsync(request);
+            var userId = GetCurrentUserId();
+            var userRole = User.FindFirst(ClaimTypes.Role)?.Value ?? "Member";
+            var instances = await _instanceService.GetInstancesAsync(request, userId, userRole);
             return Ok(instances);
         }
 

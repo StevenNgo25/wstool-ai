@@ -92,6 +92,7 @@ namespace WhatsAppCampaignManager.HostedServices
                                     Name = whapiGroup.Name,
                                     Description = whapiGroup.Description ?? whapiGroup.Subject,
                                     ParticipantCount = whapiGroup.ParticipantCount,
+                                    Participants = whapiGroup.Participants != null ? string.Join(';', whapiGroup.Participants) : null,
                                     LastSyncAt = DateTime.Now,
                                     InstanceId = instance.Id,
                                 };
@@ -104,6 +105,7 @@ namespace WhatsAppCampaignManager.HostedServices
                                 existingGroup.Name = whapiGroup.Name;
                                 existingGroup.Description = whapiGroup.Description ?? whapiGroup.Subject;
                                 existingGroup.ParticipantCount = whapiGroup.ParticipantCount;
+                                existingGroup.Participants = whapiGroup.Participants != null ? string.Join(';', whapiGroup.Participants) : null;
                                 existingGroup.LastSyncAt = DateTime.Now;
                                 existingGroup.IsActive = true;
                                 existingGroup.InstanceId = instance.Id;

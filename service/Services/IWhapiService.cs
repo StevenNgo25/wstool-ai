@@ -36,6 +36,7 @@ namespace WhatsAppCampaignManager.Services
         public bool Restrict { get; set; }
         public string? InviteCode { get; set; }
         public int ParticipantCount { get; set; }
+        public List<string>? Participants { get;set; }
         public string? RawData { get; set; }
     }
 

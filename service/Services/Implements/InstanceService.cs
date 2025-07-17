@@ -3,9 +3,8 @@ using WhatsAppCampaignManager.Data;
 using WhatsAppCampaignManager.DTOs;
 using WhatsAppCampaignManager.Models;
 using WhatsAppCampaignManager.Extensions;
-using WhatsAppCampaignManager.Services.Implements;
 
-namespace WhatsAppCampaignManager.Services
+namespace WhatsAppCampaignManager.Services.Implements
 {
     public class InstanceService : IInstanceService
     {
@@ -20,9 +19,11 @@ namespace WhatsAppCampaignManager.Services
             _logger = logger;
         }
 
-        public async Task<PaginatedResponse<InstanceDto>> GetInstancesAsync(PaginationRequest request)
+        public async Task<PaginatedResponse<InstanceDto>> GetInstancesAsync(PaginationRequest request, int userId, string role)
         {
             var query = _context.AppInstances
+                .Include(i=>i.UserInstances)
+                .Where(q=> role == "Admin" || q.UserInstances.Any(q=>q.UserId == userId))
                 .Select(i => new InstanceDto
                 {
                     Id = i.Id,

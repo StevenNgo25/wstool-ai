@@ -79,33 +79,9 @@
           </div>
         </div>
 
-        <!-- <div class="mb-3" *ngIf="jobForm.get('jobType')?.value === 'SendToGroups'">
-          <label for="groupIds" class="form-label">Nhóm mục tiêu <span class="text-danger">*</span></label>
-          <div class="mb-2">
-            <button type="button" class="btn btn-outline-primary btn-sm" (click)="toggleSelectAllGroups()">
-              Chọn tất cả
-            </button>
-          </div>
-          <ng-select
-            id="groupIds"
-            formControlName="groupIds"
-            [items]="groups"
-            bindLabel="name"
-            bindValue="id"
-            [multiple]="true"
-            [closeOnSelect]="false"
-            placeholder="Chọn nhóm"
-            [class.is-invalid]="isFieldInvalid('groupIds')"
-          ></ng-select>
-          <div class="invalid-feedback" *ngIf="isFieldInvalid('groupIds')">
-            Cần chọn ít nhất một nhóm.
-          </div>
-        </div> -->
-
         <!-- Hiển thị nếu jobType === 'SendToGroups' -->
         <div
           class="mb-3"
-          *ngIf="jobForm.get('jobType')?.value === 'SendToGroups'"
         >
           <label class="form-label"
             >Nhóm mục tiêu <span class="text-danger">*</span></label
@@ -141,7 +117,7 @@
           </div>
         </div>
 
-        <div
+        <!-- <div
           class="mb-3"
           *ngIf="jobForm.get('jobType')?.value === 'SendToUsers'"
         >
@@ -160,7 +136,7 @@
           <div class="invalid-feedback" *ngIf="isFieldInvalid('phoneNumbers')">
             Cần nhập số điện thoại.
           </div>
-        </div>
+        </div> -->
 
         <div class="d-flex justify-content-end">
           <button

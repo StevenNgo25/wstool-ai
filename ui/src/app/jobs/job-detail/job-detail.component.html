@@ -47,12 +47,14 @@
               <span *ngIf="!job.assignedGroups || job.assignedGroups.length === 0">Không có</span>
             </div>
           </div>
-          <p><strong>Số điện thoại mục tiêu:</strong> 
-            <span *ngIf="job.targetPhoneNumbers && job.targetPhoneNumbers.length > 0">
-              {{ job.targetPhoneNumbers.join(', ') }}
-            </span>
-            <span *ngIf="!job.targetPhoneNumbers || job.targetPhoneNumbers.length === 0">Không có</span>
-          </p>
+          <div><strong>Số điện thoại mục tiêu:</strong> 
+            <div style="height: 100px; overflow-y: auto;">
+              <span *ngIf="job.targetPhoneNumbers && job.targetPhoneNumbers.length > 0">
+                {{ job.targetPhoneNumbers.join(', ') }}
+              </span>
+              <span *ngIf="!job.targetPhoneNumbers || job.targetPhoneNumbers.length === 0">Không có</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>

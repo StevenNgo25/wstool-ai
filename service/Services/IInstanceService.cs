@@ -4,7 +4,7 @@ namespace WhatsAppCampaignManager.Services
 {
     public interface IInstanceService
     {
-        Task<PaginatedResponse<InstanceDto>> GetInstancesAsync(PaginationRequest request);
+        Task<PaginatedResponse<InstanceDto>> GetInstancesAsync(PaginationRequest request, int userId, string role);
         Task<InstanceDto?> GetInstanceByIdAsync(int id);
         Task<InstanceDto?> CreateInstanceAsync(CreateInstanceDto createInstanceDto);
         Task<bool> UpdateInstanceAsync(int id, UpdateInstanceDto updateInstanceDto);

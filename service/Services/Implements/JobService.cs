@@ -62,9 +62,11 @@ namespace WhatsAppCampaignManager.Services.Implements
                 {
                     targetData = System.Text.Json.JsonSerializer.Serialize(createJobDto.GroupIds);
                 }
-                else if (createJobDto.JobType == "SendToUsers" && createJobDto.PhoneNumbers?.Any() == true)
+                else if (createJobDto.JobType == "SendToUsers" && createJobDto.GroupIds?.Any() == true)
                 {
-                    targetData = System.Text.Json.JsonSerializer.Serialize(createJobDto.PhoneNumbers);
+                    var groupsDetail = _context.AppGroups.Where(q => createJobDto.GroupIds.Contains(q.Id) && q.Participants != null).Select(s=>s.Participants!).ToList();
+
+                    targetData = System.Text.Json.JsonSerializer.Serialize(groupsDetail.SelectMany(s => s.Split(';')).Distinct());
                 }
 
                 var job = new AppJob
@@ -97,6 +99,7 @@ namespace WhatsAppCampaignManager.Services.Implements
                 .Include(j => j.Instance)
                 .Where(q=>q.Instance.IsActive)
                 .Include(j => j.CreatedByUser)
+                .Where(q=>q.CreatedByUserId == userId)
                 .Include(j => j.SentMessages)
                 .Include(j => j.JobLogs.OrderByDescending(l => l.CreatedAt).Take(10)) // Latest 10 logs
                 .AsQueryable();

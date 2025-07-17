@@ -33,7 +33,7 @@ namespace WhatsAppCampaignManager.Controllers
             var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
             
             // Admin can see all jobs, members can only see their own
-            var jobs = await _jobService.GetJobsAsync(request, userRole == "Admin" ? null : userId);
+            var jobs = await _jobService.GetJobsAsync(request, userId);
             return Ok(jobs);
         }
 

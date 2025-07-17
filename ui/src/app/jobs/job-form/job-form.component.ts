@@ -39,7 +39,7 @@ export class JobFormComponent implements OnInit {
 
   jobTypes = [
     { value: "SendToGroups", label: "Send to Groups" },
-    { value: "SendToUsers", label: "Send to Users (Phone Numbers)" },
+    { value: "SendToUsers", label: "Send to Users" },
   ]
 
   constructor(
@@ -58,23 +58,23 @@ export class JobFormComponent implements OnInit {
       instanceId: [null, Validators.required],
       scheduledAt: [null],
       groupIds: [[]],
-      phoneNumbers: [""], // Comma-separated string for phone numbers
+      //phoneNumbers: [""], // Comma-separated string for phone numbers
     })
 
     // Listen for jobType changes to update validators
     this.jobForm.get("jobType")?.valueChanges.subscribe((type) => {
       const groupIdsControl = this.jobForm.get("groupIds")
-      const phoneNumbersControl = this.jobForm.get("phoneNumbers")
+      //const phoneNumbersControl = this.jobForm.get("phoneNumbers")
 
       if (type === "SendToGroups") {
         groupIdsControl?.setValidators(Validators.required)
-        phoneNumbersControl?.clearValidators()
+        //phoneNumbersControl?.clearValidators()
       } else {
         groupIdsControl?.clearValidators()
-        phoneNumbersControl?.setValidators(Validators.required)
+        //phoneNumbersControl?.setValidators(Validators.required)
       }
       groupIdsControl?.updateValueAndValidity()
-      phoneNumbersControl?.updateValueAndValidity()
+      //phoneNumbersControl?.updateValueAndValidity()
     })
   }
 
@@ -140,14 +140,14 @@ export class JobFormComponent implements OnInit {
       scheduledAt: formValue.scheduledAt ? new Date(formValue.scheduledAt).toISOString() : undefined,
     }
 
-    if (formValue.jobType === "SendToGroups") {
+    //if (formValue.jobType === "SendToGroups") {
       jobData.groupIds = formValue.groupIds
-    } else if (formValue.jobType === "SendToUsers") {
+    /* } else if (formValue.jobType === "SendToUsers") {
       jobData.phoneNumbers = formValue.phoneNumbers
         .split(",")
         .map((s: string) => s.trim())
         .filter((s: string) => s.length > 0)
-    }
+    } */
 
     this.jobService.createJob(jobData).subscribe({
       next: () => {

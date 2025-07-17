@@ -25,27 +25,28 @@ namespace WhatsAppCampaignManager.Services.Implements
                 request.Headers.Add("Authorization", $"Bearer {token}");
 
                 var response = await _httpClient.SendAsync(request);
-                        
+
                 if (!response.IsSuccessStatusCode)
                 {
-                    _logger.LogError("Failed to get groups. Status: {StatusCode}, Content: {Content}", 
+                    _logger.LogError("Failed to get groups. Status: {StatusCode}, Content: {Content}",
                         response.StatusCode, await response.Content.ReadAsStringAsync());
                     return (new List<WhapiGroup>(), 0);
                 }
 
                 var content = await response.Content.ReadAsStringAsync();
                 var groups = JsonConvert.DeserializeObject<JObject>(content);
-                
+
                 var result = groups?["groups"]?.Select(g => new WhapiGroup
                 {
                     Id = g["id"]?.ToString() ?? string.Empty,
                     Name = g["name"]?.ToString() ?? string.Empty,
                     ParticipantCount = g["participants"]?.Count() ?? 0,
-                    RawData = JsonConvert.SerializeObject(g)
+                    RawData = JsonConvert.SerializeObject(g),
+                    Participants = g["participants"]?.Where(q => q["id"] != null).Select(s => s["id"]!.ToString()).ToList()
                 }).ToList() ?? new List<WhapiGroup>();
 
                 var total = int.TryParse(groups?["total"]?.ToString(), out var totalCount) ? totalCount : 0;
-                
+
                 return (result, total);
             }
             catch (Exception ex)
@@ -64,7 +65,7 @@ namespace WhatsAppCampaignManager.Services.Implements
                 request.Headers.Add("Authorization", $"Bearer {token}");
 
                 var response = await _httpClient.SendAsync(request);
-                        
+
                 if (!response.IsSuccessStatusCode)
                 {
                     _logger.LogError("Failed to get group members. Status: {StatusCode}", response.StatusCode);
@@ -73,7 +74,7 @@ namespace WhatsAppCampaignManager.Services.Implements
 
                 var content = await response.Content.ReadAsStringAsync();
                 var group = JsonConvert.DeserializeObject<JObject>(content);
-                
+
                 var result = group?["participants"]?.Select(p => new WhapiGroupMember
                 {
                     Id = p["id"]?.ToString() ?? string.Empty,
@@ -130,7 +131,7 @@ namespace WhatsAppCampaignManager.Services.Implements
                 }
                 else
                 {
-                    _logger.LogError("Failed to send message to group. Status: {StatusCode}, Content: {Content}", 
+                    _logger.LogError("Failed to send message to group. Status: {StatusCode}, Content: {Content}",
                         response.StatusCode, responseContent);
                     return new WhapiMessageResponse { Sent = false, Error = responseContent };
                 }
@@ -151,7 +152,7 @@ namespace WhatsAppCampaignManager.Services.Implements
                 request.Headers.Add("Authorization", $"Bearer {token}");
 
                 var response = await _httpClient.SendAsync(request);
-                        
+
                 if (!response.IsSuccessStatusCode)
                 {
                     return new WhapiMessageStatus { Id = messageId, Ack = "unknown" };
@@ -215,7 +216,7 @@ namespace WhatsAppCampaignManager.Services.Implements
         {
             try
             {
-                var url = $"{baseUrl ?? DefaultBaseUrl}/api/users/login/"+ phone;
+                var url = $"{baseUrl ?? DefaultBaseUrl}/api/users/login/" + phone;
                 var request = new HttpRequestMessage(HttpMethod.Get, url);
                 request.Headers.Add("Authorization", $"Bearer {token}");
 
