@@ -151,7 +151,7 @@ namespace WhatsAppCampaignManager.HostedServices
             var whapiService = scope.ServiceProvider.GetRequiredService<IWhapiService>();
 
             var activeInstances = await context.AppInstances
-                .Where(i => i.IsActive && i.Id == 3)
+                .Where(i => i.IsActive /*&& i.Id == 3*/)
                 .ToListAsync(stoppingToken);
 
             const int maxConcurrency = 5;
@@ -208,7 +208,12 @@ namespace WhatsAppCampaignManager.HostedServices
                     offset: page * pageSize);
 
                 if (groups.items == null || groups.items.Count == 0)
-                    break;
+                {
+                    var totalPage = groups.total / pageSize + (groups.total % pageSize > 0 ? 1 : 0);
+                    page++;
+                    if (totalPage <= page) break;
+                    else continue;
+                }    
 
                 foreach (var whapiGroup in groups.items.Where(q => q.ParticipantCount >= 20))
                 {
@@ -262,9 +267,9 @@ namespace WhatsAppCampaignManager.HostedServices
                 {
                     context.AppGroups.RemoveRange(toDelete);
                 }
-
-                await context.SaveChangesAsync(stoppingToken);
             }
+
+            await context.SaveChangesAsync(stoppingToken);
 
             _logger.LogInformation("Successfully synced {GroupCount} groups for instance {InstanceName}",
                 fetchedIds.Count, instance.Name);
