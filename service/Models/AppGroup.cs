@@ -11,7 +11,7 @@ namespace WhatsAppCampaignManager.Models
         public string GroupId { get; set; } = string.Empty; // WhatsApp Group ID
         
         [Required]
-        [StringLength(200)]
+        [StringLength(1000)]
         public string Name { get; set; } = string.Empty;
         
         [StringLength(500)]

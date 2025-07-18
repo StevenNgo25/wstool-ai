@@ -100,7 +100,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let sentMsg of job.sentMessages">
-                <td>{{ sentMsg.recipientId }}</td>
+                <td>{{ sentMsg.recipientName ?? sentMsg.recipientId }}</td>
                 <td>
                   <span class="badge" 
                         [ngClass]="{

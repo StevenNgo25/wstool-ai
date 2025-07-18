@@ -60,6 +60,8 @@ namespace WhatsAppCampaignManager.DTOs
 
         public string RecipientId { get; set; } = string.Empty; // Group ID or Phone Number
 
+        public string? RecipientName { get; set; }
+
         public string RecipientType { get; set; } = "Group"; // Group, User
 
         public string? WhapiMessageId { get; set; }

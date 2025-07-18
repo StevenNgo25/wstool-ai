@@ -96,8 +96,8 @@ namespace WhatsAppCampaignManager.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<int>("ParticipantCount")
                         .HasColumnType("int");
@@ -133,6 +133,10 @@ namespace WhatsAppCampaignManager.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Status")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -335,6 +339,10 @@ namespace WhatsAppCampaignManager.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("RecipientName")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
                     b.Property<string>("RecipientType")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -410,20 +418,20 @@ namespace WhatsAppCampaignManager.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 7, 17, 15, 23, 54, 38, DateTimeKind.Local).AddTicks(6362),
+                            CreatedAt = new DateTime(2025, 7, 18, 16, 33, 4, 58, DateTimeKind.Local).AddTicks(7177),
                             Email = "admin@whatsappcampaign.com",
                             IsActive = true,
-                            PasswordHash = "$2a$11$2Ieqjvd9epAfe0wQwi49MuwZJ8877LI/A3ZECP9S1RO6jD6ldhZJq",
+                            PasswordHash = "$2a$11$YPpGg4hr7/pUYQO24mearOcWexXNDG.4kqFGCn4IT5Bo5OKw1ejoG",
                             Role = "Admin",
                             Username = "admin"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 7, 17, 15, 23, 54, 225, DateTimeKind.Local).AddTicks(3236),
+                            CreatedAt = new DateTime(2025, 7, 18, 16, 33, 4, 180, DateTimeKind.Local).AddTicks(3006),
                             Email = "user1@whatsappcampaign.com",
                             IsActive = true,
-                            PasswordHash = "$2a$11$zKjizxyp1Wui6L.sZe3cJuVyTq3n5dXifSZT34GoRXvZB8wwO.qPW",
+                            PasswordHash = "$2a$11$KTlEehOGMGfF6Iz2uRDHw.6EX3mlGd0.9xTebVPWB5f4AlqYAKz56",
                             Role = "Member",
                             Username = "user1"
                         });

@@ -185,6 +185,7 @@ namespace WhatsAppCampaignManager.HostedServices
                 {
                     JobId = job.Id,
                     RecipientId = group.GroupId,
+                    RecipientName = group.Name,
                     RecipientType = "Group",
                     WhapiMessageId = response.Id,
                     Status = response.Sent ? "Sent" : "Failed",

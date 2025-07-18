@@ -15,6 +15,13 @@ namespace WhatsAppCampaignManager.Migrations
                 name: "IX_AppInstances_WhatsAppNumber",
                 table: "AppInstances");
 
+            migrationBuilder.AddColumn<string>(
+                name: "RecipientName",
+                table: "AppSentMessages",
+                type: "nvarchar(1000)",
+                maxLength: 1000,
+                nullable: true);
+
             migrationBuilder.AlterColumn<string>(
                 name: "TargetData",
                 table: "AppJobs",
@@ -36,6 +43,23 @@ namespace WhatsAppCampaignManager.Migrations
                 oldMaxLength: 50);
 
             migrationBuilder.AddColumn<string>(
+                name: "Status",
+                table: "AppInstances",
+                type: "nvarchar(20)",
+                maxLength: 20,
+                nullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Name",
+                table: "AppGroups",
+                type: "nvarchar(1000)",
+                maxLength: 1000,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(200)",
+                oldMaxLength: 200);
+
+            migrationBuilder.AddColumn<string>(
                 name: "Participants",
                 table: "AppGroups",
                 type: "nvarchar(max)",
@@ -46,19 +70,27 @@ namespace WhatsAppCampaignManager.Migrations
                 keyColumn: "Id",
                 keyValue: 1,
                 columns: new[] { "CreatedAt", "PasswordHash" },
-                values: new object[] { new DateTime(2025, 7, 17, 15, 23, 54, 38, DateTimeKind.Local).AddTicks(6362), "$2a$11$2Ieqjvd9epAfe0wQwi49MuwZJ8877LI/A3ZECP9S1RO6jD6ldhZJq" });
+                values: new object[] { new DateTime(2025, 7, 18, 16, 33, 4, 58, DateTimeKind.Local).AddTicks(7177), "$2a$11$YPpGg4hr7/pUYQO24mearOcWexXNDG.4kqFGCn4IT5Bo5OKw1ejoG" });
 
             migrationBuilder.UpdateData(
                 table: "AppUsers",
                 keyColumn: "Id",
                 keyValue: 2,
                 columns: new[] { "CreatedAt", "PasswordHash" },
-                values: new object[] { new DateTime(2025, 7, 17, 15, 23, 54, 225, DateTimeKind.Local).AddTicks(3236), "$2a$11$zKjizxyp1Wui6L.sZe3cJuVyTq3n5dXifSZT34GoRXvZB8wwO.qPW" });
+                values: new object[] { new DateTime(2025, 7, 18, 16, 33, 4, 180, DateTimeKind.Local).AddTicks(3006), "$2a$11$KTlEehOGMGfF6Iz2uRDHw.6EX3mlGd0.9xTebVPWB5f4AlqYAKz56" });
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropColumn(
+                name: "RecipientName",
+                table: "AppSentMessages");
+
+            migrationBuilder.DropColumn(
+                name: "Status",
+                table: "AppInstances");
+
             migrationBuilder.DropColumn(
                 name: "Participants",
                 table: "AppGroups");
@@ -84,6 +116,16 @@ namespace WhatsAppCampaignManager.Migrations
                 oldType: "nvarchar(50)",
                 oldMaxLength: 50,
                 oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Name",
+                table: "AppGroups",
+                type: "nvarchar(200)",
+                maxLength: 200,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(1000)",
+                oldMaxLength: 1000);
 
             migrationBuilder.UpdateData(
                 table: "AppUsers",

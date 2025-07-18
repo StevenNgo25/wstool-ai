@@ -207,6 +207,7 @@ namespace WhatsAppCampaignManager.Services.Implements
                     Id = l.Id,
                     JobId = l.JobId,
                     RecipientId = l.RecipientId,
+                    RecipientName = l.RecipientName,
                     RecipientType = l.RecipientType,
                     WhapiMessageId = l.WhapiMessageId,
                     Status = l.Status,

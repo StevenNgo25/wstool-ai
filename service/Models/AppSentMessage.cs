@@ -11,7 +11,10 @@ namespace WhatsAppCampaignManager.Models
         
         [StringLength(100)]
         public string RecipientId { get; set; } = string.Empty; // Group ID or Phone Number
-        
+
+        [StringLength(1000)]
+        public string? RecipientName { get; set; }
+
         [StringLength(20)]
         public string RecipientType { get; set; } = "Group"; // Group, User
         
