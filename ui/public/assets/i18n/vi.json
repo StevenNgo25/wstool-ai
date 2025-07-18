@@ -173,7 +173,8 @@
     "USERNAME_REQUIRED": "Vui lòng nhập tên người dùng của bạn",
     "PASSWORD_REQUIRED": "Vui lòng nhập mật khẩu của bạn",
     "SUBMIT": "Đăng nhập",
-    "LOGGING_IN": "Đang đăng nhập..."
+    "LOGGING_IN": "Đang đăng nhập...",
+    "LOGIN_FAIL":"Đăng nhập thất bại"
   },
   "ACCOUNT_FORM": {
     "EDIT_TITLE": "Sửa tài khoản",

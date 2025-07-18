@@ -173,7 +173,8 @@
     "USERNAME_REQUIRED": "请输入您的用户名",
     "PASSWORD_REQUIRED": "请输入您的密码",
     "SUBMIT": "登录",
-    "LOGGING_IN": "正在登录..."
+    "LOGGING_IN": "正在登录...",
+    "LOGIN_FAIL":"登录失败"
   },
   "ACCOUNT_FORM": {
     "EDIT_TITLE": "编辑账户",

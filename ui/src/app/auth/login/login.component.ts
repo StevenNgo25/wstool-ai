@@ -17,6 +17,7 @@ import { TranslateModule } from "@ngx-translate/core"
 export class LoginComponent implements OnInit {
   loginForm: FormGroup
   loading = false
+  loginFail=false
 
   constructor(
     private fb: FormBuilder,
@@ -40,6 +41,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.loginFail = false
     if (this.loginForm.valid) {
       this.loading = true
       this.authService.login(this.loginForm.value).subscribe({
@@ -49,8 +51,9 @@ export class LoginComponent implements OnInit {
           this.router.navigate(["/dashboard"])
         },
         error: (error) => {
+          this.loginFail = true
           this.loading = false
-          this.showError("Invalid username or password")
+          //this.showError("Invalid username or password")
         },
       })
     }

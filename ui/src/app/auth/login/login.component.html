@@ -14,7 +14,7 @@
       <div class="card shadow" style="width: 400px;">
         <div class="card-body p-5">
           <h3 class="card-title text-center mb-4">{{ 'LOGIN.HEADING' | translate }}</h3>
-
+          <small class="text-danger" *ngIf="loginFail">{{ 'LOGIN.LOGIN_FAIL' | translate }}</small>
           <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
             <!-- Username -->
             <div class="mb-3">

@@ -173,7 +173,8 @@
     "USERNAME_REQUIRED": "Please enter your username",
     "PASSWORD_REQUIRED": "Please enter your password",
     "SUBMIT": "Login",
-    "LOGGING_IN": "Logging in..."
+    "LOGGING_IN": "Logging in...",
+    "LOGIN_FAIL":"Login fail"
   },
   "ACCOUNT_FORM": {
     "EDIT_TITLE": "Edit Account",
