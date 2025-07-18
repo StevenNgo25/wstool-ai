@@ -151,7 +151,7 @@ namespace WhatsAppCampaignManager.HostedServices
             var whapiService = scope.ServiceProvider.GetRequiredService<IWhapiService>();
 
             var activeInstances = await context.AppInstances
-                .Where(i => i.IsActive && i.Id == 3)
+                .Where(i => i.IsActive)
                 .ToListAsync(stoppingToken);
 
             const int maxConcurrency = 5;

@@ -6,7 +6,7 @@ import { ToastaService, ToastaConfig, ToastOptions, ToastaModule } from "ngx-toa
 
 import { Router } from "@angular/router"
 import { AuthService } from "../../services/auth.service"
-import { TranslateModule } from "@ngx-translate/core"
+import { TranslateModule, TranslateService } from "@ngx-translate/core"
 
 @Component({
   selector: "app-login",
@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup
   loading = false
   loginFail=false
+  selectedLang = 'en';
 
   constructor(
     private fb: FormBuilder,
@@ -25,6 +26,7 @@ export class LoginComponent implements OnInit {
     public router: Router,
     private toastaService: ToastaService,
     private toastaConfig: ToastaConfig,
+    private translate: TranslateService,
   ) {
     this.toastaConfig.theme = "bootstrap"
 
@@ -32,6 +34,7 @@ export class LoginComponent implements OnInit {
       username: ["", Validators.required],
       password: ["", Validators.required],
     })
+    this.selectedLang = this.translate.currentLang || 'vi';
   }
 
   ngOnInit(): void {
@@ -62,6 +65,12 @@ export class LoginComponent implements OnInit {
   isFieldInvalid(fieldName: string): boolean {
     const field = this.loginForm.get(fieldName)
     return !!(field && field.invalid && (field.dirty || field.touched))
+  }
+
+  changeLang(lang: string) {
+    this.selectedLang = lang;
+    this.translate.use(lang);
+    localStorage.setItem('lang', lang);
   }
 
   private showSuccess(message: string): void {

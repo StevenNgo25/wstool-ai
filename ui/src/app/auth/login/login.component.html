@@ -1,4 +1,19 @@
-<div class="container-fluid vh-100">
+<div class="container-fluid vh-100 position-relative">
+  <!-- Nút đổi ngôn ngữ -->
+  <div class="position-absolute top-0 end-0 m-3 z-3">
+    <div class="dropdown">
+      <button class="btn btn-light dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        🌐 {{ selectedLang.toUpperCase() }}
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+        <li><a class="dropdown-item" href="#" (click)="changeLang('vi')">🇻🇳 {{ 'APP.LANGUAGE.VI' | translate }}</a></li>
+        <li><a class="dropdown-item" href="#" (click)="changeLang('en')">🇬🇧 {{ 'APP.LANGUAGE.EN' | translate }}</a></li>
+        <li><a class="dropdown-item" href="#" (click)="changeLang('cn')">🇨🇳 {{ 'APP.LANGUAGE.CN' | translate }}</a></li>
+        <!-- Thêm ngôn ngữ khác nếu cần -->
+      </ul>
+    </div>
+  </div>
+
   <div class="row h-100">
     <!-- Bên trái: Logo + tiêu đề -->
     <div class="col-md-6 d-flex align-items-center justify-content-center bg-primary">
@@ -46,12 +61,12 @@
             </button>
           </form>
 
-          <!-- Footer -->
-          <!-- <div class="text-center mt-3">
-            <small class="text-muted">
-              Thiết kế bởi: CDN
-            </small>
-          </div> -->
+          <!-- Footer (tuỳ chọn) -->
+          <!--
+          <div class="text-center mt-3">
+            <small class="text-muted">Thiết kế bởi: CDN</small>
+          </div>
+          -->
         </div>
       </div>
     </div>
