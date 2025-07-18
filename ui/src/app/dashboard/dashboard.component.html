@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-12">
-      <h1 class="h3 mb-4">Trang chủ</h1>
+      <h1 class="h3 mb-4">{{ 'DASHBOARD.TITLE' | translate }}</h1>
     </div>
   </div>
 
@@ -12,7 +12,7 @@
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
               <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                Tổng số nhóm
+                {{ 'DASHBOARD.TOTAL_GROUPS' | translate }}
               </div>
               <div class="h5 mb-0 font-weight-bold text-gray-800">
                 {{ stats.totalGroups }}
@@ -32,7 +32,7 @@
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
               <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                Tổng tin nhắn
+                {{ 'DASHBOARD.TOTAL_MESSAGES' | translate }}
               </div>
               <div class="h5 mb-0 font-weight-bold text-gray-800">
                 {{ stats.totalMessages }}
@@ -52,7 +52,7 @@
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
               <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                Tổng công việc
+                {{ 'DASHBOARD.TOTAL_JOBS' | translate }}
               </div>
               <div class="h5 mb-0 font-weight-bold text-gray-800">
                 {{ stats.totalJobs }}
@@ -72,7 +72,7 @@
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
               <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                Công việc đang chờ
+                {{ 'DASHBOARD.PENDING_JOBS' | translate }}
               </div>
               <div class="h5 mb-0 font-weight-bold text-gray-800">
                 {{ stats.pendingJobs }}
@@ -91,7 +91,9 @@
     <div class="col-xl-8 col-lg-7">
       <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-          <h6 class="m-0 font-weight-bold text-primary">Tổng quan trạng thái công việc</h6>
+          <h6 class="m-0 font-weight-bold text-primary">
+            {{ 'DASHBOARD.JOB_STATUS_OVERVIEW' | translate }}
+          </h6>
         </div>
         <div class="card-body">
           <div class="chart-area">
@@ -108,7 +110,9 @@
     <div class="col-xl-4 col-lg-5">
       <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-          <h6 class="m-0 font-weight-bold text-primary">Nhóm hoạt động nhiều nhất</h6>
+          <h6 class="m-0 font-weight-bold text-primary">
+            {{ 'DASHBOARD.TOP_ACTIVE_GROUPS' | translate }}
+          </h6>
         </div>
         <div class="card-body">
           <div class="list-group list-group-flush" *ngIf="stats.topGroups.length > 0">
@@ -116,13 +120,17 @@
                  *ngFor="let group of stats.topGroups">
               <div>
                 <h6 class="mb-1">{{ group.groupName }}</h6>
-                <small class="text-muted">{{ group.participantCount }} thành viên</small>
+                <small class="text-muted">
+                  {{ 'DASHBOARD.MEMBERS' | translate:{ count: group.participantCount } }}
+                </small>
               </div>
-              <span class="badge bg-primary rounded-pill">{{ group.messagesSent }} đã gửi</span>
+              <span class="badge bg-primary rounded-pill">
+                {{ 'DASHBOARD.SENT' | translate:{ count: group.messagesSent } }}
+              </span>
             </div>
           </div>
           <div *ngIf="stats.topGroups.length === 0" class="text-center text-muted">
-            Không tìm thấy nhóm nào
+            {{ 'DASHBOARD.NO_GROUP_FOUND' | translate }}
           </div>
         </div>
       </div>
@@ -133,31 +141,33 @@
     <div class="col-12">
       <div class="card shadow mb-4">
         <div class="card-header py-3">
-          <h6 class="m-0 font-weight-bold text-primary">Thống kê nhanh</h6>
+          <h6 class="m-0 font-weight-bold text-primary">
+            {{ 'DASHBOARD.QUICK_STATS' | translate }}
+          </h6>
         </div>
         <div class="card-body">
           <div class="row text-center">
             <div class="col-md-3">
               <div class="border-right">
                 <h4 class="text-primary">{{ stats.totalUniqueUsers }}</h4>
-                <p class="text-muted mb-0">Người dùng duy nhất</p>
+                <p class="text-muted mb-0">{{ 'DASHBOARD.UNIQUE_USERS' | translate }}</p>
               </div>
             </div>
             <div class="col-md-3">
               <div class="border-right">
                 <h4 class="text-success">{{ stats.completedJobs }}</h4>
-                <p class="text-muted mb-0">Công việc hoàn thành</p>
+                <p class="text-muted mb-0">{{ 'DASHBOARD.COMPLETED_JOBS' | translate }}</p>
               </div>
             </div>
             <div class="col-md-3">
               <div class="border-right">
                 <h4 class="text-info">{{ stats.totalSentMessages }}</h4>
-                <p class="text-muted mb-0">Tổng tin đã gửi</p>
+                <p class="text-muted mb-0">{{ 'DASHBOARD.TOTAL_SENT_MESSAGES' | translate }}</p>
               </div>
             </div>
             <div class="col-md-3">
               <h4 class="text-warning">{{ getSuccessRate() }}%</h4>
-              <p class="text-muted mb-0">Tỷ lệ thành công</p>
+              <p class="text-muted mb-0">{{ 'DASHBOARD.SUCCESS_RATE' | translate }}</p>
             </div>
           </div>
         </div>
@@ -165,5 +175,5 @@
     </div>
   </div>
 
-  <app-loading *ngIf="loading" height="400px" message="Đang tải trang tổng quan..."></app-loading>
+  <app-loading *ngIf="loading" height="400px" [message]="'DASHBOARD.LOADING' | translate"></app-loading>
 </div>

@@ -12,6 +12,7 @@ import { PaginationRequest, PaginatedResponse } from "../models/common.model"
 import { ConfirmDialogComponent } from "../shared/components/confirm-dialog/confirm-dialog.component"
 import { PaginationComponent } from "../shared/components/pagination/pagination.component"
 import { LoadingComponent } from "../shared/components/loading/loading.component"
+import { TranslateModule } from "@ngx-translate/core"
 
 @Component({
   selector: "app-jobs",
@@ -25,6 +26,7 @@ import { LoadingComponent } from "../shared/components/loading/loading.component
     ConfirmDialogComponent,
     NgbModalModule, // Import NgbModalModule
     ToastaModule, // Import ToastaModule
+    TranslateModule
   ],
   templateUrl: "./jobs.component.html",
   styleUrls: ["./jobs.component.scss"],

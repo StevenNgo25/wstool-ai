@@ -6,11 +6,12 @@ import { ToastaService, ToastaConfig, ToastOptions, ToastaModule } from "ngx-toa
 
 import { Router } from "@angular/router"
 import { AuthService } from "../../services/auth.service"
+import { TranslateModule } from "@ngx-translate/core"
 
 @Component({
   selector: "app-login",
   standalone: true, // Đánh dấu là standalone component
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, ToastaModule], // Import các module cần thiết
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, ToastaModule, TranslateModule], // Import các module cần thiết
   templateUrl: "./login.component.html",
 })
 export class LoginComponent implements OnInit {

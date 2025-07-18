@@ -1,55 +1,71 @@
 <div class="container-fluid">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="h3 mb-0">{{ isEditMode ? 'Chính sửa bài viết' : 'Thêm mới bài viết' }}</h1>
+    <h1 class="h3 mb-0">
+      {{ isEditMode ? ('MESSAGE.TITLE_EDIT' | translate) : ('MESSAGE.TITLE_CREATE' | translate) }}
+    </h1>
   </div>
 
   <div class="card shadow">
     <div class="card-body">
       <form [formGroup]="messageForm" (ngSubmit)="onSubmit()">
         <div class="mb-3">
-          <label for="textContent" class="form-label">Nội dung bài viết <span class="text-danger">*</span></label>
+          <label for="textContent" class="form-label">
+            {{ 'MESSAGE.LABEL_TEXT' | translate }} <span class="text-danger">*</span>
+          </label>
           <textarea class="form-control" id="textContent" formControlName="textContent" rows="5"
                     [class.is-invalid]="isFieldInvalid('textContent')"></textarea>
           <div class="invalid-feedback" *ngIf="isFieldInvalid('textContent')">
-            Tối đa 4000 ký tự và bắt buộc nhập
+            {{ 'MESSAGE.TEXT_REQUIRED' | translate }}
           </div>
         </div>
 
         <div class="mb-3">
-          <label for="instanceId" class="form-label">Tài khoản WS</label>
+          <label for="instanceId" class="form-label">
+            {{ 'MESSAGE.LABEL_INSTANCE' | translate }}
+          </label>
           <ng-select [items]="instances"
                      bindLabel="name"
                      bindValue="id"
-                     placeholder="Select an instance"
+                     [placeholder]="'MESSAGE.PLACEHOLDER_SELECT_INSTANCE' | translate"
                      formControlName="instanceId"
                      [class.is-invalid]="isFieldInvalid('instanceId')">
           </ng-select>
         </div>
 
         <div class="mb-3">
-          <label for="imageFile" class="form-label">Hình ảnh</label>
+          <label for="imageFile" class="form-label">
+            {{ 'MESSAGE.LABEL_IMAGE' | translate }}
+          </label>
           <input type="file" class="form-control" id="imageFile" (change)="onFileSelected($event)" accept="image/*">
-          <small class="form-text text-muted">Only image files (JPG, PNG, GIF) are allowed.</small>
+          <small class="form-text text-muted">
+            {{ 'MESSAGE.IMAGE_NOTE' | translate }}
+          </small>
         </div>
 
         <div class="mb-3" *ngIf="currentImageUrl && !removeImage">
-          <label class="form-label">Hình ảnh hiện tại</label>
+          <label class="form-label">
+            {{ 'MESSAGE.CURRENT_IMAGE' | translate }}
+          </label>
           <div>
-            <img [src]="environment.imageUrl + currentImageUrl" alt="Current Message Image" class="img-thumbnail" style="max-width: 200px; max-height: 200px; object-fit: contain;">
+            <img [src]="environment.imageUrl + currentImageUrl" alt="Current Message Image"
+                 class="img-thumbnail" style="max-width: 200px; max-height: 200px; object-fit: contain;">
             <div class="form-check mt-2">
-              <input class="form-check-input" type="checkbox" id="removeImage" [(ngModel)]="removeImage" (change)="onRemoveImageChange($event)">
+              <input class="form-check-input" type="checkbox" id="removeImage"
+                     [(ngModel)]="removeImage" (change)="onRemoveImageChange($event)">
               <label class="form-check-label" for="removeImage">
-                Xóa hình ảnh
+                {{ 'MESSAGE.REMOVE_IMAGE' | translate }}
               </label>
             </div>
           </div>
         </div>
 
         <div class="d-flex justify-content-end">
-          <button type="button" class="btn btn-secondary me-2" (click)="router.navigate(['/messages'])">Cancel</button>
+          <button type="button" class="btn btn-secondary me-2" (click)="router.navigate(['/messages'])">
+            {{ 'MESSAGE.BUTTON_CANCEL' | translate }}
+          </button>
           <button type="submit" class="btn btn-primary" [disabled]="loading">
             <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
-            {{ isEditMode ? 'Cập nhật' : 'Lưu' }}
+            {{ isEditMode ? ('MESSAGE.BUTTON_UPDATE' | translate) : ('MESSAGE.BUTTON_SAVE' | translate) }}
           </button>
         </div>
       </form>

@@ -1,15 +1,15 @@
 <div class="container-fluid">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="h3 mb-0">Tạo công việc mới</h1>
+    <h1 class="h3 mb-0">{{ 'CREATE_JOB.TITLE' | translate }}</h1>
   </div>
 
   <div class="card shadow">
     <div class="card-body">
       <form [formGroup]="jobForm" (ngSubmit)="onSubmit()">
         <div class="mb-3">
-          <label for="jobType" class="form-label"
-            >Loại công việc <span class="text-danger">*</span></label
-          >
+          <label for="jobType" class="form-label">
+            {{ 'CREATE_JOB.JOB_TYPE_LABEL' | translate }} <span class="text-danger">*</span>
+          </label>
           <select
             class="form-select"
             id="jobType"
@@ -21,122 +21,96 @@
             </option>
           </select>
           <div class="invalid-feedback" *ngIf="isFieldInvalid('jobType')">
-            Loại công việc là bắt buộc.
+            {{ 'CREATE_JOB.JOB_TYPE_REQUIRED' | translate }}
           </div>
         </div>
 
         <div class="mb-3">
-          <label for="messageId" class="form-label"
-            >Tin nhắn <span class="text-danger">*</span></label
-          >
+          <label for="messageId" class="form-label">
+            {{ 'CREATE_JOB.MESSAGE_LABEL' | translate }} <span class="text-danger">*</span>
+          </label>
           <ng-select
             [items]="messages"
             bindLabel="textContent"
             bindValue="id"
-            placeholder="Chọn một tin nhắn"
+            [placeholder]="'CREATE_JOB.MESSAGE_PLACEHOLDER' | translate"
             formControlName="messageId"
             [class.is-invalid]="isFieldInvalid('messageId')"
           >
           </ng-select>
           <div class="invalid-feedback" *ngIf="isFieldInvalid('messageId')">
-            Tin nhắn là bắt buộc.
+            {{ 'CREATE_JOB.MESSAGE_REQUIRED' | translate }}
           </div>
         </div>
 
         <div class="mb-3">
-          <label for="scheduledAt" class="form-label"
-            >Hẹn giờ đăng (Không bắt buộc)</label
-          >
+          <label for="scheduledAt" class="form-label">
+            {{ 'CREATE_JOB.SCHEDULE_LABEL' | translate }}
+          </label>
           <input
             type="datetime-local"
             class="form-control"
             id="scheduledAt"
             formControlName="scheduledAt"
           />
-          <small class="form-text text-muted"
-            >Để trống để chạy ngay lập tức.</small
-          >
+          <small class="form-text text-muted">
+            {{ 'CREATE_JOB.SCHEDULE_NOTE' | translate }}
+          </small>
         </div>
 
         <hr class="my-4" />
 
         <div class="mb-3">
-          <label for="instanceId" class="form-label"
-            >Tài khoản WhatsApp <span class="text-danger">*</span></label
-          >
+          <label for="instanceId" class="form-label">
+            {{ 'CREATE_JOB.INSTANCE_LABEL' | translate }} <span class="text-danger">*</span>
+          </label>
           <ng-select
             [items]="instances"
             bindLabel="name"
             bindValue="id"
-            placeholder="Chọn một tài khoản"
+            [placeholder]="'CREATE_JOB.INSTANCE_PLACEHOLDER' | translate"
             formControlName="instanceId"
             (change)="onInstanceChange($event)"
             [class.is-invalid]="isFieldInvalid('instanceId')"
           >
           </ng-select>
           <div class="invalid-feedback" *ngIf="isFieldInvalid('instanceId')">
-            Tài khoản là bắt buộc.
+            {{ 'CREATE_JOB.INSTANCE_REQUIRED' | translate }}
           </div>
         </div>
 
-        <!-- Hiển thị nếu jobType === 'SendToGroups' -->
-        <div
-          class="mb-3"
-        >
-          <label class="form-label"
-            >Nhóm mục tiêu <span class="text-danger">*</span></label
-          >
+        <div class="mb-3">
+          <label class="form-label">
+            {{ 'CREATE_JOB.GROUP_LABEL' | translate }} <span class="text-danger">*</span>
+          </label>
 
-          <!-- Nút mở modal -->
           <div class="mb-2">
             <button
               type="button"
               class="btn btn-outline-primary btn-sm"
               (click)="openGroupModal()"
             >
-              Chọn nhóm
+              {{ 'CREATE_JOB.GROUP_SELECT_BTN' | translate }}
             </button>
           </div>
 
-          <!-- Hiển thị nhóm đã chọn -->
           <div
             class="form-control"
             [class.is-invalid]="isFieldInvalid('groupIds')"
             style="min-height: 60px"
           >
-            <span *ngIf="selectedGroups.length === 0" class="text-muted"
-              >Chưa chọn nhóm nào</span
-            >
+            <span *ngIf="selectedGroups.length === 0" class="text-muted">
+              {{ 'CREATE_JOB.GROUP_EMPTY' | translate }}
+            </span>
             <ul *ngIf="selectedGroups.length > 0" class="mb-0 ps-3" style="height: 300px; overflow-y: auto;">
               <li *ngFor="let group of selectedGroups">{{ group.name }}</li>
             </ul>
           </div>
 
           <div class="invalid-feedback" *ngIf="isFieldInvalid('groupIds')">
-            Cần chọn ít nhất một nhóm.
+            {{ 'CREATE_JOB.GROUP_REQUIRED' | translate }}
           </div>
         </div>
-
-        <!-- <div
-          class="mb-3"
-          *ngIf="jobForm.get('jobType')?.value === 'SendToUsers'"
-        >
-          <label for="phoneNumbers" class="form-label"
-            >Số điện thoại (cách nhau bằng dấu phẩy)
-            <span class="text-danger">*</span></label
-          >
-          <textarea
-            class="form-control"
-            id="phoneNumbers"
-            formControlName="phoneNumbers"
-            rows="5"
-            placeholder="Ví dụ: +1234567890, +1987654321"
-            [class.is-invalid]="isFieldInvalid('phoneNumbers')"
-          ></textarea>
-          <div class="invalid-feedback" *ngIf="isFieldInvalid('phoneNumbers')">
-            Cần nhập số điện thoại.
-          </div>
-        </div> -->
 
         <div class="d-flex justify-content-end">
           <button
@@ -144,32 +118,46 @@
             class="btn btn-secondary me-2"
             (click)="router.navigate(['/jobs'])"
           >
-            Hủy
+            {{ 'CREATE_JOB.CANCEL' | translate }}
           </button>
           <button type="submit" class="btn btn-primary" [disabled]="loading">
             <span
               *ngIf="loading"
               class="spinner-border spinner-border-sm me-2"
             ></span>
-            Tạo công việc
+            {{ 'CREATE_JOB.SUBMIT' | translate }}
           </button>
         </div>
       </form>
     </div>
   </div>
 </div>
+
 <ng-template #groupModal let-modal>
   <div class="modal-header">
-    <h5 class="modal-title">Chọn nhóm</h5>
+    <h5 class="modal-title">{{ 'CREATE_JOB.GROUP_MODAL_TITLE' | translate }}</h5>
     <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
   </div>
   <div class="modal-body">
     <div class="mb-2">
-      <input type="text" class="form-control" placeholder="Tìm kiếm nhóm..." [(ngModel)]="groupSearch" />
+      <input
+        type="text"
+        class="form-control"
+        [placeholder]="'CREATE_JOB.GROUP_SEARCH' | translate"
+        [(ngModel)]="groupSearch"
+      />
     </div>
     <div class="form-check mb-2">
-      <input type="checkbox" class="form-check-input" id="selectAll" [(ngModel)]="selectAllChecked" (change)="toggleSelectAll()" />
-      <label for="selectAll" class="form-check-label">Chọn tất cả</label>
+      <input
+        type="checkbox"
+        class="form-check-input"
+        id="selectAll"
+        [(ngModel)]="selectAllChecked"
+        (change)="toggleSelectAll()"
+      />
+      <label for="selectAll" class="form-check-label">
+        {{ 'CREATE_JOB.GROUP_SELECT_ALL' | translate }}
+      </label>
     </div>
     <div style="max-height: 300px; overflow-y: auto;">
       <div *ngFor="let group of filteredGroups()">
@@ -187,7 +175,11 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button class="btn btn-secondary" (click)="modal.dismiss()">Đóng</button>
-    <button class="btn btn-primary" (click)="confirmGroupSelection(modal)">Xác nhận</button>
+    <button class="btn btn-secondary" (click)="modal.dismiss()">
+      {{ 'CREATE_JOB.CLOSE' | translate }}
+    </button>
+    <button class="btn btn-primary" (click)="confirmGroupSelection(modal)">
+      {{ 'CREATE_JOB.CONFIRM' | translate }}
+    </button>
   </div>
 </ng-template>

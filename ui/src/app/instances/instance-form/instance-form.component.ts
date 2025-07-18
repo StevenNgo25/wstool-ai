@@ -7,11 +7,12 @@ import { ToastaService, ToastOptions, ToastaModule } from "ngx-toasta" // Import
 import { ActivatedRoute, Router } from "@angular/router"
 import { InstanceService } from "../../services/instance.service"
 import { CreateInstanceDto, UpdateInstanceDto } from "../../models/user.model"
+import { TranslateModule } from "@ngx-translate/core"
 
 @Component({
   selector: "app-instance-form",
   standalone: true, // Đánh dấu là standalone component
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, ToastaModule], // Import các module cần thiết
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, ToastaModule, TranslateModule], // Import các module cần thiết
   templateUrl: "./instance-form.component.html",
   styleUrls: ["./instance-form.component.scss"],
 })

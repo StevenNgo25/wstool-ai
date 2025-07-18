@@ -10,6 +10,7 @@ namespace WhatsAppCampaignManager.DTOs
         public string? Description { get; set; }
         public int ParticipantCount { get; set; }
         public bool IsActive { get; set; }
+        public int InstanceId { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? LastSyncAt { get; set; }
         public AppInstance Instance { get; set; } = null!;

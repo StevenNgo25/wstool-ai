@@ -13,6 +13,7 @@ import { ConfirmDialogComponent } from "../shared/components/confirm-dialog/conf
 import { PaginationComponent } from "../shared/components/pagination/pagination.component"
 import { LoadingComponent } from "../shared/components/loading/loading.component"
 import {environment} from '../../environments/environment.js'
+import { TranslateModule } from "@ngx-translate/core"
 
 @Component({
   selector: "app-messages",
@@ -26,6 +27,7 @@ import {environment} from '../../environments/environment.js'
     ConfirmDialogComponent,
     NgbModalModule, // Import NgbModalModule
     ToastaModule, // Import ToastaModule
+    TranslateModule
   ],
   templateUrl: "./messages.component.html",
 })

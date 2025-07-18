@@ -16,11 +16,12 @@ import { Instance } from "../../models/user.model"
 import { Group } from "../../models/message.model"
 import { PaginationRequest } from "../../models/common.model"
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap"
+import { TranslateModule } from "@ngx-translate/core"
 
 @Component({
   selector: "app-job-form",
   standalone: true, // Đánh dấu là standalone component
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, NgSelectModule, ToastaModule, FormsModule], // Import các module cần thiết
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, NgSelectModule, ToastaModule, FormsModule, TranslateModule], // Import các module cần thiết
   templateUrl: "./job-form.component.html",
   styleUrls: ["./job-form.component.scss"],
 })

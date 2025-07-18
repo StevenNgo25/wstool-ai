@@ -14,11 +14,12 @@ import { Instance } from "../../models/user.model"
 import { Group } from "../../models/message.model"
 import { PaginationRequest } from "../../models/common.model"
 import { environment } from "../../../environments/environment"
+import { TranslateModule } from "@ngx-translate/core"
 
 @Component({
   selector: "app-message-form",
   standalone: true, // Đánh dấu là standalone component
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, NgSelectModule, ToastaModule, FormsModule], // Import các module cần thiết
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, NgSelectModule, ToastaModule, FormsModule, TranslateModule], // Import các module cần thiết
   templateUrl: "./message-form.component.html",
   styleUrls: ["./message-form.component.scss"],
 })

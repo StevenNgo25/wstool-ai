@@ -7,11 +7,12 @@ import { LoadingComponent } from "../shared/components/loading/loading.component
 import { GroupService } from "../services/group.service"
 import { Group } from "../models/message.model" // Corrected import for Group
 import { PaginationRequest, PaginatedResponse } from "../models/common.model"
+import { TranslateModule } from "@ngx-translate/core"
 
 @Component({
   selector: "app-groups",
   standalone: true, // Đánh dấu là standalone component
-  imports: [CommonModule, FormsModule, PaginationComponent, LoadingComponent], // Import các module cần thiết
+  imports: [CommonModule, FormsModule, PaginationComponent, LoadingComponent, TranslateModule], // Import các module cần thiết
   templateUrl: "./groups.component.html",
   styleUrls: ["./groups.component.scss"],
 })

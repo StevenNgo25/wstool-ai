@@ -1,58 +1,58 @@
 <div class="container-fluid">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="h3 mb-0">Chi tiết công việc</h1>
+    <h1 class="h3 mb-0">{{ 'JOB_DETAIL.DETAIL_TITLE' | translate }}</h1>
     <div>
       <button class="btn btn-outline-warning me-2" 
               (click)="restartJob()"
               [disabled]="job?.status === 'Running' || job?.status === 'Pending'">
-        <i class="fa fa-refresh me-1"></i>Khởi động lại
+        <i class="fa fa-refresh me-1"></i>{{ 'JOB_DETAIL.RESTART' | translate }}
       </button>
       <button class="btn btn-outline-danger" 
               (click)="cancelJob()"
               [disabled]="job?.status === 'Completed' || job?.status === 'Failed' || job?.status === 'Cancelled'">
-        <i class="fa fa-ban me-1"></i>Hủy công việc
+        <i class="fa fa-ban me-1"></i>{{ 'JOB_DETAIL.CANCEL' | translate }}
       </button>
     </div>
   </div>
 
-  <app-loading *ngIf="loading" height="400px" message="Đang tải chi tiết công việc..."></app-loading>
+  <app-loading *ngIf="loading" height="400px" [message]="'JOB_DETAIL.LOADING_MESSAGE' | translate"></app-loading>
 
   <div class="card shadow mb-4" *ngIf="job && !loading">
     <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary">Thông tin công việc</h6>
+      <h6 class="m-0 font-weight-bold text-primary">{{ 'JOB_DETAIL.INFO_HEADER' | translate }}</h6>
     </div>
     <div class="card-body">
       <div class="row">
         <div class="col-md-6">
-          <p><strong>Loại công việc:</strong> {{ job.jobType }}</p>
-          <p><strong>Tin nhắn:</strong> {{ job.messageTitle }}</p>
-          <p><strong>Tài khoản WhatsApp:</strong> {{ job.instanceName }}</p>
+          <p><strong>{{ 'JOB_DETAIL.TYPE' | translate }}:</strong> {{ job.jobType }}</p>
+          <p><strong>{{ 'JOB_DETAIL.MESSAGE' | translate }}:</strong> {{ job.messageTitle }}</p>
+          <p><strong>{{ 'JOB_DETAIL.INSTANCE' | translate }}:</strong> {{ job.instanceName }}</p>
         </div>
         <div class="col-md-6">
-          <p><strong>Trạng thái:</strong> <span [ngClass]="getJobStatusClass(job.status)">{{ job.status }}</span></p>
-          <p><strong>Tiến độ:</strong> {{ job.progress }}%</p>
-          <p><strong>Ngày tạo:</strong> {{ job.createdAt | date:'short' }}</p>
-          <p><strong>Hẹn giờ đăng:</strong> {{ job.scheduledAt ? (job.scheduledAt | date:'short') : 'Chạy ngay lập tức' }}</p>
-          <p><strong>Bắt đầu lúc:</strong> {{ job.startedAt ? (job.startedAt | date:'short') : 'Không có' }}</p>
-          <p><strong>Hoàn thành lúc:</strong> {{ job.completedAt ? (job.completedAt | date:'short') : 'Không có' }}</p>
+          <p><strong>{{ 'JOB_DETAIL.STATUS' | translate }}:</strong> <span [ngClass]="getJobStatusClass(job.status)">{{ job.status }}</span></p>
+          <p><strong>{{ 'JOB_DETAIL.PROGRESS' | translate }}:</strong> {{ job.progress }}%</p>
+          <p><strong>{{ 'JOB_DETAIL.CREATED_AT' | translate }}:</strong> {{ job.createdAt | date:'short' }}</p>
+          <p><strong>{{ 'JOB_DETAIL.SCHEDULED_AT' | translate }}:</strong> {{ job.scheduledAt ? (job.scheduledAt | date:'short') : ('JOB_DETAIL.RUN_IMMEDIATELY' | translate) }}</p>
+          <p><strong>{{ 'JOB_DETAIL.STARTED_AT' | translate }}:</strong> {{ job.startedAt ? (job.startedAt | date:'short') : ('JOB_DETAIL.NONE' | translate) }}</p>
+          <p><strong>{{ 'JOB_DETAIL.COMPLETED_AT' | translate }}:</strong> {{ job.completedAt ? (job.completedAt | date:'short') : ('JOB_DETAIL.NONE' | translate) }}</p>
         </div>
       </div>
       <div class="row mt-3">
         <div class="col-12">
-          <div><strong>Nhóm mục tiêu:</strong> 
+          <div><strong>{{ 'JOB_DETAIL.TARGET_GROUPS' | translate }}:</strong> 
             <div style="height: 100px; overflow-y: auto;">
               <span *ngIf="job.assignedGroups && job.assignedGroups.length > 0">
                 <span *ngFor="let group of job.assignedGroups" class="badge bg-secondary me-1">{{ group.name }}</span>
               </span>
-              <span *ngIf="!job.assignedGroups || job.assignedGroups.length === 0">Không có</span>
+              <span *ngIf="!job.assignedGroups || job.assignedGroups.length === 0">{{ 'JOB_DETAIL.NONE' | translate }}</span>
             </div>
           </div>
-          <div><strong>Số điện thoại mục tiêu:</strong> 
+          <div><strong>{{ 'JOB_DETAIL.TARGET_PHONES' | translate }}:</strong> 
             <div style="height: 100px; overflow-y: auto;">
               <span *ngIf="job.targetPhoneNumbers && job.targetPhoneNumbers.length > 0">
                 {{ job.targetPhoneNumbers.join(', ') }}
               </span>
-              <span *ngIf="!job.targetPhoneNumbers || job.targetPhoneNumbers.length === 0">Không có</span>
+              <span *ngIf="!job.targetPhoneNumbers || job.targetPhoneNumbers.length === 0">{{ 'JOB_DETAIL.NONE' | translate }}</span>
             </div>
           </div>
         </div>
@@ -62,7 +62,7 @@
 
   <div class="card shadow mb-4" *ngIf="job && !loading">
     <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary">Nhật ký công việc</h6>
+      <h6 class="m-0 font-weight-bold text-primary">{{ 'JOB_DETAIL.LOG_HEADER' | translate }}</h6>
     </div>
     <div class="card-body" style="height: 300px; overflow-y: auto;">
       <div *ngIf="job.logs && job.logs.length > 0; else noLogs">
@@ -77,14 +77,14 @@
         </ul>
       </div>
       <ng-template #noLogs>
-        <div class="text-center text-muted py-4">Không có nhật ký cho công việc này.</div>
+        <div class="text-center text-muted py-4">{{ 'JOB_DETAIL.NO_LOGS' | translate }}</div>
       </ng-template>
     </div>
   </div>
 
   <div class="card shadow" *ngIf="job && !loading">
     <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary">Tin nhắn đã gửi</h6>
+      <h6 class="m-0 font-weight-bold text-primary">{{ 'JOB_DETAIL.SENT_MESSAGES_HEADER' | translate }}</h6>
     </div>
     <div class="card-body" style="height: 300px; overflow-y: auto;">
       <div *ngIf="job.sentMessages && job.sentMessages.length > 0; else noSentMessages">
@@ -92,10 +92,10 @@
           <table class="table table-hover mb-0">
             <thead class="table-light">
               <tr>
-                <th>Người nhận</th>
-                <th>Trạng thái</th>
-                <th>Thời gian gửi</th>
-                <th>Lỗi</th>
+                <th>{{ 'JOB_DETAIL.RECIPIENT' | translate }}</th>
+                <th>{{ 'JOB_DETAIL.STATUS' | translate }}</th>
+                <th>{{ 'JOB_DETAIL.SENT_AT' | translate }}</th>
+                <th>{{ 'JOB_DETAIL.ERROR' | translate }}</th>
               </tr>
             </thead>
             <tbody>
@@ -107,18 +107,18 @@
                           'bg-success': sentMsg.status === 'Sent',
                           'bg-danger': sentMsg.status === 'Failed'
                         }">
-                    {{ sentMsg.status === 'Sent' ? 'Đã gửi' : 'Thất bại' }}
+                    {{ sentMsg.status === 'Sent' ? ('JOB_DETAIL.SENT' | translate) : ('JOB_DETAIL.FAILED' | translate) }}
                   </span>
                 </td>
                 <td>{{ sentMsg.sentAt | date:'short' }}</td>
-                <td>{{ sentMsg.errorMessage || 'Không có' }}</td>
+                <td>{{ sentMsg.errorMessage || ('JOB_DETAIL.NONE' | translate) }}</td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
       <ng-template #noSentMessages>
-        <div class="text-center text-muted py-4">Chưa có tin nhắn nào được gửi cho công việc này.</div>
+        <div class="text-center text-muted py-4">{{ 'JOB_DETAIL.NO_SENT_MESSAGES' | translate }}</div>
       </ng-template>
     </div>
   </div>

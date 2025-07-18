@@ -13,6 +13,7 @@ import { ConfirmDialogComponent } from "../shared/components/confirm-dialog/conf
 import { PaginationComponent } from "../shared/components/pagination/pagination.component"
 import { LoadingComponent } from "../shared/components/loading/loading.component"
 import { AuthService } from "../services/auth.service"
+import { TranslateModule } from "@ngx-translate/core"
 
 @Component({
   selector: "app-instances",
@@ -26,6 +27,7 @@ import { AuthService } from "../services/auth.service"
     ConfirmDialogComponent,
     NgbModalModule, // Import NgbModalModule
     ToastaModule, // Import ToastaModule
+    TranslateModule
   ],
   templateUrl: "./instances.component.html",
   styleUrls: ["./instances.component.scss"],

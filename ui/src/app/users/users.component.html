@@ -1,8 +1,8 @@
 <div class="container-fluid">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="h3 mb-0">Người dùng</h1>
+    <h1 class="h3 mb-0">{{ 'USER_LIST.TITLE' | translate }}</h1>
     <button class="btn btn-primary" (click)="createUser()">
-      <i class="fa fa-plus me-1"></i>Thêm người dùng
+      <i class="fa fa-plus me-1"></i>{{ 'USER_LIST.ADD_USER' | translate }}
     </button>
   </div>
 
@@ -11,32 +11,34 @@
       <div class="row align-items-center">
         <div class="col-md-6">
           <div class="input-group">
-            <input type="text" class="form-control" placeholder="Tìm kiếm người dùng..." 
-                   [(ngModel)]="searchTerm" (keyup.enter)="search()">
+            <input type="text" class="form-control" 
+                   [placeholder]="'USER_LIST.SEARCH_PLACEHOLDER' | translate"
+                   [(ngModel)]="searchTerm" 
+                   (keyup.enter)="search()">
             <button class="btn btn-outline-secondary" type="button" (click)="search()">
               <i class="fa fa-search"></i>
             </button>
           </div>
         </div>
         <div class="col-md-6 text-end">
-          <!-- Không có thao tác hàng loạt theo ngữ cảnh đã cho -->
+          <!-- No bulk actions -->
         </div>
       </div>
     </div>
 
     <div class="card-body p-0">
       <app-loading *ngIf="loading" height="300px"></app-loading>
-      
+
       <div class="table-responsive" *ngIf="!loading">
         <table class="table table-hover mb-0">
           <thead class="table-light">
             <tr>
-              <th>Tên đăng nhập</th>
-              <th>Email</th>
-              <th>Vai trò</th>
-              <th>Trạng thái</th>
-              <th>Ngày tạo</th>
-              <th width="120">Thao tác</th>
+              <th>{{ 'USER_LIST.USERNAME' | translate }}</th>
+              <th>{{ 'USER_LIST.EMAIL' | translate }}</th>
+              <th>{{ 'USER_LIST.ROLE' | translate }}</th>
+              <th>{{ 'USER_LIST.STATUS' | translate }}</th>
+              <th>{{ 'USER_LIST.CREATED_AT' | translate }}</th>
+              <th width="120">{{ 'USER_LIST.ACTIONS' | translate }}</th>
             </tr>
           </thead>
           <tbody>
@@ -46,7 +48,7 @@
               <td>{{ user.role }}</td>
               <td>
                 <span class="badge" [ngClass]="user.isActive ? 'bg-success' : 'bg-danger'">
-                  {{ user.isActive ? 'Hoạt động' : 'Tạm khóa' }}
+                  {{ user.isActive ? ('USER_LIST.ACTIVE' | translate) : ('USER_LIST.LOCKED' | translate) }}
                 </span>
               </td>
               <td>{{ user.createdAt | date:'short' }}</td>
@@ -54,12 +56,12 @@
                 <div class="btn-group btn-group-sm">
                   <button class="btn btn-outline-primary" 
                           (click)="editUser(user.id)"
-                          title="Chỉnh sửa">
+                          [title]="'USER_LIST.EDIT' | translate">
                     <i class="fa fa-edit"></i>
                   </button>
                   <button class="btn btn-outline-danger" 
                           (click)="deleteUser(user.id)"
-                          title="Xóa">
+                          [title]="'USER_LIST.DELETE' | translate">
                     <i class="fa fa-trash"></i>
                   </button>
                 </div>
@@ -67,7 +69,7 @@
             </tr>
             <tr *ngIf="users.data.length === 0">
               <td colspan="6" class="text-center py-4 text-muted">
-                Không tìm thấy người dùng nào.
+                {{ 'USER_LIST.NO_DATA' | translate }}
               </td>
             </tr>
           </tbody>

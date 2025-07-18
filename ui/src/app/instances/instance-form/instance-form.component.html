@@ -1,6 +1,8 @@
 <div class="container-fluid">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="h3 mb-0">{{ isEditMode ? 'Chỉnh sửa tài khoản' : 'Thêm tài khoản' }}</h1>
+    <h1 class="h3 mb-0">
+      {{ isEditMode ? ('ACCOUNT_FORM.EDIT_TITLE' | translate) : ('ACCOUNT_FORM.ADD_TITLE' | translate) }}
+    </h1>
   </div>
 
   <div class="card shadow">
@@ -8,43 +10,53 @@
       <form [formGroup]="instanceForm" (ngSubmit)="onSubmit()">
 
         <div class="mb-3">
-          <label for="name" class="form-label">Tên tài khoản <span class="text-danger">*</span></label>
+          <label for="name" class="form-label">
+            {{ 'ACCOUNT_FORM.NAME_LABEL' | translate }} <span class="text-danger">*</span>
+          </label>
           <input type="text" class="form-control" id="name" formControlName="name"
                  [class.is-invalid]="isFieldInvalid('name')">
           <div class="invalid-feedback" *ngIf="isFieldInvalid('name')">
-            Tên tài khoản là bắt buộc và tối đa 100 ký tự.
+            {{ 'ACCOUNT_FORM.NAME_INVALID' | translate }}
           </div>
         </div>
 
         <div class="mb-3">
-          <label for="whatsAppNumber" class="form-label">Số WhatsApp</label>
+          <label for="whatsAppNumber" class="form-label">
+            {{ 'ACCOUNT_FORM.WHATSAPP_LABEL' | translate }}
+          </label>
           <input type="text" class="form-control" id="whatsAppNumber" formControlName="whatsAppNumber"
-                 placeholder="VD: 84123456789"
+                 placeholder="{{ 'ACCOUNT_FORM.WHATSAPP_PLACEHOLDER' | translate }}"
                  [class.is-invalid]="isFieldInvalid('whatsAppNumber')">
           <div class="invalid-feedback" *ngIf="isFieldInvalid('whatsAppNumber')">
-            Số WhatsApp tối đa 50 ký tự.
+            {{ 'ACCOUNT_FORM.WHATSAPP_INVALID' | translate }}
           </div>
         </div>
 
         <div class="mb-3">
-          <label for="whapiToken" class="form-label">Mã WS Token <span class="text-danger">*</span></label>
+          <label for="whapiToken" class="form-label">
+            {{ 'ACCOUNT_FORM.TOKEN_LABEL' | translate }} <span class="text-danger">*</span>
+          </label>
           <input type="password" class="form-control" id="whapiToken" formControlName="whapiToken"
                  [class.is-invalid]="isFieldInvalid('whapiToken')">
           <div class="invalid-feedback" *ngIf="isFieldInvalid('whapiToken')">
-            Mã WS Token là bắt buộc và tối đa 200 ký tự.
+            {{ 'ACCOUNT_FORM.TOKEN_INVALID' | translate }}
           </div>
         </div>
 
         <div class="mb-3 form-check">
           <input type="checkbox" class="form-check-input" id="isActive" formControlName="isActive">
-          <label class="form-check-label" for="isActive">Đang hoạt động</label>
+          <label class="form-check-label" for="isActive">
+            {{ 'ACCOUNT_FORM.IS_ACTIVE' | translate }}
+          </label>
         </div>
 
         <div class="d-flex justify-content-end">
-          <button type="button" class="btn btn-secondary me-2" (click)="router.navigate(['/instances'])">Hủy</button>
+          <button type="button" class="btn btn-secondary me-2" (click)="router.navigate(['/instances'])">
+            {{ 'ACCOUNT_FORM.CANCEL' | translate }}
+          </button>
           <button type="submit" class="btn btn-primary" [disabled]="loading">
             <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
-            {{ isEditMode ? 'Cập nhật tài khoản' : 'Tạo tài khoản' }}
+            {{ isEditMode ? ('ACCOUNT_FORM.UPDATE' | translate) : ('ACCOUNT_FORM.CREATE' | translate) }}
           </button>
         </div>
 

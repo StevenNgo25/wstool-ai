@@ -86,7 +86,8 @@ namespace WhatsAppCampaignManager.Services.Implements
                 ParticipantCount = g.ParticipantCount,
                 IsActive = g.IsActive,
                 CreatedAt = g.CreatedAt,
-                LastSyncAt = g.LastSyncAt
+                LastSyncAt = g.LastSyncAt,
+                InstanceId = g.InstanceId
             });
 
             // Apply search

@@ -1,8 +1,8 @@
 <div class="container-fluid">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="h3 mb-0">Công việc</h1>
+    <h1 class="h3 mb-0">{{ 'JOBS.TITLE' | translate }}</h1>
     <button class="btn btn-primary" (click)="createJob()">
-      <i class="fa fa-plus me-1"></i>Thêm công việc
+      <i class="fa fa-plus me-1"></i>{{ 'JOBS.ADD_JOB' | translate }}
     </button>
   </div>
 
@@ -11,7 +11,8 @@
       <div class="row align-items-center">
         <div class="col-md-6">
           <div class="input-group">
-            <input type="text" class="form-control" placeholder="Tìm kiếm công việc..." 
+            <input type="text" class="form-control" 
+                   [placeholder]="'JOBS.SEARCH_PLACEHOLDER' | translate" 
                    [(ngModel)]="searchTerm" (keyup.enter)="search()">
             <button class="btn btn-outline-secondary" type="button" (click)="search()">
               <i class="fa fa-search"></i>
@@ -22,7 +23,7 @@
           <button class="btn btn-danger btn-sm" 
                   [disabled]="selectedJobs.length === 0"
                   (click)="bulkDelete()">
-            <i class="fa fa-trash me-1"></i>Xóa đã chọn ({{ selectedJobs.length }})
+            <i class="fa fa-trash me-1"></i>{{ 'JOBS.DELETE_SELECTED' | translate }} ({{ selectedJobs.length }})
           </button>
         </div>
       </div>
@@ -30,7 +31,7 @@
 
     <div class="card-body p-0">
       <app-loading *ngIf="loading" height="300px"></app-loading>
-      
+
       <div class="table-responsive" *ngIf="!loading">
         <table class="table table-hover mb-0">
           <thead class="table-light">
@@ -40,13 +41,13 @@
                        [checked]="isAllSelected()" 
                        (change)="toggleSelectAll()">
               </th>
-              <th>Loại</th>
-              <th>Tiêu đề tin nhắn</th>
-              <th>Tài khoản</th>
-              <th>Trạng thái</th>
-              <th>Tiến độ</th>
-              <th>Ngày tạo</th>
-              <th width="150">Thao tác</th>
+              <th>{{ 'JOBS.COLUMN_TYPE' | translate }}</th>
+              <th>{{ 'JOBS.COLUMN_TITLE' | translate }}</th>
+              <th>{{ 'JOBS.COLUMN_ACCOUNT' | translate }}</th>
+              <th>{{ 'JOBS.COLUMN_STATUS' | translate }}</th>
+              <th>{{ 'JOBS.COLUMN_PROGRESS' | translate }}</th>
+              <th>{{ 'JOBS.COLUMN_CREATED_AT' | translate }}</th>
+              <th width="150">{{ 'JOBS.COLUMN_ACTIONS' | translate }}</th>
             </tr>
           </thead>
           <tbody>
@@ -70,24 +71,24 @@
                 <div class="btn-group btn-group-sm">
                   <button class="btn btn-outline-info" 
                           (click)="viewJobDetails(job.id)"
-                          title="Xem chi tiết">
+                          [title]="'JOBS.VIEW_DETAILS' | translate">
                     <i class="fa fa-info-circle"></i>
                   </button>
                   <button class="btn btn-outline-warning" 
                           (click)="restartJob(job.id)"
                           [disabled]="job.status === 'Running' || job.status === 'Pending'"
-                          title="Khởi động lại">
+                          [title]="'JOBS.RESTART' | translate">
                     <i class="fa fa-refresh"></i>
                   </button>
                   <button class="btn btn-outline-danger" 
                           (click)="cancelJob(job.id)"
                           [disabled]="job.status === 'Completed' || job.status === 'Failed' || job.status === 'Cancelled'"
-                          title="Hủy công việc">
+                          [title]="'JOBS.CANCEL' | translate">
                     <i class="fa fa-ban"></i>
                   </button>
                   <button class="btn btn-outline-danger" 
                           (click)="deleteJob(job.id)"
-                          title="Xóa công việc">
+                          [title]="'JOBS.DELETE' | translate">
                     <i class="fa fa-trash"></i>
                   </button>
                 </div>
@@ -95,7 +96,7 @@
             </tr>
             <tr *ngIf="jobs.data.length === 0">
               <td colspan="9" class="text-center py-4 text-muted">
-                Không tìm thấy công việc nào
+                {{ 'JOBS.NO_DATA' | translate }}
               </td>
             </tr>
           </tbody>

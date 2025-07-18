@@ -10,11 +10,12 @@ import { UserService } from "../../services/user.service"
 import { InstanceService } from "../../services/instance.service"
 import { CreateUserDto, UpdateUserDto, Instance, AssignInstancesDto } from "../../models/user.model"
 import { PaginationRequest } from "../../models/common.model"
+import { TranslateModule } from "@ngx-translate/core"
 
 @Component({
   selector: "app-user-form",
   standalone: true, // Đánh dấu là standalone component
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, NgSelectModule, ToastaModule], // Import các module cần thiết
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, NgSelectModule, ToastaModule, TranslateModule], // Import các module cần thiết
   templateUrl: "./user-form.component.html",
   styleUrls: ["./user-form.component.scss"],
 })

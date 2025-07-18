@@ -4,8 +4,8 @@
     <div class="col-md-6 d-flex align-items-center justify-content-center bg-primary">
       <div class="text-center text-white">
         <i class="fa fa-whatsapp" style="font-size: 5rem;"></i>
-        <h1 class="mt-3">WhatsApp tool</h1>
-        <p class="lead">Tạo các chiến dịch WhatsApp</p>
+        <h1 class="mt-3">{{ 'LOGIN.TITLE' | translate }}</h1>
+        <p class="lead">{{ 'LOGIN.DESCRIPTION' | translate }}</p>
       </div>
     </div>
 
@@ -13,28 +13,28 @@
     <div class="col-md-6 d-flex align-items-center justify-content-center">
       <div class="card shadow" style="width: 400px;">
         <div class="card-body p-5">
-          <h3 class="card-title text-center mb-4">Đăng nhập</h3>
+          <h3 class="card-title text-center mb-4">{{ 'LOGIN.HEADING' | translate }}</h3>
 
           <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
             <!-- Username -->
             <div class="mb-3">
-              <label for="username" class="form-label">Tên đăng nhập</label>
+              <label for="username" class="form-label">{{ 'LOGIN.USERNAME' | translate }}</label>
               <input type="text" class="form-control" id="username" 
                      formControlName="username" 
                      [class.is-invalid]="isFieldInvalid('username')">
               <div class="invalid-feedback" *ngIf="isFieldInvalid('username')">
-                Vui lòng nhập tên đăng nhập
+                {{ 'LOGIN.USERNAME_REQUIRED' | translate }}
               </div>
             </div>
 
             <!-- Password -->
             <div class="mb-3">
-              <label for="password" class="form-label">Mật khẩu</label>
+              <label for="password" class="form-label">{{ 'LOGIN.PASSWORD' | translate }}</label>
               <input type="password" class="form-control" id="password" 
                      formControlName="password"
                      [class.is-invalid]="isFieldInvalid('password')">
               <div class="invalid-feedback" *ngIf="isFieldInvalid('password')">
-                Vui lòng nhập mật khẩu
+                {{ 'LOGIN.PASSWORD_REQUIRED' | translate }}
               </div>
             </div>
 
@@ -42,7 +42,7 @@
             <button type="submit" class="btn btn-primary w-100" 
                     [disabled]="loginForm.invalid || loading">
               <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
-              {{ loading ? 'Đang đăng nhập...' : 'Đăng nhập' }}
+              {{ loading ? ('LOGIN.LOGGING_IN' | translate) : ('LOGIN.SUBMIT' | translate) }}
             </button>
           </form>
 

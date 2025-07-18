@@ -6,11 +6,12 @@ import { ChartConfiguration, ChartData, ChartType } from "chart.js"
 import { GroupService } from "../services/group.service"
 import { DashboardStats } from "../models/message.model"
 import { NgChartsModule } from 'ng2-charts';
+import { TranslateModule } from "@ngx-translate/core"
 
 @Component({
   selector: "app-dashboard",
   standalone: true, // Đánh dấu là standalone component
-  imports: [CommonModule, LoadingComponent, NgChartsModule], // Import các module cần thiết
+  imports: [CommonModule, LoadingComponent, NgChartsModule, TranslateModule], // Import các module cần thiết
   templateUrl: "./dashboard.component.html",
   styleUrls: ["./dashboard.component.scss"],
 })

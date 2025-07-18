@@ -9,6 +9,7 @@ import { ConfirmDialogComponent } from "../../shared/components/confirm-dialog/c
 import { ActivatedRoute, Router } from "@angular/router"
 import { JobService } from "../../services/job.service"
 import { Job } from "../../models/job.model"
+import { TranslateModule } from "@ngx-translate/core"
 
 @Component({
   selector: "app-job-detail",
@@ -20,6 +21,7 @@ import { Job } from "../../models/job.model"
     ConfirmDialogComponent,
     NgbModalModule, // Import NgbModalModule
     ToastaModule, // Import ToastaModule
+    TranslateModule
   ],
   templateUrl: "./job-detail.component.html",
   styleUrls: ["./job-detail.component.scss"],

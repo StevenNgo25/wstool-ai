@@ -1,6 +1,6 @@
-import { ApplicationConfig, provideZoneChangeDetection } from "@angular/core"
+import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from "@angular/core"
 import { provideRouter } from "@angular/router"
-import { provideHttpClient, withInterceptors } from "@angular/common/http"
+import { HttpClient, HttpClientModule, provideHttpClient, withInterceptors } from "@angular/common/http"
 import { provideAnimations } from "@angular/platform-browser/animations" // For BrowserAnimationsModule
 import { ToastaModule } from "ngx-toasta" // For ToastaModule.forRoot()
 
@@ -13,6 +13,13 @@ import { MessageService } from "./services/message.service"
 import { JobService } from "./services/job.service"
 import { GroupService } from "./services/group.service"
 import { InstanceService } from "./services/instance.service"
+
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -30,5 +37,15 @@ export const appConfig: ApplicationConfig = {
     JobService,
     GroupService,
     InstanceService,
+    importProvidersFrom(
+      TranslateModule.forRoot({
+        defaultLanguage: 'en',
+        loader: {
+          provide: TranslateLoader,
+          useFactory: HttpLoaderFactory,
+          deps: [HttpClient]
+        }
+      })
+    )
   ],
 }
