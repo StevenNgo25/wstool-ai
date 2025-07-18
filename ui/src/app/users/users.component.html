@@ -33,6 +33,7 @@
         <table class="table table-hover mb-0">
           <thead class="table-light">
             <tr>
+              <th>{{ 'USER_LIST.ID' | translate }}</th>
               <th>{{ 'USER_LIST.USERNAME' | translate }}</th>
               <th>{{ 'USER_LIST.EMAIL' | translate }}</th>
               <th>{{ 'USER_LIST.ROLE' | translate }}</th>
@@ -43,6 +44,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let user of users.data">
+              <td>{{ user.id }}</td>
               <td>{{ user.username }}</td>
               <td>{{ user.email }}</td>
               <td>{{ user.role }}</td>

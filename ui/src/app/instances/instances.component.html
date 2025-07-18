@@ -38,6 +38,7 @@
         <table class="table table-hover mb-0">
           <thead class="table-light">
             <tr>
+              <th>{{ 'WHATSAPP_ACCOUNTS.ID' | translate }}</th>
               <th>{{ 'WHATSAPP_ACCOUNTS.ACCOUNT_NAME' | translate }}</th>
               <th>{{ 'WHATSAPP_ACCOUNTS.WHATSAPP_NUMBER' | translate }}</th>
               <th>{{ 'WHATSAPP_ACCOUNTS.IS_ACTIVE' | translate }}</th>
@@ -48,6 +49,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let instance of instances.data">
+              <td>{{ instance.id }}</td>
               <td>{{ instance.name }}</td>
               <td>{{ instance.whatsAppNumber }}</td>
               <td>

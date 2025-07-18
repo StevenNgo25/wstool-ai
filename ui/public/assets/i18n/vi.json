@@ -3,7 +3,7 @@
   "DASHBOARD": {
     "TITLE": "Trang chủ",
     "TOTAL_GROUPS": "Tổng số nhóm",
-    "TOTAL_MESSAGES": "Tổng số tin nhắn",
+    "TOTAL_MESSAGES": "Tổng số bài viết",
     "TOTAL_JOBS": "Tổng số công việc",
     "PENDING_JOBS": "Công việc đang chờ",
     "JOB_STATUS_OVERVIEW": "Tổng quan trạng thái công việc",
@@ -14,7 +14,7 @@
     "QUICK_STATS": "Thống kê nhanh",
     "UNIQUE_USERS": "Người dùng duy nhất",
     "COMPLETED_JOBS": "Công việc đã hoàn thành",
-    "TOTAL_SENT_MESSAGES": "Tổng số tin nhắn đã gửi",
+    "TOTAL_SENT_MESSAGES": "Tổng số bài viết đã gửi",
     "SUCCESS_RATE": "Tỷ lệ thành công",
     "LOADING": "Đang tải trang tổng quan..."
   },
@@ -136,6 +136,7 @@
     "CONFIRM": "Xác nhận"
   },
   "JOBS": {
+    "ID": "ID",
     "TITLE": "Công việc",
     "ADD_JOB": "Thêm công việc",
     "SEARCH_PLACEHOLDER": "Tìm kiếm công việc...",
@@ -192,6 +193,7 @@
     "UPDATE": "Cập nhật tài khoản"
   },
   "WHATSAPP_ACCOUNTS": {
+    "ID":"ID",
     "TITLE": "Tài khoản WhatsApp",
     "ADD_ACCOUNT": "Thêm tài khoản",
     "SEARCH_PLACEHOLDER": "Tìm kiếm tài khoản...",
@@ -238,6 +240,7 @@
     "UPDATE": "Cập nhật"
   },
   "USER_LIST": {
+    "ID":"ID",
     "TITLE": "Người dùng",
     "ADD_USER": "Thêm người dùng",
     "SEARCH_PLACEHOLDER": "Tìm kiếm người dùng...",

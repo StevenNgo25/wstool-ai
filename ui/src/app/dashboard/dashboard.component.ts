@@ -21,11 +21,11 @@ export class DashboardComponent implements OnInit {
 
   jobChartType: ChartType = "doughnut"
   jobChartData: ChartData<"doughnut"> = {
-    labels: ["Pending", "Completed", "Failed"],
+    labels: ["Pending", "Completed", "Failed", "Running"],
     datasets: [
       {
-        data: [0, 0, 0],
-        backgroundColor: ["#f6c23e", "#1cc88a", "#e74a3b"],
+        data: [0, 0, 0, 0],
+        backgroundColor: ["#ffc107", "#198754", "#dc3545", "#0dcaf0"],
       },
     ],
   }
@@ -62,13 +62,13 @@ export class DashboardComponent implements OnInit {
 
   updateChartData(): void {
     if (this.stats) {
-      const failedJobs = this.stats.totalJobs - this.stats.completedJobs - this.stats.pendingJobs
+      //const failedJobs = this.stats.totalJobs - this.stats.completedJobs - this.stats.pendingJobs
       this.jobChartData = {
-        labels: ["Pending", "Completed", "Failed"],
+        labels: ["Pending", "Completed", "Failed", "Running"],
         datasets: [
           {
-            data: [this.stats.pendingJobs, this.stats.completedJobs, failedJobs],
-            backgroundColor: ["#f6c23e", "#1cc88a", "#e74a3b"],
+            data: [this.stats.pendingJobs, this.stats.completedJobs, this.stats.failedJobs, this.stats.runningJobs],
+            backgroundColor: ["#ffc107", "#198754", "#dc3545", "#0dcaf0"],
           },
         ],
       }
@@ -77,6 +77,6 @@ export class DashboardComponent implements OnInit {
 
   getSuccessRate(): number {
     if (!this.stats || this.stats.totalJobs === 0) return 0
-    return Math.round((this.stats.completedJobs / this.stats.totalJobs) * 100)
+    return Math.round(((this.stats.completedJobs + this.stats.failedJobs) / this.stats.completedJobs) * 100)
   }
 }

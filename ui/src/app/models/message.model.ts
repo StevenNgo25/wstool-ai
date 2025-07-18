@@ -61,6 +61,7 @@ export interface DashboardStats {
   pendingJobs: number
   completedJobs: number
   failedJobs: number
+  runningJobs: number
   last7DaysSentMessages: number
   last7DaysFailedMessages: number
   topGroups: GroupStats[]

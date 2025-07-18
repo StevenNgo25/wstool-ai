@@ -136,6 +136,7 @@
     "CONFIRM": "Confirm"
   },
   "JOBS": {
+    "ID": "ID",
     "TITLE": "Jobs",
     "ADD_JOB": "Add Job",
     "SEARCH_PLACEHOLDER": "Search jobs...",
@@ -192,6 +193,7 @@
     "UPDATE": "Update Account"
   },
   "WHATSAPP_ACCOUNTS": {
+    "ID":"ID",
     "TITLE": "WhatsApp Accounts",
     "ADD_ACCOUNT": "Add Account",
     "SEARCH_PLACEHOLDER": "Search accounts...",
@@ -238,6 +240,7 @@
     "UPDATE": "Update"
   },
   "USER_LIST": {
+    "ID":"ID",
     "TITLE": "Users",
     "ADD_USER": "Add User",
     "SEARCH_PLACEHOLDER": "Search users...",

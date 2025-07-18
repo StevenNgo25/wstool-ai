@@ -136,6 +136,7 @@
     "CONFIRM": "确认"
   },
   "JOBS": {
+    "ID": "ID",
     "TITLE": "任务",
     "ADD_JOB": "添加任务",
     "SEARCH_PLACEHOLDER": "搜索任务...",
@@ -192,6 +193,7 @@
     "UPDATE": "更新账户"
   },
   "WHATSAPP_ACCOUNTS": {
+    "ID":"ID",
     "TITLE": "WhatsApp 账户",
     "ADD_ACCOUNT": "添加账户",
     "SEARCH_PLACEHOLDER": "搜索账户...",
@@ -238,6 +240,7 @@
     "UPDATE": "更新"
   },
   "USER_LIST": {
+    "ID":"ID",
     "TITLE": "用户",
     "ADD_USER": "添加用户",
     "SEARCH_PLACEHOLDER": "搜索用户...",

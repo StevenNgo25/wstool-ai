@@ -139,6 +139,7 @@ namespace WhatsAppCampaignManager.Services.Implements
                     TotalMessages = await _context.AppMessages.Where(q => q.CreatedByUserId == userId).CountAsync(),
                     TotalJobs = await _context.AppJobs.Where(q => q.CreatedByUserId == userId).CountAsync(),
                     PendingJobs = await _context.AppJobs.Where(q => q.CreatedByUserId == userId).CountAsync(j => j.Status == "Pending"),
+                    RunningJobs = await _context.AppJobs.Where(q => q.CreatedByUserId == userId).CountAsync(j => j.Status == "Running"),
                     CompletedJobs = await _context.AppJobs.Where(q => q.CreatedByUserId == userId).CountAsync(j => j.Status == "Completed"),
                     TotalSentMessages = await _context.AppSentMessages.Include(i => i.Job).Where(q=>q.Job.CreatedByUserId == userId).CountAsync(),
                     TopGroups = await _context.AppGroups
